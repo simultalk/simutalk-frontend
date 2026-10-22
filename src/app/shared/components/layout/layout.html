@@ -1,5 +1,10 @@
 <mat-toolbar class="barra">
   <span>SimuTalk</span>
+  <span class="espacio"></span>
+  @if (auth.isLoggedIn()) {
+    <span class="usuario">{{ auth.username() }}</span>
+    <button mat-button (click)="auth.signOut()">Cerrar sesión</button>
+  }
 </mat-toolbar>
 
 <mat-sidenav-container class="contenedor">

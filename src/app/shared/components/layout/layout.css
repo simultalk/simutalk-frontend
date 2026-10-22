@@ -15,11 +15,12 @@
 .contenido {
   padding: 24px;
 }
-.barra {
-  background: var(--mat-sys-primary);
-  color: var(--mat-sys-on-primary);
+
+.espacio {
+  flex: 1;
 }
 
-.menu {
-  border-right: 1px solid var(--mat-sys-outline-variant);
+.usuario {
+  font-size: 14px;
+  margin-right: 8px;
 }
