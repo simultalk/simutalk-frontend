@@ -1,0 +1,36 @@
+<div class="pantalla">
+  <mat-card class="tarjeta">
+    <mat-card-header>
+      <mat-card-title>SimuTalk</mat-card-title>
+      <mat-card-subtitle>Inicia sesión para continuar</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="username" autocomplete="username" />
+          @if (form.controls.username.hasError('required')) {
+            <mat-error>Ingresa tu usuario</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="current-password" />
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>Ingresa tu contraseña</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <p class="error" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <button mat-flat-button type="submit" [disabled]="loading()">
+          {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
