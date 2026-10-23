@@ -1,0 +1,34 @@
+<mat-card class="tarjeta">
+  <mat-card-header>
+    <mat-card-title>Prueba: invitar a entrevista (US-07)</mat-card-title>
+    <mat-card-subtitle>Página temporal, solo para probar el diálogo</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (!auth.isLoggedIn()) {
+      <p class="aviso">
+        Primero <a routerLink="/login">inicia sesión</a> con el reclutador dueño de la vacante.
+      </p>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="openDialog()">
+      <mat-form-field appearance="outline">
+        <mat-label>Id de la postulación</mat-label>
+        <input matInput type="number" min="1" formControlName="applicationId" />
+        @if (form.controls.applicationId.invalid) {
+          <mat-error>Ingresa el id de una postulación</mat-error>
+        }
+      </mat-form-field>
+      <button mat-flat-button type="submit">Invitar a entrevista</button>
+    </form>
+
+    @if (session(); as s) {
+      <div class="resultado" role="status">
+        <p><strong>Invitación enviada.</strong></p>
+        <p>Sesión {{ s.id }} · estado {{ s.status }}</p>
+        <p>Fecha límite: {{ s.expiresAt | date: 'dd/MM/yyyy' }}</p>
+        <p>Invitado el {{ s.invitedAt | date: 'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>
