@@ -8,34 +8,8 @@ import { JobPosting } from '../../model/recruitment.model';
   selector: 'app-detail-job-posting',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="job-posting-detail">
-      <ng-container *ngIf="loading">
-        <p>Cargando vacante...</p>
-      </ng-container>
-
-      <ng-container *ngIf="!loading && jobPosting">
-        <h2>Vacante #{{ jobPosting.id }}</h2>
-        <p *ngIf="jobPosting.status">Estado: {{ jobPosting.status }}</p>
-
-        <button
-          type="button"
-          (click)="onApply()"
-          [disabled]="alreadyAppliedOrBlocked || applying"
-        >
-          {{ applying ? 'Enviando...' : 'Postular' }}
-        </button>
-
-        <button type="button" (click)="goBack()">Volver</button>
-
-        <p *ngIf="successMessage" class="success">{{ successMessage }}</p>
-        <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-      </ng-container>
-
-      <p *ngIf="!loading && !jobPosting && !errorMessage">No se encontró la vacante.</p>
-      <p *ngIf="errorMessage && !jobPosting" class="error">{{ errorMessage }}</p>
-    </div>
-  `
+  templateUrl: './detail-job-posting.component.html',
+  styleUrls: ['./detail-job-posting.component.css']
 })
 export class DetailJobPostingComponent implements OnInit {
   jobPosting?: JobPosting;

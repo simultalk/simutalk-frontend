@@ -5,4 +5,4 @@ import { DetailJobPostingComponent } from './recruitment/pages/detail-job-postin
 export const routes: Routes = [
   { path: 'vacantes', component: ListJobPostingsComponent },
   { path: 'vacantes/:id', component: DetailJobPostingComponent }
-];ng
+];
