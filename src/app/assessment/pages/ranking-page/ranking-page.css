@@ -1,0 +1,16 @@
+.ranking { padding: 24px; }
+.posting-select { width: min(420px, 100%); }
+.ranking-table { width: 100%; }
+
+.clickable-row { cursor: pointer; }
+.clickable-row:hover { background: rgba(0, 0, 0, 0.04); }
+.clickable-row:focus-visible { outline: 2px solid currentColor; outline-offset: -2px; }
+
+.breakdown { margin: 0; padding: 8px 0; list-style: none; font-size: 0.875rem; }
+
+/* Colores de insignias */
+.mat-mdc-chip.badge--top      { --mdc-chip-elevated-container-color: #d6f0e0; --mdc-chip-label-text-color: #14532d; }
+.mat-mdc-chip.badge--evidence { --mdc-chip-elevated-container-color: #d5eef0; --mdc-chip-label-text-color: #134e4a; }
+.mat-mdc-chip.badge--verified { --mdc-chip-elevated-container-color: #d8e8fb; --mdc-chip-label-text-color: #1e3a5f; }
+.mat-mdc-chip.badge--missing  { --mdc-chip-elevated-container-color: #fdebc8; --mdc-chip-label-text-color: #7a4a00; }
+.mat-mdc-chip.badge--alert    { --mdc-chip-elevated-container-color: #fbd9d9; --mdc-chip-label-text-color: #7f1d1d; }
