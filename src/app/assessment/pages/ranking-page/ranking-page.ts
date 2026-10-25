@@ -7,11 +7,12 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { RankingService } from '../../services/ranking.service';
+import { RankingService } from '../../services/ranking';
 import {
   JobPostingSummary,
   RankingBadge,
   RankingEntry,
+  RankingResponse,
 } from '../../model/ranking';
 
 interface BadgeConfig {
@@ -32,8 +33,8 @@ interface BadgeConfig {
     MatSnackBarModule,
     MatTableModule,
   ],
-  templateUrl: './ranking-page.component.html',
-  styleUrl: './ranking-page.component.css',
+  templateUrl: './ranking-page.html',
+  styleUrl: './ranking-page.css',
 })
 export class RankingPageComponent implements OnInit {
   private readonly rankingService = inject(RankingService);
@@ -65,11 +66,11 @@ export class RankingPageComponent implements OnInit {
   ngOnInit(): void {
     this.loadingPostings.set(true);
     this.rankingService.getActiveJobPostings().subscribe({
-      next: (list) => {
+      next: (list: JobPostingSummary[]) => {
         this.jobPostings.set(list);
         this.loadingPostings.set(false);
       },
-      error: (err) => {
+      error: (err: unknown) => {
         this.loadingPostings.set(false);
         this.showError(err);
       },
@@ -81,11 +82,11 @@ export class RankingPageComponent implements OnInit {
     this.ranking.set([]);
     this.loadingRanking.set(true);
     this.rankingService.getRanking(id).subscribe({
-      next: (res) => {
+      next: (res: RankingResponse) => {
         this.ranking.set(res.entries);
         this.loadingRanking.set(false);
       },
-      error: (err) => {
+      error: (err: unknown) => {
         this.loadingRanking.set(false);
         this.showError(err);
       },
