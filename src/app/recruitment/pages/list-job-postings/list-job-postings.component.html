@@ -1,0 +1,52 @@
+<div class="simutalk-container">
+  <header class="page-header">
+    <div>
+      <span class="section-label">OPORTUNIDADES DISPONIBLES</span>
+      <h1 class="page-title">Vacantes publicadas</h1>
+    </div>
+
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Buscar vacante por título..."
+        [(ngModel)]="searchTerm"
+        (input)="onSearchChange()"
+        aria-label="Buscar vacante por título"
+      />
+    </div>
+  </header>
+
+  <div *ngIf="loading" class="state-box">Cargando vacantes disponibles...</div>
+  <div *ngIf="errorMessage" class="error-banner">{{ errorMessage }}</div>
+
+  <div *ngIf="!loading && filteredPostings.length === 0" class="state-box">
+    No se encontraron vacantes publicadas con ese título.
+  </div>
+
+  <div class="cards-grid" *ngIf="!loading && filteredPostings.length > 0">
+    <article class="job-card" *ngFor="let job of filteredPostings">
+      <div class="card-top">
+        <span class="badge-published">PUBLICADA</span>
+        <span class="badge-anon" *ngIf="job.anonymizedScreening">
+          Cribado anonimizado
+        </span>
+      </div>
+
+      <h2 class="job-title">{{ job.title }}</h2>
+      <p class="company-name">
+        {{ job.companyName || 'Empresa ID #' + job.companyId }}
+      </p>
+      <p class="job-desc">{{ job.description }}</p>
+
+      <div class="card-footer">
+        <div class="closing-date">
+          <span class="label">Cierre:</span>
+          <span>{{ job.closingDate | date:'dd/MM/yyyy' }}</span>
+        </div>
+        <button class="btn-primary" (click)="goToDetail(job.id)">
+          Ver detalle y postular
+        </button>
+      </div>
+    </article>
+  </div>
+</div>

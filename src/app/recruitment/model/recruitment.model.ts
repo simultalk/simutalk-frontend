@@ -1,4 +1,3 @@
-// Basado en Figura 28 y Tabla 11/13 del informe TB1
 export interface EvaluationCriterion {
   id: number;
   jobPostingId: number;
@@ -16,7 +15,7 @@ export interface JobPosting {
   title: string;
   description: string;
   companyId: number;
-  companyName?: string; // Opcional si el backend lo enriquece
+  companyName?: string;
   status: 'DRAFT' | 'PUBLISHED' | 'CLOSED';
   closingDate: string;
   anonymizedScreening: boolean;
@@ -24,7 +23,6 @@ export interface JobPosting {
   criteria?: EvaluationCriterion[];
 }
 
-// Etapas del pipeline según US-17 y sección 6.3
 export type ApplicationStatus =
   | 'RECEIVED'
   | 'INTERVIEWING'
@@ -33,7 +31,6 @@ export type ApplicationStatus =
   | 'REJECTED'
   | 'HIRED';
 
-// Basado en Figura 32 y 33 del informe TB1
 export interface Application {
   id: number;
   jobPostingId: number;
@@ -47,7 +44,6 @@ export interface Application {
   updatedAt: string;
 }
 
-// Basado en Figura 34 del informe TB1 (US-22)
 export interface InterviewSession {
   id: number;
   applicationId: number;
@@ -62,7 +58,6 @@ export interface InterviewSession {
   answeredQuestions: number;
 }
 
-// Basado en Figura 37 y Diagrama de BD (Figura 18) para US-22
 export interface CriterionScore {
   id: number;
   criterionId: number;
