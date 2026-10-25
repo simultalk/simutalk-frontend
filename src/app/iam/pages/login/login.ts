@@ -38,7 +38,7 @@ export class Login {
     this.auth.signIn(this.form.getRawValue()).subscribe({
       next: () => {
         this.loading.set(false);
-        this.router.navigate(['/']);
+        this.router.navigateByUrl(this.auth.homeUrl());
       },
       error: (error: HttpErrorResponse) => {
         this.loading.set(false);
