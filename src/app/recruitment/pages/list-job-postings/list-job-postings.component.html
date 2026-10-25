@@ -1,0 +1,38 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">Inicio / Vacantes</p>
+  <h1 class="st-page-title">Vacantes publicadas</h1>
+  <p class="st-page-subtitle">Elige una vacante para ver el detalle y postular.</p>
+</header>
+
+<mat-form-field appearance="outline" class="buscador">
+  <mat-label>Buscar por título</mat-label>
+  <input matInput type="search" #buscador (input)="searchTerm.set(buscador.value)" />
+  <mat-icon matSuffix fontSet="material-symbols-outlined" aria-hidden="true">search</mat-icon>
+</mat-form-field>
+
+@if (loading()) {
+  <p class="estado" role="status">Cargando vacantes...</p>
+} @else if (errorMessage()) {
+  <p class="estado error" role="alert">{{ errorMessage() }}</p>
+} @else if (filteredPostings().length === 0) {
+  <p class="estado">No se encontraron vacantes publicadas con ese título.</p>
+} @else {
+  <div class="grilla">
+    @for (job of filteredPostings(); track job.id) {
+      <article class="st-card vacante">
+        @if (job.anonymizedScreening) {
+          <span class="etiqueta">Cribado anonimizado</span>
+        }
+        <h2 class="titulo">{{ job.title }}</h2>
+        <p class="empresa">{{ job.companyName ?? 'Empresa #' + job.companyId }}</p>
+        <p class="descripcion">{{ job.description }}</p>
+        <footer class="pie">
+          <span class="cierre">Cierra: {{ job.closingDate | date: 'dd/MM/yyyy' }}</span>
+          <button mat-flat-button type="button" (click)="goToDetail(job.id)">
+            Ver detalle y postular
+          </button>
+        </footer>
+      </article>
+    }
+  </div>
+}

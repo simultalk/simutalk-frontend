@@ -1,0 +1,14 @@
+.detalle { display: flex; flex-direction: column; gap: 12px; max-width: 760px; }
+.detalle button { align-self: flex-start; }
+.meta { color: var(--st-text-secondary); margin: 0; }
+.descripcion { margin: 0; white-space: pre-line; }
+.aviso {
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin: 0;
+}
+.mensaje { margin: 0; font-weight: 600; }
+.mensaje.ok { color: var(--st-primary-dark); }
+.mensaje.error { color: #b3261e; }

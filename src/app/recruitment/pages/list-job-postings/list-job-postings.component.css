@@ -1,0 +1,44 @@
+.buscador { width: 100%; max-width: 420px; }
+
+.grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.vacante { display: flex; flex-direction: column; gap: 8px; }
+.titulo { font-size: 18px; font-weight: 700; margin: 0; }
+.empresa { color: var(--st-text-secondary); font-size: 14px; margin: 0; }
+
+.descripcion {
+  margin: 0;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.etiqueta {
+  align-self: flex-start;
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+
+.pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.cierre { color: var(--st-text-secondary); font-size: 13px; }
+
+.estado { color: var(--st-text-secondary); }
+.estado.error { color: #b3261e; }
