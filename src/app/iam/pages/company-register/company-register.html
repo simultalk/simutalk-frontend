@@ -1,0 +1,71 @@
+<div class="pantalla">
+  <mat-card class="tarjeta">
+    <mat-card-header>
+      <mat-card-title>Registro de empresa</mat-card-title>
+      <mat-card-subtitle>Crea la cuenta de tu empresa en SimuTalk</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Razón social</mat-label>
+          <input matInput formControlName="businessName" autocomplete="organization" />
+          @if (form.controls.businessName.hasError('required')) {
+            <mat-error>Ingresa la razón social</mat-error>
+          }
+          @if (form.controls.businessName.hasError('minlength')) {
+            <mat-error>Debe tener al menos 3 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>RUC</mat-label>
+          <input matInput formControlName="ruc" maxlength="11" inputmode="numeric" />
+          @if (form.controls.ruc.hasError('required')) {
+            <mat-error>Ingresa el RUC</mat-error>
+          }
+          @if (form.controls.ruc.hasError('pattern')) {
+            <mat-error>El RUC debe tener 11 dígitos</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Correo corporativo</mat-label>
+          <input matInput type="email" formControlName="corporateEmail" autocomplete="email" />
+          @if (form.controls.corporateEmail.hasError('required')) {
+            <mat-error>Ingresa el correo corporativo</mat-error>
+          }
+          @if (form.controls.corporateEmail.hasError('email')) {
+            <mat-error>Ingresa un correo válido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input matInput type="password" formControlName="password" autocomplete="new-password" />
+          @if (form.controls.password.hasError('required')) {
+            <mat-error>Ingresa una contraseña</mat-error>
+          }
+          @if (form.controls.password.hasError('minlength')) {
+            <mat-error>Debe tener al menos 6 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        @if (errorMessage()) {
+          <p class="error" role="alert">{{ errorMessage() }}</p>
+        }
+        @if (success()) {
+          <p class="exito" role="status">Empresa registrada correctamente.</p>
+        }
+
+        <button mat-flat-button type="submit" [disabled]="loading()">
+          {{ loading() ? 'Registrando...' : 'Registrar empresa' }}
+        </button>
+
+        <p class="enlace">
+          ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+        </p>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
