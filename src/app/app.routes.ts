@@ -5,17 +5,26 @@ import { CompanyRegister } from './iam/pages/company-register/company-register';
 import { ApplicantRegister } from './iam/pages/applicant-register/applicant-register';
 
 export const routes: Routes = [
+  // Páginas públicas (sin menú)
   { path: 'login', component: Login },
   { path: 'register/company', component: CompanyRegister },
   { path: 'register/applicant', component: ApplicantRegister },
-  { path: '', component: Layout, children: [] },
-  { path: '**', redirectTo: '' },
+
+  // Páginas internas: se muestran dentro del layout (barra superior + menú)
   {
-    path: 'assessment/ranking',
-    // canActivate: [authGuard, roleGuard], data: { roles: ['ROLE_RECRUITER'] },
-    loadComponent: () =>
-      import('./assessment/pages/ranking-page/ranking-page').then(
-        (m) => m.RankingPageComponent
-      ),
+    path: '',
+    component: Layout,
+    children: [
+      {
+        path: 'assessment/ranking',
+        loadComponent: () =>
+          import('./assessment/pages/ranking-page/ranking-page').then(
+            (m) => m.RankingPageComponent
+          ),
+      },
+    ],
   },
+
+  // Cualquier otra dirección vuelve al inicio. Siempre debe ir al final.
+  { path: '**', redirectTo: '' }
 ];
