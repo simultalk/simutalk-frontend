@@ -1,17 +1,34 @@
-<mat-toolbar class="barra">
-  <span>SimuTalk</span>
-  <span class="espacio"></span>
-  @if (auth.isLoggedIn()) {
-    <span class="usuario">{{ auth.username() }}</span>
-    <button mat-button (click)="auth.signOut()">Cerrar sesión</button>
-  }
-</mat-toolbar>
+<header class="barra">
+  <a class="marca" [routerLink]="auth.homeUrl()" aria-label="SimuTalk, ir al inicio">
+    <img src="logo.svg" alt="" width="32" height="32" />
+    <span>Simu<strong>Talk</strong></span>
+  </a>
 
-<mat-sidenav-container class="contenedor">
-  <mat-sidenav mode="side" opened class="menu">
-    <mat-nav-list></mat-nav-list>
-  </mat-sidenav>
-  <mat-sidenav-content class="contenido">
+  <span class="espacio"></span>
+
+  <div class="usuario">
+    <span class="usuario-texto">
+      {{ username }}@if (roleLabel) {<span class="rol"> · {{ roleLabel }}</span>}
+    </span>
+    <span class="avatar" aria-hidden="true">{{ initials }}</span>
+    <button mat-stroked-button type="button" (click)="auth.signOut()">
+      <mat-icon fontSet="material-symbols-outlined">logout</mat-icon>
+      Cerrar sesión
+    </button>
+  </div>
+</header>
+
+<div class="cuerpo">
+  <nav class="menu" aria-label="Menú principal">
+    @for (item of menu; track item.route) {
+      <a class="opcion" [routerLink]="item.route" routerLinkActive="activa" ariaCurrentWhenActive="page">
+        <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ item.icon }}</mat-icon>
+        <span>{{ item.label }}</span>
+      </a>
+    }
+  </nav>
+
+  <main class="contenido">
     <router-outlet />
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </main>
+</div>

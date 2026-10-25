@@ -4,16 +4,29 @@
   height: 100vh;
 }
 
-.contenedor {
-  flex: 1;
+/* Barra superior */
+.barra {
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: var(--st-surface);
+  border-bottom: 1px solid var(--st-border);
 }
 
-.menu {
-  width: 240px;
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--st-text);
+  font-size: 20px;
+  font-weight: 700;
 }
 
-.contenido {
-  padding: 24px;
+.marca strong {
+  color: var(--st-primary);
 }
 
 .espacio {
@@ -21,6 +34,101 @@
 }
 
 .usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.usuario-texto {
   font-size: 14px;
-  margin-right: 8px;
+  color: var(--st-text);
+}
+
+.rol {
+  color: var(--st-text-secondary);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menú lateral + contenido */
+.cuerpo {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.menu {
+  width: 240px;
+  flex-shrink: 0;
+  padding: 16px 12px;
+  background: var(--st-surface);
+  border-right: 1px solid var(--st-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--st-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.opcion mat-icon {
+  color: var(--st-primary);
+}
+
+.opcion:hover {
+  background: var(--st-background);
+}
+
+.opcion.activa {
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  font-weight: 600;
+}
+
+.opcion:focus-visible {
+  outline: 2px solid var(--st-primary);
+  outline-offset: 2px;
+}
+
+.contenido {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px;
+  background: var(--st-background);
+}
+
+/* Pantallas pequeñas: se ocultan los textos largos */
+@media (max-width: 720px) {
+  .usuario-texto {
+    display: none;
+  }
+
+  .menu {
+    width: 72px;
+  }
+
+  .opcion span {
+    display: none;
+  }
 }
