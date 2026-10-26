@@ -10,6 +10,7 @@ import { AuthService } from './shared/services/auth.service';
 import { Forbidden } from './shared/pages/forbidden/forbidden';
 import { UnderConstruction } from './shared/pages/under-construction/under-construction';
 import { ROLE_CANDIDATE, ROLE_RECRUITER } from './shared/model/menu';
+import { interviewsRoutes } from './interviews/interviews.routes';
 
 /** Sección del menú que todavía no tiene pantalla: muestra "En construcción". */
 function pending(path: string, title: string, roles: string[]): Route {
@@ -60,6 +61,9 @@ export const routes: Routes = [
       pending('recruitment/my-applications', 'Mis postulaciones', [ROLE_CANDIDATE]),
       pending('profiles/me', 'Mi perfil', [ROLE_CANDIDATE]),
       pending('profiles/certifications', 'Certificaciones', [ROLE_CANDIDATE]),
+
+      // Entrevistas (US-07 y US-08)
+      { path: 'interviews', children: interviewsRoutes },
 
       // 403
       { path: 'forbidden', component: Forbidden },
