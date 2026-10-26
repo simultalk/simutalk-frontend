@@ -1,16 +1,17 @@
 import { Routes, Route } from '@angular/router';
 import { inject } from '@angular/core';
-import { Layout } from './shared/components/layout/layout';
-import { Login } from './iam/pages/login/login';
-import { CompanyRegister } from './iam/pages/company-register/company-register';
-import { ApplicantRegister } from './iam/pages/applicant-register/applicant-register';
-import { authGuard } from './shared/guards/auth.guard';
-import { roleGuard } from './shared/guards/role.guard';
-import { AuthService } from './shared/services/auth.service';
-import { Forbidden } from './shared/pages/forbidden/forbidden';
-import { UnderConstruction } from './shared/pages/under-construction/under-construction';
-import { ROLE_CANDIDATE, ROLE_RECRUITER } from './shared/model/menu';
-import { interviewsRoutes } from './interviews/interviews.routes';
+import { Layout } from './components/shared/layout/layout';
+import { Login } from './components/auth/login/login';
+import { CompanyRegister } from './components/auth/company-register/company-register';
+import { ApplicantRegister } from './components/auth/applicant-register/applicant-register';
+import { authGuard } from './guards/auth.guard';
+import { roleGuard } from './guards/role.guard';
+import { AuthService } from './services/auth.service';
+import { Forbidden } from './components/shared/forbidden/forbidden';
+import { UnderConstruction } from './components/shared/under-construction/under-construction';
+import { InvitationTest } from './components/company/invitation-test/invitation-test';
+import { TakeInterview } from './components/applicant/take-interview/take-interview';
+import { ROLE_CANDIDATE, ROLE_RECRUITER } from './models/menu';
 
 /** Sección del menú que todavía no tiene pantalla: muestra "En construcción". */
 function pending(path: string, title: string, roles: string[]): Route {
@@ -30,40 +31,38 @@ export const routes: Routes = [
     canActivate: [authGuard],
     canActivateChild: [roleGuard],
     children: [
-      // Inicio: cada rol va a su página principal
       { path: '', pathMatch: 'full', redirectTo: () => inject(AuthService).homeUrl() },
 
-      // Reclutador
+      // Reclutador (components/company)
       pending('recruitment/my-job-postings', 'Mis vacantes', [ROLE_RECRUITER]),
       {
         path: 'assessment/ranking',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./assessment/pages/ranking-page/ranking-page').then(
-            (m) => m.RankingPageComponent
-          ),
+          import('./components/company/ranking-page/ranking-page').then((m) => m.RankingPageComponent),
       },
       pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),
+      // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
+      { path: 'interviews/invitation-test', component: InvitationTest },
 
-      // Postulante
+      // Postulante (components/applicant)
       {
-  path: 'recruitment/job-postings',
-  data: { roles: [ROLE_CANDIDATE] },
-  loadComponent: () => import('./recruitment/pages/list-job-postings/list-job-postings.component')
-    .then(m => m.ListJobPostingsComponent),
-},
-{
-  path: 'recruitment/job-postings/:id',
-  data: { roles: [ROLE_CANDIDATE] },
-  loadComponent: () => import('./recruitment/pages/detail-job-posting/detail-job-posting.component')
-    .then(m => m.DetailJobPostingComponent),
-  },
+        path: 'recruitment/job-postings',
+        data: { roles: [ROLE_CANDIDATE] },
+        loadComponent: () =>
+          import('./components/applicant/list-job-postings/list-job-postings.component').then((m) => m.ListJobPostingsComponent),
+      },
+      {
+        path: 'recruitment/job-postings/:id',
+        data: { roles: [ROLE_CANDIDATE] },
+        loadComponent: () =>
+          import('./components/applicant/detail-job-posting/detail-job-posting.component').then((m) => m.DetailJobPostingComponent),
+      },
       pending('recruitment/my-applications', 'Mis postulaciones', [ROLE_CANDIDATE]),
       pending('profiles/me', 'Mi perfil', [ROLE_CANDIDATE]),
       pending('profiles/certifications', 'Certificaciones', [ROLE_CANDIDATE]),
-
-      // Entrevistas (US-07 y US-08)
-      { path: 'interviews', children: interviewsRoutes },
+      // US-08, maqueta con datos de prueba
+      { path: 'interviews/take-interview', component: TakeInterview },
 
       // 403
       { path: 'forbidden', component: Forbidden },
@@ -71,5 +70,5 @@ export const routes: Routes = [
   },
 
   // Cualquier otra dirección vuelve al inicio. Siempre debe ir al final.
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];
