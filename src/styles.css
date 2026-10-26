@@ -1,1 +1,52 @@
-/* You can add global styles to this file, and also import other style files */
+/* Identidad de marca de SimuTalk (Figma: Identidad de marca y wireframes).
+   Usen estas variables en sus CSS en vez de escribir colores a mano. */
+:root {
+  --st-primary: #1b6e5e;
+  --st-primary-dark: #0f5c4f;
+  --st-primary-soft: #e8f2ef;
+  --st-background: #f5f7fa;
+  --st-surface: #ffffff;
+  --st-text: #1a2230;
+  --st-text-secondary: #5c6779;
+  --st-accent: #ff9500;
+  --st-border: #e2e8f0;
+  --st-radius: 12px;
+}
+
+body {
+  background-color: var(--st-background);
+  color: var(--st-text);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Encabezado de página: "Inicio / Sección" + título, como en los wireframes. */
+.st-page-header {
+  margin-bottom: 24px;
+}
+
+.st-breadcrumb {
+  font-size: 13px;
+  color: var(--st-text-secondary);
+  margin: 0 0 4px;
+}
+
+.st-page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--st-text);
+  margin: 0;
+}
+
+.st-page-subtitle {
+  font-size: 14px;
+  color: var(--st-text-secondary);
+  margin: 6px 0 0;
+}
+
+/* Tarjeta blanca con borde suave. */
+.st-card {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  padding: 24px;
+}

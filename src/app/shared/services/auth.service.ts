@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable, map, switchMap, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { Session, SignInRequest, SignInResponse, UserResponse } from '../model/auth.model';
+import { HOME_BY_ROLE, MENU_BY_ROLE, MenuItem, ROLE_LABELS } from '../model/menu';
 
 const SESSION_KEY = 'simutalk.session';
 
@@ -72,5 +73,22 @@ export class AuthService {
 
   hasAnyRole(roles: string[]): boolean {
     return this.roles().some(role => roles.includes(role));
+  }
+
+  /** Página de inicio según el rol (reclutador: Mis vacantes, postulante: Vacantes). */
+  homeUrl(): string {
+    const role = this.roles().find(r => HOME_BY_ROLE[r]);
+    return role ? HOME_BY_ROLE[role] : '/forbidden';
+  }
+
+  /** Opciones del menú lateral según los roles del usuario. */
+  menu(): MenuItem[] {
+    return this.roles().flatMap(role => MENU_BY_ROLE[role] ?? []);
+  }
+
+  /** Nombre del rol para mostrar, por ejemplo "Reclutador". */
+  roleLabel(): string {
+    const role = this.roles().find(r => ROLE_LABELS[r]);
+    return role ? ROLE_LABELS[role] : '';
   }
 }

@@ -1,0 +1,39 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">Inicio / Vacantes / Detalle</p>
+  <button mat-button type="button" (click)="goBack()">← Volver a vacantes</button>
+</header>
+
+@if (loading()) {
+  <p role="status">Cargando vacante...</p>
+} @else if (jobPosting(); as job) {
+  <article class="st-card detalle">
+    <h1 class="st-page-title">{{ job.title }}</h1>
+    <p class="meta">
+      {{ job.companyName ?? 'Empresa #' + job.companyId }} · Cierra el
+      {{ job.closingDate | date: 'dd/MM/yyyy' }}
+    </p>
+    <p class="descripcion">{{ job.description }}</p>
+
+    @if (job.anonymizedScreening) {
+      <p class="aviso">Esta vacante usa cribado anonimizado: tu nombre no se muestra en la primera revisión.</p>
+    }
+
+    @if (successMessage()) {
+      <p class="mensaje ok" role="status">{{ successMessage() }}</p>
+    }
+    @if (errorMessage()) {
+      <p class="mensaje error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <button
+      mat-flat-button
+      type="button"
+      (click)="onApply()"
+      [disabled]="applying() || alreadyAppliedOrBlocked()"
+    >
+      {{ applying() ? 'Enviando...' : 'Postular' }}
+    </button>
+  </article>
+} @else if (errorMessage()) {
+  <p class="mensaje error" role="alert">{{ errorMessage() }}</p>
+}
