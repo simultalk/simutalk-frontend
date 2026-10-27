@@ -1,0 +1,50 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">Inicio / Mis vacantes / Nueva</p>
+  <h1 class="st-page-title">Crear vacante</h1>
+  <p class="st-page-subtitle">Completa los datos. La vacante se guarda como borrador.</p>
+</header>
+
+<form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
+  <mat-form-field appearance="outline">
+    <mat-label>Título del puesto</mat-label>
+    <input matInput formControlName="title" maxlength="150" />
+    @if (form.controls.title.hasError('required')) {
+      <mat-error>El título es obligatorio.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput formControlName="description" rows="6" maxlength="4000"></textarea>
+    <mat-hint align="end">{{ form.controls.description.value.length }}/4000</mat-hint>
+    @if (form.controls.description.hasError('required')) {
+      <mat-error>La descripción es obligatoria.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Fecha de cierre</mat-label>
+    <input matInput type="date" formControlName="closingDate" [min]="today" />
+    @if (form.controls.closingDate.hasError('required')) {
+      <mat-error>Elige una fecha de cierre.</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-slide-toggle formControlName="anonymizedScreening">
+    Ocultar datos personales del postulante durante la preselección
+  </mat-slide-toggle>
+
+  @if (errorMessage()) {
+    <p class="mensaje error" role="alert">{{ errorMessage() }}</p>
+  }
+  @if (successMessage()) {
+    <p class="mensaje exito" role="status">{{ successMessage() }}</p>
+  }
+
+  <div class="acciones">
+    <button mat-button type="button" (click)="cancel()">Cancelar</button>
+    <button mat-flat-button type="submit" [disabled]="saving()">
+      {{ saving() ? 'Guardando...' : 'Crear vacante' }}
+    </button>
+  </div>
+</form>

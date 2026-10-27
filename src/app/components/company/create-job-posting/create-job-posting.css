@@ -1,0 +1,17 @@
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 640px;
+}
+
+.acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.mensaje { margin: 8px 0 0; font-size: 14px; }
+.error { color: #b3261e; }
+.exito { color: var(--st-primary-dark); }

@@ -80,3 +80,10 @@ export interface Assessment {
   feedbackSummary?: string;
   criterionScores: CriterionScore[];
 }
+
+export interface CreateJobPostingRequest {
+  title: string;
+  description: string;
+  closingDate: string;
+  anonymizedScreening: boolean;
+}
