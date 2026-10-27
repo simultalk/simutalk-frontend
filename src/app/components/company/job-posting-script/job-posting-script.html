@@ -1,0 +1,119 @@
+
+<header class="st-page-header encabezado">
+  <div>
+    <p class="st-breadcrumb">
+      <a routerLink="/recruitment/my-job-postings">Mis vacantes</a> / Guion
+    </p>
+    <h1 class="st-page-title">Guion de preguntas</h1>
+    <p class="st-page-subtitle">{{ job()?.title }}</p>
+  </div>
+  @if (isDraft()) {
+    <button mat-flat-button type="button" (click)="publish()" [disabled]="publishing()">
+      {{ publishing() ? 'Publicando...' : 'Publicar vacante' }}
+    </button>
+  }
+</header>
+
+@if (loading()) {
+  <p role="status">Cargando guion...</p>
+} @else {
+  @if (publishError()) {
+    <p class="error caja" role="alert">{{ publishError() }}</p>
+  }
+
+  <div class="st-card">
+    <p class="resumen">
+      Pesos: <strong [class.ok]="totalWeight() === 100">{{ totalWeight() }} / 100</strong>
+      · Preguntas: <strong>{{ questions().length }}</strong>
+    </p>
+    @if (missing().length > 0) {
+      <p class="aviso">
+        Sin preguntas todavía:
+        @for (c of missing(); track c.id) {
+          <span class="chip falta">{{ c.name }}</span>
+        }
+      </p>
+    }
+    @if (!isDraft()) {
+      <p class="aviso">La vacante ya no es borrador, así que el guion no se puede cambiar.</p>
+    }
+
+    @if (questions().length === 0) {
+      <p>Todavía no hay preguntas en el guion.</p>
+    } @else {
+      @if (isDraft()) {
+        <p class="ayuda">Arrastra las preguntas para cambiar el orden.</p>
+      }
+      <ol class="lista" cdkDropList [cdkDropListDisabled]="!isDraft()" (cdkDropListDropped)="drop($event)">
+        @for (q of questions(); track q.id; let i = $index) {
+          <li class="pregunta" cdkDrag>
+            <span class="numero">{{ i + 1 }}</span>
+            <div class="texto">
+              <p class="enunciado">{{ q.statement }}</p>
+              <p class="datos">
+                <span class="chip">{{ criterionName(q.criterionId) }}</span>
+                {{ q.maxDurationSeconds }} s
+                @if (q.allowsFollowUp) {
+                  · permite repregunta
+                }
+              </p>
+            </div>
+            @if (isDraft()) {
+              <button mat-button class="eliminar" type="button" (click)="remove(q)">Quitar</button>
+            }
+          </li>
+        }
+      </ol>
+    }
+  </div>
+
+  @if (isDraft()) {
+    @if (competencies().length === 0) {
+      <p class="aviso">Primero agrega al menos un criterio de tipo competencia.</p>
+    } @else {
+      <form class="st-card formulario" [formGroup]="form" (ngSubmit)="add()">
+        <h2 class="subtitulo">Agregar pregunta</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Criterio que evalúa</mat-label>
+          <mat-select formControlName="criterionId">
+            @for (c of competencies(); track c.id) {
+              <mat-option [value]="c.id">{{ c.name }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.criterionId.invalid) {
+            <mat-error>Elige un criterio.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Pregunta</mat-label>
+          <textarea matInput formControlName="statement" rows="3" maxlength="500"></textarea>
+          @if (form.controls.statement.hasError('required')) {
+            <mat-error>Escribe la pregunta.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tiempo máximo de respuesta (segundos)</mat-label>
+          <input matInput type="number" formControlName="maxDurationSeconds" min="30" max="600" />
+          @if (form.controls.maxDurationSeconds.invalid) {
+            <mat-error>Entre 30 y 600 segundos.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-checkbox formControlName="allowsFollowUp">Permite repregunta</mat-checkbox>
+
+        @if (errorMessage()) {
+          <p class="error" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <div class="botones">
+          <button mat-flat-button type="submit" [disabled]="saving()">
+            {{ saving() ? 'Guardando...' : 'Agregar pregunta' }}
+          </button>
+        </div>
+      </form>
+    }
+  }
+}

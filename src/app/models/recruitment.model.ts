@@ -96,3 +96,10 @@ export interface CriterionRequest {
   certificationName: string | null;
   mandatory: boolean;
 }
+// Datos que se envían para crear una pregunta del guion (US-05)
+export interface QuestionRequest {
+  criterionId: number;
+  statement: string;
+  maxDurationSeconds: number;
+  allowsFollowUp: boolean;
+}

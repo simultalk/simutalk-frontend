@@ -12,7 +12,9 @@ import {
   CreateJobPostingRequest,
   CriterionRequest,
   EvaluationCriterion,
+  QuestionRequest,
 } from '../models/recruitment.model';
+import { Question } from '../models/question';
 
 @Injectable({
   providedIn: 'root',
@@ -59,6 +61,31 @@ export class RecruitmentService {
   // DELETE /job-postings/{id}/criteria/{criterionId} (US-03)
   deleteCriterion(jobPostingId: number, criterionId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/criteria/${criterionId}`);
+  }
+
+  // GET /job-postings/{id}/questions (US-05)
+  getQuestions(jobPostingId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.apiUrl}/job-postings/${jobPostingId}/questions`);
+  }
+
+  // POST /job-postings/{id}/questions (US-05)
+  addQuestion(jobPostingId: number, request: QuestionRequest): Observable<Question> {
+    return this.http.post<Question>(`${this.apiUrl}/job-postings/${jobPostingId}/questions`, request);
+  }
+
+  // DELETE /job-postings/{id}/questions/{questionId} (US-05)
+  deleteQuestion(jobPostingId: number, questionId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/questions/${questionId}`);
+  }
+
+  // PATCH /job-postings/{id}/questions/order (US-05)
+  reorderQuestions(jobPostingId: number, orderedIds: number[]): Observable<Question[]> {
+    return this.http.patch<Question[]>(`${this.apiUrl}/job-postings/${jobPostingId}/questions/order`, { orderedIds });
+  }
+
+  // PATCH /job-postings/{id}/status (US-05): PUBLISHED o CLOSED
+  changeJobPostingStatus(jobPostingId: number, status: 'PUBLISHED' | 'CLOSED'): Observable<JobPosting> {
+    return this.http.patch<JobPosting>(`${this.apiUrl}/job-postings/${jobPostingId}/status`, { status });
   }
   // 1. GET /job-postings?status=PUBLISHED (Sprint 3)
   getPublishedJobPostings(): Observable<JobPosting[]> {

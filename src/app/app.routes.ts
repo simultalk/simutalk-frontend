@@ -75,6 +75,14 @@ export const routes: Routes = [
             (m) => m.JobPostingCriteria,
           ),
       },
+      {
+        path: 'recruitment/my-job-postings/:id/script',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/job-posting-script/job-posting-script').then(
+            (m) => m.JobPostingScript,
+          ),
+      },
       pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),
       // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
       { path: 'interviews/invitation-test', component: InvitationTest },

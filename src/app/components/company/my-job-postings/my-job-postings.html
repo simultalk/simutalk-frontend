@@ -34,6 +34,7 @@
             <td><span class="estado" [class]="'estado ' + job.status">{{ statusLabels[job.status] }}</span></td>
             <td class="acciones">
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">Criterios</a>
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">Guion</a>
               @if (job.status !== 'CLOSED') {
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'edit']">Editar</a>
               }
