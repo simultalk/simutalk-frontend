@@ -32,6 +32,15 @@ export class RecruitmentService {
       }),
     );
   }
+  // PUT /job-postings/{id} (US-01)
+  updateJobPosting(id: number, request: CreateJobPostingRequest): Observable<JobPosting> {
+    return this.http.put<JobPosting>(`${this.apiUrl}/job-postings/${id}`, request);
+  }
+
+  // DELETE /job-postings/{id} (US-01)
+  deleteJobPosting(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/job-postings/${id}`);
+  }
   // 1. GET /job-postings?status=PUBLISHED (Sprint 3)
   getPublishedJobPostings(): Observable<JobPosting[]> {
     const params = new HttpParams().set('status', 'PUBLISHED');

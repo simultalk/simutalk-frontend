@@ -43,7 +43,23 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'assessment/ranking',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/ranking-page/ranking-page').then(
+            (m) => m.RankingPageComponent,
+          ),
+      },
+      {
         path: 'recruitment/my-job-postings/new',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/create-job-posting/create-job-posting').then(
+            (m) => m.CreateJobPosting,
+          ),
+      },
+      {
+        path: 'recruitment/my-job-postings/:id/edit',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
           import('./components/company/create-job-posting/create-job-posting').then(

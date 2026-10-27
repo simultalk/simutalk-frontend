@@ -22,6 +22,7 @@
         <th>Cierre</th>
         <th>Peso total</th>
         <th>Estado</th>
+        <th>Acciones</th>
       </tr>
       </thead>
       <tbody>
@@ -31,6 +32,14 @@
             <td>{{ job.closingDate | date: 'dd/MM/yyyy' }}</td>
             <td>{{ job.totalWeight }} / 100</td>
             <td><span class="estado" [class]="'estado ' + job.status">{{ statusLabels[job.status] }}</span></td>
+            <td class="acciones">
+              @if (job.status !== 'CLOSED') {
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'edit']">Editar</a>
+              }
+              @if (job.status !== 'PUBLISHED') {
+                <button mat-button class="eliminar" type="button" (click)="remove(job)">Eliminar</button>
+              }
+            </td>
           </tr>
         }
       </tbody>
