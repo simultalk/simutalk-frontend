@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
+
 import {
   JobPosting,
   Application,
@@ -21,6 +22,15 @@ export class RecruitmentService {
   // 0. POST /job-postings (Sprint 3 - US-01)
   createJobPosting(request: CreateJobPostingRequest): Observable<JobPosting> {
     return this.http.post<JobPosting>(`${this.apiUrl}/job-postings`, request);
+  }
+  // GET /company-profiles/me + GET /job-postings?companyId= (US-01)
+  getMyJobPostings(): Observable<JobPosting[]> {
+    return this.http.get<{ id: number }>(`${this.apiUrl}/company-profiles/me`).pipe(
+      switchMap((company) => {
+        const params = new HttpParams().set('companyId', company.id);
+        return this.http.get<JobPosting[]>(`${this.apiUrl}/job-postings`, { params });
+      }),
+    );
   }
   // 1. GET /job-postings?status=PUBLISHED (Sprint 3)
   getPublishedJobPostings(): Observable<JobPosting[]> {

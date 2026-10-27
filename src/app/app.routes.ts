@@ -34,13 +34,12 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: () => inject(AuthService).homeUrl() },
 
       // Reclutador (components/company)
-      pending('recruitment/my-job-postings', 'Mis vacantes', [ROLE_RECRUITER]),
       {
-        path: 'assessment/ranking',
+        path: 'recruitment/my-job-postings',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/ranking-page/ranking-page').then(
-            (m) => m.RankingPageComponent,
+          import('./components/company/my-job-postings/my-job-postings').then(
+            (m) => m.MyJobPostings,
           ),
       },
       {
