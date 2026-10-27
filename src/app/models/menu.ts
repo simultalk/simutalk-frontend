@@ -12,6 +12,7 @@ export const ROLE_CANDIDATE = 'ROLE_CANDIDATE';
 export const MENU_BY_ROLE: Record<string, MenuItem[]> = {
   [ROLE_RECRUITER]: [
     { label: 'Mis vacantes', icon: 'work', route: '/recruitment/my-job-postings' },
+    { label: 'Crear vacante', icon: 'add_circle', route: '/recruitment/my-job-postings/new' },
     { label: 'Ranking', icon: 'leaderboard', route: '/assessment/ranking' },
     { label: 'Reportes', icon: 'bar_chart', route: '/analytics/reports' },
   ],

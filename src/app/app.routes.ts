@@ -39,7 +39,17 @@ export const routes: Routes = [
         path: 'assessment/ranking',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/ranking-page/ranking-page').then((m) => m.RankingPageComponent),
+          import('./components/company/ranking-page/ranking-page').then(
+            (m) => m.RankingPageComponent,
+          ),
+      },
+      {
+        path: 'recruitment/my-job-postings/new',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/create-job-posting/create-job-posting').then(
+            (m) => m.CreateJobPosting,
+          ),
       },
       pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),
       // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
@@ -50,13 +60,17 @@ export const routes: Routes = [
         path: 'recruitment/job-postings',
         data: { roles: [ROLE_CANDIDATE] },
         loadComponent: () =>
-          import('./components/applicant/list-job-postings/list-job-postings.component').then((m) => m.ListJobPostingsComponent),
+          import('./components/applicant/list-job-postings/list-job-postings.component').then(
+            (m) => m.ListJobPostingsComponent,
+          ),
       },
       {
         path: 'recruitment/job-postings/:id',
         data: { roles: [ROLE_CANDIDATE] },
         loadComponent: () =>
-          import('./components/applicant/detail-job-posting/detail-job-posting.component').then((m) => m.DetailJobPostingComponent),
+          import('./components/applicant/detail-job-posting/detail-job-posting.component').then(
+            (m) => m.DetailJobPostingComponent,
+          ),
       },
       pending('recruitment/my-applications', 'Mis postulaciones', [ROLE_CANDIDATE]),
       pending('profiles/me', 'Mi perfil', [ROLE_CANDIDATE]),
