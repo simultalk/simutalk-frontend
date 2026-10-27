@@ -10,6 +10,8 @@ import {
   InterviewSession,
   Assessment,
   CreateJobPostingRequest,
+  CriterionRequest,
+  EvaluationCriterion,
 } from '../models/recruitment.model';
 
 @Injectable({
@@ -40,6 +42,23 @@ export class RecruitmentService {
   // DELETE /job-postings/{id} (US-01)
   deleteJobPosting(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/job-postings/${id}`);
+  }
+  // POST /job-postings/{id}/criteria (US-02)
+  addCriterion(jobPostingId: number, request: CriterionRequest): Observable<EvaluationCriterion> {
+    return this.http.post<EvaluationCriterion>(`${this.apiUrl}/job-postings/${jobPostingId}/criteria`, request);
+  }
+
+  // PUT /job-postings/{id}/criteria/{criterionId} (US-03)
+  updateCriterion(jobPostingId: number, criterionId: number, request: CriterionRequest): Observable<EvaluationCriterion> {
+    return this.http.put<EvaluationCriterion>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/criteria/${criterionId}`,
+      request,
+    );
+  }
+
+  // DELETE /job-postings/{id}/criteria/{criterionId} (US-03)
+  deleteCriterion(jobPostingId: number, criterionId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/criteria/${criterionId}`);
   }
   // 1. GET /job-postings?status=PUBLISHED (Sprint 3)
   getPublishedJobPostings(): Observable<JobPosting[]> {

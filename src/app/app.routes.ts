@@ -60,10 +60,19 @@ export const routes: Routes = [
       },
       {
         path: 'recruitment/my-job-postings/:id/edit',
+
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
           import('./components/company/create-job-posting/create-job-posting').then(
             (m) => m.CreateJobPosting,
+          ),
+      },
+      {
+        path: 'recruitment/my-job-postings/:id/criteria',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/job-posting-criteria/job-posting-criteria').then(
+            (m) => m.JobPostingCriteria,
           ),
       },
       pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),
