@@ -34,7 +34,14 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: () => inject(AuthService).homeUrl() },
 
       // Reclutador (components/company)
-      pending('recruitment/my-job-postings', 'Mis vacantes', [ROLE_RECRUITER]),
+      {
+        path: 'recruitment/my-job-postings',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/my-job-postings/my-job-postings').then(
+            (m) => m.MyJobPostings,
+          ),
+      },
       {
         path: 'assessment/ranking',
         data: { roles: [ROLE_RECRUITER] },
@@ -49,6 +56,31 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/company/create-job-posting/create-job-posting').then(
             (m) => m.CreateJobPosting,
+          ),
+      },
+      {
+        path: 'recruitment/my-job-postings/:id/edit',
+
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/create-job-posting/create-job-posting').then(
+            (m) => m.CreateJobPosting,
+          ),
+      },
+      {
+        path: 'recruitment/my-job-postings/:id/criteria',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/job-posting-criteria/job-posting-criteria').then(
+            (m) => m.JobPostingCriteria,
+          ),
+      },
+      {
+        path: 'recruitment/my-job-postings/:id/script',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/job-posting-script/job-posting-script').then(
+            (m) => m.JobPostingScript,
           ),
       },
       pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),

@@ -1,0 +1,19 @@
+.st-breadcrumb a { color: inherit; }
+
+.total { font-size: 18px; font-weight: 700; color: #b3261e; margin: 0 0 12px; }
+.total.completo { color: var(--st-primary-dark); }
+.ayuda { font-size: 13px; font-weight: 400; color: var(--st-text-secondary); }
+.aviso { color: var(--st-text-secondary); font-size: 14px; }
+
+.tabla { width: 100%; border-collapse: collapse; }
+.tabla th, .tabla td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--st-border); vertical-align: middle; }.tabla th { font-size: 13px; color: var(--st-text-secondary); font-weight: 600; }
+.detalle { display: block; font-size: 13px; color: var(--st-text-secondary); }
+.acciones { white-space: nowrap; }
+.eliminar { color: #b3261e; }
+
+.formulario { display: flex; flex-direction: column; gap: 8px; max-width: 640px; margin-top: 16px; }
+.subtitulo { font-size: 18px; margin: 0 0 8px; }
+.fila { display: flex; gap: 12px; flex-wrap: wrap; }
+.fila mat-form-field { flex: 1; min-width: 180px; }
+.botones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
+.error { color: #b3261e; margin: 0; }

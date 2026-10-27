@@ -87,3 +87,19 @@ export interface CreateJobPostingRequest {
   closingDate: string;
   anonymizedScreening: boolean;
 }
+// Datos que se envían para crear o editar un criterio (US-02, US-03)
+export interface CriterionRequest {
+  name: string;
+  description: string;
+  weight: number;
+  criterionType: 'COMPETENCY' | 'CERTIFICATION';
+  certificationName: string | null;
+  mandatory: boolean;
+}
+// Datos que se envían para crear una pregunta del guion (US-05)
+export interface QuestionRequest {
+  criterionId: number;
+  statement: string;
+  maxDurationSeconds: number;
+  allowsFollowUp: boolean;
+}

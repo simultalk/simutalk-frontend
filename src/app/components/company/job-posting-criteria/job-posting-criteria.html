@@ -1,0 +1,125 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">
+    <a routerLink="/recruitment/my-job-postings">Mis vacantes</a> / Criterios
+  </p>
+  <h1 class="st-page-title">Criterios de evaluación</h1>
+  <p class="st-page-subtitle">{{ job()?.title }}</p>
+</header>
+
+@if (loading()) {
+  <p role="status">Cargando criterios...</p>
+} @else {
+  <div class="st-card">
+    <p class="total" [class.completo]="total() === 100" role="status">
+      Total: {{ total() }} / 100
+      @if (total() !== 100) {
+        <span class="ayuda">· los pesos deben sumar 100 para poder publicar</span>
+      }
+    </p>
+
+    @if (!isDraft()) {
+      <p class="aviso">La vacante ya no es borrador, así que sus criterios no se pueden cambiar.</p>
+    }
+
+    @if (criteria().length === 0) {
+      <p>Esta vacante todavía no tiene criterios.</p>
+    } @else {
+      <table class="tabla">
+        <thead>
+        <tr>
+          <th>Criterio</th>
+          <th>Tipo</th>
+          <th>Peso</th>
+          @if (isDraft()) {
+            <th>Acciones</th>
+          }
+        </tr>
+        </thead>
+        <tbody>
+          @for (c of criteria(); track c.id) {
+            <tr>
+              <td>
+                <strong>{{ c.name }}</strong>
+                <span class="detalle">{{ c.description }}</span>
+              </td>
+              <td>
+                {{ c.criterionType === 'CERTIFICATION' ? 'Certificación' : 'Competencia' }}
+                @if (c.criterionType === 'CERTIFICATION') {
+                  <span class="detalle">{{ c.certificationName }}{{ c.mandatory ? ' · obligatoria' : '' }}</span>
+                }
+              </td>
+              <td>{{ c.weight }}</td>
+              @if (isDraft()) {
+                <td class="acciones">
+                  <button mat-button type="button" (click)="edit(c)">Editar</button>
+                  <button mat-button class="eliminar" type="button" (click)="remove(c)">Quitar</button>
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+  @if (isDraft()) {
+    <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
+      <h2 class="subtitulo">{{ editingId() ? 'Editar criterio' : 'Agregar criterio' }}</h2>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="name" maxlength="100" />
+        @if (form.controls.name.hasError('required')) {
+          <mat-error>El nombre es obligatorio.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" rows="3" maxlength="1000"></textarea>
+        @if (form.controls.description.hasError('required')) {
+          <mat-error>La descripción es obligatoria.</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="fila">
+        <mat-form-field appearance="outline">
+          <mat-label>Peso (1 a 100)</mat-label>
+          <input matInput type="number" formControlName="weight" min="1" max="100" />
+          @if (form.controls.weight.invalid) {
+            <mat-error>Pon un número entre 1 y 100.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo</mat-label>
+          <mat-select formControlName="criterionType">
+            <mat-option value="COMPETENCY">Competencia</mat-option>
+            <mat-option value="CERTIFICATION">Certificación</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      @if (form.controls.criterionType.value === 'CERTIFICATION') {
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre de la certificación</mat-label>
+          <input matInput formControlName="certificationName" maxlength="150" />
+        </mat-form-field>
+        <mat-checkbox formControlName="mandatory">Es obligatoria para postular</mat-checkbox>
+      }
+
+      @if (errorMessage()) {
+        <p class="error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <div class="botones">
+        @if (editingId()) {
+          <button mat-button type="button" (click)="cancelEdit()">Cancelar</button>
+        }
+        <button mat-flat-button type="submit" [disabled]="saving()">
+          {{ saving() ? 'Guardando...' : (editingId() ? 'Guardar cambios' : 'Agregar criterio') }}
+        </button>
+      </div>
+    </form>
+  }
+}

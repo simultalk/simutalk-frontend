@@ -1,0 +1,50 @@
+<header class="st-page-header encabezado">
+  <div>
+    <p class="st-breadcrumb">Inicio / Mis vacantes</p>
+    <h1 class="st-page-title">Mis vacantes</h1>
+    <p class="st-page-subtitle">Vacantes de tu empresa y su estado.</p>
+  </div>
+  <a mat-flat-button routerLink="/recruitment/my-job-postings/new">Crear vacante</a>
+</header>
+
+@if (loading()) {
+  <p role="status">Cargando vacantes...</p>
+} @else if (errorMessage()) {
+  <p class="error" role="alert">{{ errorMessage() }}</p>
+} @else if (jobPostings().length === 0) {
+  <p>Todavía no tienes vacantes. Crea la primera.</p>
+} @else {
+  <div class="st-card">
+    <table class="tabla">
+      <thead>
+      <tr>
+        <th>Título</th>
+        <th>Cierre</th>
+        <th>Peso total</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (job of jobPostings(); track job.id) {
+          <tr>
+            <td>{{ job.title }}</td>
+            <td>{{ job.closingDate | date: 'dd/MM/yyyy' }}</td>
+            <td>{{ job.totalWeight }} / 100</td>
+            <td><span class="estado" [class]="'estado ' + job.status">{{ statusLabels[job.status] }}</span></td>
+            <td class="acciones">
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">Criterios</a>
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">Guion</a>
+              @if (job.status !== 'CLOSED') {
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'edit']">Editar</a>
+              }
+              @if (job.status !== 'PUBLISHED') {
+                <button mat-button class="eliminar" type="button" (click)="remove(job)">Eliminar</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

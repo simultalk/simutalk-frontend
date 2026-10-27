@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
+
 import {
   JobPosting,
   Application,
@@ -9,7 +10,11 @@ import {
   InterviewSession,
   Assessment,
   CreateJobPostingRequest,
+  CriterionRequest,
+  EvaluationCriterion,
+  QuestionRequest,
 } from '../models/recruitment.model';
+import { Question } from '../models/question';
 
 @Injectable({
   providedIn: 'root',
@@ -21,6 +26,66 @@ export class RecruitmentService {
   // 0. POST /job-postings (Sprint 3 - US-01)
   createJobPosting(request: CreateJobPostingRequest): Observable<JobPosting> {
     return this.http.post<JobPosting>(`${this.apiUrl}/job-postings`, request);
+  }
+  // GET /company-profiles/me + GET /job-postings?companyId= (US-01)
+  getMyJobPostings(): Observable<JobPosting[]> {
+    return this.http.get<{ id: number }>(`${this.apiUrl}/company-profiles/me`).pipe(
+      switchMap((company) => {
+        const params = new HttpParams().set('companyId', company.id);
+        return this.http.get<JobPosting[]>(`${this.apiUrl}/job-postings`, { params });
+      }),
+    );
+  }
+  // PUT /job-postings/{id} (US-01)
+  updateJobPosting(id: number, request: CreateJobPostingRequest): Observable<JobPosting> {
+    return this.http.put<JobPosting>(`${this.apiUrl}/job-postings/${id}`, request);
+  }
+
+  // DELETE /job-postings/{id} (US-01)
+  deleteJobPosting(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/job-postings/${id}`);
+  }
+  // POST /job-postings/{id}/criteria (US-02)
+  addCriterion(jobPostingId: number, request: CriterionRequest): Observable<EvaluationCriterion> {
+    return this.http.post<EvaluationCriterion>(`${this.apiUrl}/job-postings/${jobPostingId}/criteria`, request);
+  }
+
+  // PUT /job-postings/{id}/criteria/{criterionId} (US-03)
+  updateCriterion(jobPostingId: number, criterionId: number, request: CriterionRequest): Observable<EvaluationCriterion> {
+    return this.http.put<EvaluationCriterion>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/criteria/${criterionId}`,
+      request,
+    );
+  }
+
+  // DELETE /job-postings/{id}/criteria/{criterionId} (US-03)
+  deleteCriterion(jobPostingId: number, criterionId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/criteria/${criterionId}`);
+  }
+
+  // GET /job-postings/{id}/questions (US-05)
+  getQuestions(jobPostingId: number): Observable<Question[]> {
+    return this.http.get<Question[]>(`${this.apiUrl}/job-postings/${jobPostingId}/questions`);
+  }
+
+  // POST /job-postings/{id}/questions (US-05)
+  addQuestion(jobPostingId: number, request: QuestionRequest): Observable<Question> {
+    return this.http.post<Question>(`${this.apiUrl}/job-postings/${jobPostingId}/questions`, request);
+  }
+
+  // DELETE /job-postings/{id}/questions/{questionId} (US-05)
+  deleteQuestion(jobPostingId: number, questionId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/questions/${questionId}`);
+  }
+
+  // PATCH /job-postings/{id}/questions/order (US-05)
+  reorderQuestions(jobPostingId: number, orderedIds: number[]): Observable<Question[]> {
+    return this.http.patch<Question[]>(`${this.apiUrl}/job-postings/${jobPostingId}/questions/order`, { orderedIds });
+  }
+
+  // PATCH /job-postings/{id}/status (US-05): PUBLISHED o CLOSED
+  changeJobPostingStatus(jobPostingId: number, status: 'PUBLISHED' | 'CLOSED'): Observable<JobPosting> {
+    return this.http.patch<JobPosting>(`${this.apiUrl}/job-postings/${jobPostingId}/status`, { status });
   }
   // 1. GET /job-postings?status=PUBLISHED (Sprint 3)
   getPublishedJobPostings(): Observable<JobPosting[]> {

@@ -1,7 +1,9 @@
 <header class="st-page-header">
-  <p class="st-breadcrumb">Inicio / Mis vacantes / Nueva</p>
-  <h1 class="st-page-title">Crear vacante</h1>
-  <p class="st-page-subtitle">Completa los datos. La vacante se guarda como borrador.</p>
+  <p class="st-breadcrumb">Inicio / Mis vacantes / {{ jobPostingId ? 'Editar' : 'Nueva' }}</p>
+  <h1 class="st-page-title">{{ jobPostingId ? 'Editar vacante' : 'Crear vacante' }}</h1>
+  <p class="st-page-subtitle">
+    {{ jobPostingId ? 'Cambia los datos y guarda.' : 'Completa los datos. La vacante se guarda como borrador.' }}
+  </p>
 </header>
 
 <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
@@ -37,14 +39,12 @@
   @if (errorMessage()) {
     <p class="mensaje error" role="alert">{{ errorMessage() }}</p>
   }
-  @if (successMessage()) {
-    <p class="mensaje exito" role="status">{{ successMessage() }}</p>
-  }
+
 
   <div class="acciones">
     <button mat-button type="button" (click)="cancel()">Cancelar</button>
     <button mat-flat-button type="submit" [disabled]="saving()">
-      {{ saving() ? 'Guardando...' : 'Crear vacante' }}
+      {{ saving() ? 'Guardando...' : (jobPostingId ? 'Guardar cambios' : 'Crear vacante') }}
     </button>
   </div>
 </form>
