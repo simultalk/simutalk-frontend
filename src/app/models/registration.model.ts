@@ -14,8 +14,16 @@ export interface ApplicantRegisterRequest {
   lastName: string;
   email: string;
   phone: string;
-  resumeUrl: string; // enlace al currículum (CV)
+  documentNumber: string;
+  birthDate: string;
+  district: string;
+  yearsOfExperience: number;
   password: string;
+}
+
+export interface CandidateProfileResponse {
+  id: number;
+  userId: number;
 }
 
 // Respuesta genérica de un registro de cuenta
