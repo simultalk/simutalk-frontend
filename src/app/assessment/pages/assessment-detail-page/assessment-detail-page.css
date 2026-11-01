@@ -1,0 +1,28 @@
+.detail { padding: 24px; max-width: 960px; }
+
+.summary__score { font-size: 1.25rem; }
+
+.criterion {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+}
+.criterion h3 { margin: 0; }
+.criterion__meta { margin: 4px 0 12px; font-size: 0.875rem; opacity: 0.8; }
+.criterion__empty { font-size: 0.875rem; opacity: 0.8; }
+
+.answer h4 { margin: 12px 0 4px; font-size: 0.9rem; }
+
+.transcript { white-space: pre-wrap; line-height: 1.6; margin: 0; }
+
+mark {
+  background: #ffe08a;
+  color: inherit;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+.mat-mdc-chip.flag--low    { --mdc-chip-elevated-container-color: #fdebc8; --mdc-chip-label-text-color: #7a4a00; }
+.mat-mdc-chip.flag--medium { --mdc-chip-elevated-container-color: #fbd3a8; --mdc-chip-label-text-color: #6b3200; }
+.mat-mdc-chip.flag--high   { --mdc-chip-elevated-container-color: #fbd9d9; --mdc-chip-label-text-color: #7f1d1d; }

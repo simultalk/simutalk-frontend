@@ -1,0 +1,79 @@
+<section class="detail">
+  <a mat-button routerLink="/assessment/ranking">← Volver al ranking</a>
+  <h1>Evaluación de la entrevista</h1>
+
+  @switch (state()) {
+    @case ('loading') {
+      <mat-progress-spinner mode="indeterminate" diameter="40" aria-label="Cargando evaluación" />
+    }
+
+    @case ('missing') {
+      <p>Esta entrevista todavía no tiene una evaluación registrada.</p>
+      <button mat-flat-button (click)="calculate()" [disabled]="calculating()">
+        {{ calculating() ? 'Calculando…' : 'Calcular evaluación' }}
+      </button>
+    }
+
+    @case ('error') {
+      <p>No se pudo cargar la evaluación.</p>
+      <button mat-stroked-button (click)="load()">Reintentar</button>
+    }
+
+    @case ('ready') {
+      @if (assessment(); as a) {
+        <div class="summary">
+          <p class="summary__score">
+            Puntaje ponderado: <strong>{{ a.weightedScore | number: '1.0-1' }}</strong>
+          </p>
+          @if (a.feedbackSummary) {
+            <p>{{ a.feedbackSummary }}</p>
+          }
+        </div>
+
+        <h2>Alertas de integridad</h2>
+        @if (a.integrityFlags.length === 0) {
+          <p>No se detectaron alertas.</p>
+        } @else {
+          <mat-chip-set aria-label="Alertas de integridad">
+            @for (flag of a.integrityFlags; track $index) {
+              <mat-chip [class]="'flag flag--' + flag.severity.toLowerCase()">
+                {{ flag.type }} · {{ severityLabel(flag.severity) }}
+              </mat-chip>
+            }
+          </mat-chip-set>
+        }
+
+        <h2>Detalle por criterio</h2>
+        @for (view of criterionViews(); track view.id) {
+          <article class="criterion">
+            <header>
+              <h3>{{ view.name }}</h3>
+              <p class="criterion__meta">
+                Peso {{ view.weight }} % ·
+                Puntaje {{ view.score | number: '1.0-1' }} ·
+                {{ view.evidenceCount }} evidencia(s)
+              </p>
+            </header>
+
+            @for (answer of view.answers; track answer.answerId) {
+              <div class="answer">
+                <h4>{{ answer.label }}</h4>
+                <p class="transcript">
+                  @for (seg of answer.segments; track $index) {
+                    @if (seg.highlighted) {
+                      <mark>{{ seg.text }}</mark>
+                    } @else {
+                      <span>{{ seg.text }}</span>
+                    }
+                  }
+                </p>
+              </div>
+            } @empty {
+              <p class="criterion__empty">Este criterio no tiene evidencias registradas.</p>
+            }
+          </article>
+        }
+      }
+    }
+  }
+</section>
