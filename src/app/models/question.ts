@@ -22,3 +22,16 @@ export interface RecordAnswerRequest {
   followUp: boolean;
   parentAnswerId?: number | null;
 }
+
+/** Respuesta de POST y GET /interview-sessions/{sessionId}/answers. */
+export interface Answer {
+  id: number;
+  questionId: number;
+  /** Solo en repreguntas: la respuesta que la originó. */
+  parentAnswerId: number | null;
+  transcript: string;
+  audioUrl: string | null;
+  durationSeconds: number;
+  answeredAt: string;
+  followUp: boolean;
+}
