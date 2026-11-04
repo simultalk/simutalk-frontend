@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateChildFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../assessment/services/auth.service';
 
 /**
  * Lee data.roles de la ruta y lo compara con los roles del usuario.

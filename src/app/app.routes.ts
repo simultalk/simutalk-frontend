@@ -1,17 +1,17 @@
 import { Routes, Route } from '@angular/router';
 import { inject } from '@angular/core';
-import { Layout } from './components/shared/layout/layout';
-import { Login } from './components/auth/login/login';
-import { CompanyRegister } from './components/auth/company-register/company-register';
-import { ApplicantRegister } from './components/auth/applicant-register/applicant-register';
+import { Layout } from './recruitment/components/shared/layout/layout';
+import { Login } from './recruitment/components/auth/login/login';
+import { CompanyRegister } from './recruitment/components/auth/company-register/company-register';
+import { ApplicantRegister } from './recruitment/components/auth/applicant-register/applicant-register';
 import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
-import { AuthService } from './services/auth.service';
-import { Forbidden } from './components/shared/forbidden/forbidden';
-import { UnderConstruction } from './components/shared/under-construction/under-construction';
-import { InvitationTest } from './components/company/invitation-test/invitation-test';
-import { TakeInterview } from './components/applicant/take-interview/take-interview';
-import { ROLE_CANDIDATE, ROLE_RECRUITER } from './models/menu';
+import { AuthService } from './assessment/services/auth.service';
+import { Forbidden } from './recruitment/components/shared/forbidden/forbidden';
+import { UnderConstruction } from './recruitment/components/shared/under-construction/under-construction';
+import { InvitationTest } from './recruitment/components/company/invitation-test/invitation-test';
+import { TakeInterview } from './recruitment/components/applicant/take-interview/take-interview';
+import { ROLE_CANDIDATE, ROLE_RECRUITER } from './assessment/models/menu';
 
 /** Sección del menú que todavía no tiene pantalla: muestra "En construcción". */
 function pending(path: string, title: string, roles: string[]): Route {
@@ -38,7 +38,7 @@ export const routes: Routes = [
         path: 'recruitment/my-job-postings',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/my-job-postings/my-job-postings').then(
+          import('./recruitment/components/company/my-job-postings/my-job-postings').then(
             (m) => m.MyJobPostings,
           ),
       },
@@ -46,7 +46,7 @@ export const routes: Routes = [
         path: 'assessment/ranking',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/ranking-page/ranking-page').then(
+          import('./recruitment/components/company/ranking-page/ranking-page').then(
             (m) => m.RankingPageComponent,
           ),
       },
@@ -54,7 +54,7 @@ export const routes: Routes = [
         path: 'recruitment/my-job-postings/new',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/create-job-posting/create-job-posting').then(
+          import('./recruitment/components/company/create-job-posting/create-job-posting').then(
             (m) => m.CreateJobPosting,
           ),
       },
@@ -63,7 +63,7 @@ export const routes: Routes = [
 
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/create-job-posting/create-job-posting').then(
+          import('./recruitment/components/company/create-job-posting/create-job-posting').then(
             (m) => m.CreateJobPosting,
           ),
       },
@@ -71,7 +71,7 @@ export const routes: Routes = [
         path: 'recruitment/my-job-postings/:id/criteria',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/job-posting-criteria/job-posting-criteria').then(
+          import('./recruitment/components/company/job-posting-criteria/job-posting-criteria').then(
             (m) => m.JobPostingCriteria,
           ),
       },
@@ -79,7 +79,7 @@ export const routes: Routes = [
         path: 'recruitment/my-job-postings/:id/script',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/job-posting-script/job-posting-script').then(
+          import('./recruitment/components/company/job-posting-script/job-posting-script').then(
             (m) => m.JobPostingScript,
           ),
       },
@@ -92,7 +92,7 @@ export const routes: Routes = [
         path: 'recruitment/job-postings',
         data: { roles: [ROLE_CANDIDATE] },
         loadComponent: () =>
-          import('./components/applicant/list-job-postings/list-job-postings.component').then(
+          import('./recruitment/components/applicant/list-job-postings/list-job-postings.component').then(
             (m) => m.ListJobPostingsComponent,
           ),
       },
@@ -100,7 +100,7 @@ export const routes: Routes = [
         path: 'recruitment/job-postings/:id',
         data: { roles: [ROLE_CANDIDATE] },
         loadComponent: () =>
-          import('./components/applicant/detail-job-posting/detail-job-posting.component').then(
+          import('./recruitment/components/applicant/detail-job-posting/detail-job-posting.component').then(
             (m) => m.DetailJobPostingComponent,
           ),
       },

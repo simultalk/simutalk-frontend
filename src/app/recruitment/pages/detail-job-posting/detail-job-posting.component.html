@@ -1,0 +1,47 @@
+<div class="simutalk-container" *ngIf="!loading && jobPosting">
+  <button class="btn-secondary" (click)="goBack()">← Volver a vacantes</button>
+
+  <div class="detail-card">
+    <div class="header-row">
+      <div>
+        <span class="section-label">DETALLE DE CONVOCATORIA</span>
+        <h1 class="job-title">{{ jobPosting.title }}</h1>
+        <p class="company-meta">
+          Empresa #{{ jobPosting.companyId }} · Cierra el {{ jobPosting.closingDate | date:'dd/MM/yyyy' }}
+        </p>
+      </div>
+
+      <button
+        class="btn-apply"
+        [disabled]="alreadyAppliedOrBlocked || applying"
+        (click)="onApply()"
+      >
+        {{ alreadyAppliedOrBlocked ? 'Postulación enviada / No disponible' : (applying ? 'Enviando...' : 'Postular a esta vacante') }}
+      </button>
+    </div>
+
+    <!-- Mensajes del backend -->
+    <div *ngIf="successMessage" class="alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert-error">{{ errorMessage }}</div>
+
+    <hr class="divider" />
+
+    <section>
+      <h3 class="subtitle">Descripción del puesto</h3>
+      <p class="body-text">{{ jobPosting.description }}</p>
+    </section>
+
+    <section *ngIf="jobPosting.criteria && jobPosting.criteria.length > 0">
+      <h3 class="subtitle">Criterios de evaluación ponderados</h3>
+      <div class="criteria-list">
+        <div class="criterion-item" *ngFor="let c of jobPosting.criteria">
+          <div>
+            <strong>{{ c.name }}</strong>
+            <p class="criterion-desc">{{ c.description }}</p>
+          </div>
+          <span class="weight-pill">{{ c.weight }} %</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
