@@ -1,3 +1,4 @@
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -9,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
+import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
 import { RegistrationService } from '../../../services/registration.service';
 import { CompanySize } from '../../../models/registration.model';
 
@@ -23,13 +25,16 @@ import { CompanySize } from '../../../models/registration.model';
     MatButtonModule,
     MatIconModule,
     ThemeToggle,
+    LanguageSwitcher,
     MatSnackBarModule,
+    TranslatePipe,
   ],
   templateUrl: './company-register.html',
   styleUrl: './company-register.css',
 })
 export class CompanyRegister {
   private fb = inject(FormBuilder);
+  private i18n = inject(TranslateService);
   private registration = inject(RegistrationService);
   private router = inject(Router);
   private snackBar = inject(MatSnackBar);
@@ -37,11 +42,12 @@ export class CompanyRegister {
   loading = signal(false);
   errorMessage = signal('');
 
-  sizes: { value: CompanySize; label: string }[] = [
-    { value: 'MICRO', label: 'Micro (hasta 10 trabajadores)' },
-    { value: 'PEQUENA', label: 'Pequeña (11 a 100)' },
-    { value: 'MEDIANA', label: 'Mediana (101 a 250)' },
-    { value: 'GRANDE', label: 'Grande (más de 250)' },
+  // El texto de cada tamaño sale de iam.companyRegister.size<VALOR>
+  sizes: { value: CompanySize }[] = [
+    { value: 'MICRO' },
+    { value: 'PEQUENA' },
+    { value: 'MEDIANA' },
+    { value: 'GRANDE' },
   ];
 
   form = this.fb.nonNullable.group({
@@ -67,13 +73,13 @@ export class CompanyRegister {
     this.registration.registerCompany(this.form.getRawValue()).subscribe({
       next: () => {
         this.loading.set(false);
-        this.snackBar.open('Empresa registrada. ¡Bienvenido a SimuTalk!', 'OK', { duration: 4000 });
+        this.snackBar.open(this.i18n.instant('iam.companyRegister.success'), 'OK', { duration: 4000 });
         // La sesión ya quedó iniciada: va directo a crear su primera vacante
         this.router.navigate(['/recruitment/my-job-postings']);
       },
       error: (error: HttpErrorResponse) => {
         this.loading.set(false);
-        this.errorMessage.set(error.error?.message || 'No se pudo completar el registro. Inténtalo de nuevo.');
+        this.errorMessage.set(error.error?.message || this.i18n.instant('iam.companyRegister.error'));
       },
     });
   }
