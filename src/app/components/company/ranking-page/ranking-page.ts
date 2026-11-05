@@ -1,9 +1,10 @@
 import { DecimalPipe, NgClass } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -31,6 +32,7 @@ interface BadgeConfig {
     MatFormFieldModule,
     MatProgressSpinnerModule,
     MatSelectModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
     MatTableModule,
   ],
@@ -48,6 +50,10 @@ export class RankingPageComponent implements OnInit {
   readonly selectedId = signal<number | null>(null);
   readonly loadingPostings = signal(false);
   readonly loadingRanking = signal(false);
+
+  readonly anonymized = signal(false); // elección del reclutador con el toggle
+  readonly forced = signal(false);     // el backend obliga el modo anónimo
+  readonly isAnonymous = computed(() => this.anonymized() || this.forced());
 
   readonly displayedColumns = [
     'position',
@@ -81,10 +87,23 @@ export class RankingPageComponent implements OnInit {
 
   onPostingChange(id: number): void {
     this.selectedId.set(id);
+    this.forced.set(false);
+    this.loadRanking(id);
+  }
+
+  onAnonymizedChange(checked: boolean): void {
+    if (this.forced()) return;
+    this.anonymized.set(checked);
+    const id = this.selectedId();
+    if (id !== null) this.loadRanking(id);
+  }
+
+  private loadRanking(id: number): void {
     this.ranking.set([]);
     this.loadingRanking.set(true);
-    this.rankingService.getRanking(id).subscribe({
+    this.rankingService.getRanking(id, this.anonymized()).subscribe({
       next: (res: RankingResponse) => {
+        this.forced.set(res.anonymizationForced === true);
         this.ranking.set(res.entries);
         this.loadingRanking.set(false);
       },
@@ -93,6 +112,12 @@ export class RankingPageComponent implements OnInit {
         this.showError(err);
       },
     });
+  }
+
+  displayName(row: RankingEntry): string {
+    return this.isAnonymous()
+      ? (row.candidateCode ?? '—')
+      : (row.candidateName ?? row.candidateCode ?? '—');
   }
 
   badge(b: RankingBadge): BadgeConfig {

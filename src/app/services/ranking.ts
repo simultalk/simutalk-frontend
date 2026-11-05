@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -22,9 +22,10 @@ export class RankingService {
   }
 
   /** El backend responde "candidates" con "rank" y "fullName": aquí se pasa al modelo de la pantalla. */
-  getRanking(jobPostingId: number): Observable<RankingResponse> {
+  getRanking(jobPostingId: number, anonymized = false): Observable<RankingResponse> {
+    const params = new HttpParams().set('anonymized', String(anonymized));
     return this.http
-      .get<RankingApiResponse>(`${this.baseUrl}/job-postings/${jobPostingId}/ranking`)
+      .get<RankingApiResponse>(`${this.baseUrl}/job-postings/${jobPostingId}/ranking`, { params })
       .pipe(
         map((res) => ({
           anonymized: res.anonymized,

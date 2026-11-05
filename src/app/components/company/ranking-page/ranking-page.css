@@ -14,3 +14,5 @@
 .mat-mdc-chip.badge--verified { --mdc-chip-elevated-container-color: #d8e8fb; --mdc-chip-label-text-color: #1e3a5f; }
 .mat-mdc-chip.badge--missing  { --mdc-chip-elevated-container-color: #fdebc8; --mdc-chip-label-text-color: #7a4a00; }
 .mat-mdc-chip.badge--alert    { --mdc-chip-elevated-container-color: #fbd9d9; --mdc-chip-label-text-color: #7f1d1d; }
+.anonymize-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
+.anonymize-notice { margin: 0; padding: 6px 12px; border-radius: 6px; background: #fff4e5; color: #7a4b00; font-size: 14px; }
