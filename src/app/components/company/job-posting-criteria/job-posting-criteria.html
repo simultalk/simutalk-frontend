@@ -40,6 +40,9 @@
             <tr>
               <td>
                 <strong>{{ c.name }}</strong>
+                @if (c.origin === 'AI_SUGGESTED') {
+                  <span class="chip-ia">IA</span>
+                }
                 <span class="detalle">{{ c.description }}</span>
               </td>
               <td>
@@ -63,6 +66,30 @@
   </div>
 
   @if (isDraft()) {
+    <div class="st-card sugerencias">
+      <div class="cabecera-sugerencias">
+        <div>
+          <h2 class="subtitulo">Sugerencias con IA</h2>
+          <p class="ayuda">Salen de la descripción del puesto. Tú eliges cuáles usar y con qué peso.</p>
+        </div>
+        <button mat-stroked-button type="button" (click)="suggest()" [disabled]="suggesting()">
+          {{ suggesting() ? 'Buscando...' : 'Sugerir criterios' }}
+        </button>
+      </div>
+      @for (s of suggestions(); track s.name) {
+        <div class="sugerencia">
+          <div class="sugerencia-texto">
+            <strong>{{ s.name }}</strong>
+            <span class="detalle">{{ s.description }}</span>
+            @if (s.rationale) {
+              <span class="detalle motivo">{{ s.rationale }}</span>
+            }
+          </div>
+          <button mat-button type="button" (click)="useSuggestion(s)">Usar</button>
+          <button mat-button type="button" (click)="discardSuggestion(s)">Descartar</button>
+        </div>
+      }
+    </div>
     <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
       <h2 class="subtitulo">{{ editingId() ? 'Editar criterio' : 'Agregar criterio' }}</h2>
 

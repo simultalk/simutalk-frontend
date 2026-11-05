@@ -13,6 +13,7 @@ import {
   CriterionRequest,
   EvaluationCriterion,
   QuestionRequest,
+  CriterionSuggestion,
 } from '../models/recruitment.model';
 import { Question } from '../models/question';
 
@@ -61,6 +62,13 @@ export class RecruitmentService {
   // DELETE /job-postings/{id}/criteria/{criterionId} (US-03)
   deleteCriterion(jobPostingId: number, criterionId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/criteria/${criterionId}`);
+  }
+  // POST /job-postings/{id}/criteria/suggestions (US-04)
+  suggestCriteria(jobPostingId: number): Observable<CriterionSuggestion[]> {
+    return this.http.post<CriterionSuggestion[]>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/criteria/suggestions`,
+      {},
+    );
   }
 
   // GET /job-postings/{id}/questions (US-05)
