@@ -23,15 +23,6 @@ export const routes: Routes = [
   { path: 'login', component: Login },
   { path: 'register/company', component: CompanyRegister },
   { path: 'register/applicant', component: ApplicantRegister },
-  {
-    path: 'assessment/sessions/:sessionId',
-    loadComponent: () =>
-      import('./assessment/pages/assessment-detail-page/assessment-detail-page').then(
-        (m) => m.AssessmentDetailPageComponent
-      ),
-    canActivate: [authGuard],
-    data: { roles: [ROLE_RECRUITER] }
-  },
 
   // Páginas internas: piden sesión (authGuard) y el rol de data.roles (roleGuard)
   {
@@ -49,6 +40,14 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/company/my-job-postings/my-job-postings').then(
             (m) => m.MyJobPostings,
+          ),
+      },
+      {
+        path: 'assessment/sessions/:sessionId',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./assessment/pages/assessment-detail-page/assessment-detail-page').then(
+            (m) => m.AssessmentDetailPageComponent,
           ),
       },
       {
