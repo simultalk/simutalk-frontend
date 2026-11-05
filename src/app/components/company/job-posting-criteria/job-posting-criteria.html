@@ -1,44 +1,44 @@
 <header class="st-page-header encabezado">
   <div>
     <p class="st-breadcrumb">
-      <a routerLink="/recruitment/my-job-postings">Mis vacantes</a> / Criterios
+      <a routerLink="/recruitment/my-job-postings">{{ 'recruitment.myJobPostings.title' | translate }}</a> / {{ 'recruitment.criteria.crumb' | translate }}
     </p>
-    <h1 class="st-page-title">Criterios de evaluación</h1>
+    <h1 class="st-page-title">{{ 'recruitment.criteria.title' | translate }}</h1>
     <p class="st-page-subtitle">{{ job()?.title }}</p>
   </div>
   <a mat-flat-button [routerLink]="['/recruitment/my-job-postings', jobPostingId, 'script']">
-    Siguiente: guion
+    {{ 'recruitment.criteria.next' | translate }}
   </a>
 </header>
 
 <app-job-posting-steps [step]="2" [jobId]="jobPostingId" />
 
 @if (loading()) {
-  <p role="status">Cargando criterios...</p>
+  <p role="status">{{ 'recruitment.criteria.loading' | translate }}</p>
 } @else {
   <div class="st-card">
     <p class="total" [class.completo]="total() === 100" role="status">
-      Total: {{ total() }} / 100
+      {{ 'recruitment.criteria.total' | translate: { total: total() } }}
       @if (total() !== 100) {
-        <span class="ayuda">· los pesos deben sumar 100 para poder publicar</span>
+        <span class="ayuda">{{ 'recruitment.criteria.totalHint' | translate }}</span>
       }
     </p>
 
     @if (!isDraft()) {
-      <p class="aviso">La vacante ya no es borrador, así que sus criterios no se pueden cambiar.</p>
+      <p class="aviso">{{ 'recruitment.criteria.notDraft' | translate }}</p>
     }
 
     @if (criteria().length === 0) {
-      <p>Esta vacante todavía no tiene criterios.</p>
+      <p>{{ 'recruitment.criteria.empty' | translate }}</p>
     } @else {
       <table class="tabla st-tabla-responsive">
         <thead>
         <tr>
-          <th>Criterio</th>
-          <th>Tipo</th>
-          <th>Peso</th>
+          <th>{{ 'recruitment.criteria.colCriterion' | translate }}</th>
+          <th>{{ 'recruitment.criteria.colType' | translate }}</th>
+          <th>{{ 'recruitment.criteria.colWeight' | translate }}</th>
           @if (isDraft()) {
-            <th>Acciones</th>
+            <th>{{ 'recruitment.criteria.colActions' | translate }}</th>
           }
         </tr>
         </thead>
@@ -48,21 +48,21 @@
               <td class="completo">
                 <strong>{{ c.name }}</strong>
                 @if (c.origin === 'AI_SUGGESTED') {
-                  <span class="chip-ia">IA</span>
+                  <span class="chip-ia">{{ 'common.ai' | translate }}</span>
                 }
                 <span class="detalle">{{ c.description }}</span>
               </td>
-              <td data-label="Tipo">
-                {{ c.criterionType === 'CERTIFICATION' ? 'Certificación' : 'Competencia' }}
+              <td [attr.data-label]="'recruitment.criteria.colType' | translate">
+                {{ (c.criterionType === 'CERTIFICATION' ? 'recruitment.criteria.certification' : 'recruitment.criteria.competency') | translate }}
                 @if (c.criterionType === 'CERTIFICATION') {
-                  <span class="detalle">{{ c.certificationName }}{{ c.mandatory ? ' · obligatoria' : '' }}</span>
+                  <span class="detalle">{{ c.certificationName }}@if (c.mandatory) { · {{ 'recruitment.criteria.mandatory' | translate }} }</span>
                 }
               </td>
-              <td data-label="Peso">{{ c.weight }}</td>
+              <td [attr.data-label]="'recruitment.criteria.colWeight' | translate">{{ c.weight }}</td>
               @if (isDraft()) {
                 <td class="acciones">
-                  <button mat-button type="button" (click)="edit(c)">Editar</button>
-                  <button mat-button class="eliminar" type="button" (click)="remove(c)">Quitar</button>
+                  <button mat-button type="button" (click)="edit(c)">{{ 'common.edit' | translate }}</button>
+                  <button mat-button class="eliminar" type="button" (click)="remove(c)">{{ 'common.remove' | translate }}</button>
                 </td>
               }
             </tr>
@@ -76,70 +76,71 @@
     <div class="st-card sugerencias">
       <div class="cabecera-sugerencias">
         <div>
-          <h2 class="subtitulo">Sugerencias con IA</h2>
-          <p class="ayuda">Salen de la descripción del puesto. Tú eliges cuáles usar y con qué peso.</p>
+          <h2 class="subtitulo">{{ 'recruitment.criteria.aiTitle' | translate }}</h2>
+          <p class="ayuda">{{ 'recruitment.criteria.aiHint' | translate }}</p>
         </div>
         <button mat-stroked-button type="button" (click)="suggest()" [disabled]="suggesting()">
-          {{ suggesting() ? 'Buscando...' : 'Sugerir criterios' }}
+          {{ (suggesting() ? 'common.searching' : 'recruitment.criteria.suggest') | translate }}
         </button>
       </div>
       @for (s of suggestions(); track s.name) {
+        @let v = ai.criterion(s);
         <div class="sugerencia">
           <div class="sugerencia-texto">
-            <strong>{{ s.name }}</strong>
-            <span class="detalle">{{ s.description }}</span>
-            @if (s.rationale) {
-              <span class="detalle motivo">{{ s.rationale }}</span>
+            <strong>{{ v.name }}</strong>
+            <span class="detalle">{{ v.description }}</span>
+            @if (v.rationale) {
+              <span class="detalle motivo">{{ v.rationale }}</span>
             }
           </div>
-          <button mat-button type="button" (click)="useSuggestion(s)">Usar</button>
-          <button mat-button type="button" (click)="discardSuggestion(s)">Descartar</button>
+          <button mat-button type="button" (click)="useSuggestion(v); discardSuggestion(s)">{{ 'common.use' | translate }}</button>
+          <button mat-button type="button" (click)="discardSuggestion(s)">{{ 'common.discard' | translate }}</button>
         </div>
       }
     </div>
     <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
-      <h2 class="subtitulo">{{ editingId() ? 'Editar criterio' : 'Agregar criterio' }}</h2>
+      <h2 class="subtitulo">{{ (editingId() ? 'recruitment.criteria.formEdit' : 'recruitment.criteria.formAdd') | translate }}</h2>
 
       <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
+        <mat-label>{{ 'recruitment.criteria.name' | translate }}</mat-label>
         <input matInput formControlName="name" maxlength="100" />
         @if (form.controls.name.hasError('required')) {
-          <mat-error>El nombre es obligatorio.</mat-error>
+          <mat-error>{{ 'recruitment.criteria.nameRequired' | translate }}</mat-error>
         }
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Descripción</mat-label>
+        <mat-label>{{ 'recruitment.criteria.description' | translate }}</mat-label>
         <textarea matInput formControlName="description" rows="3" maxlength="1000"></textarea>
         @if (form.controls.description.hasError('required')) {
-          <mat-error>La descripción es obligatoria.</mat-error>
+          <mat-error>{{ 'recruitment.criteria.descriptionRequired' | translate }}</mat-error>
         }
       </mat-form-field>
 
       <div class="fila">
         <mat-form-field appearance="outline">
-          <mat-label>Peso (1 a 100)</mat-label>
+          <mat-label>{{ 'recruitment.criteria.weight' | translate }}</mat-label>
           <input matInput type="number" formControlName="weight" min="1" max="100" />
           @if (form.controls.weight.invalid) {
-            <mat-error>Pon un número entre 1 y 100.</mat-error>
+            <mat-error>{{ 'recruitment.criteria.weightInvalid' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Tipo</mat-label>
+          <mat-label>{{ 'recruitment.criteria.type' | translate }}</mat-label>
           <mat-select formControlName="criterionType">
-            <mat-option value="COMPETENCY">Competencia</mat-option>
-            <mat-option value="CERTIFICATION">Certificación</mat-option>
+            <mat-option value="COMPETENCY">{{ 'recruitment.criteria.competency' | translate }}</mat-option>
+            <mat-option value="CERTIFICATION">{{ 'recruitment.criteria.certification' | translate }}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
 
       @if (form.controls.criterionType.value === 'CERTIFICATION') {
         <mat-form-field appearance="outline">
-          <mat-label>Nombre de la certificación</mat-label>
+          <mat-label>{{ 'recruitment.criteria.certificationName' | translate }}</mat-label>
           <input matInput formControlName="certificationName" maxlength="150" />
         </mat-form-field>
-        <mat-checkbox formControlName="mandatory">Es obligatoria para postular</mat-checkbox>
+        <mat-checkbox formControlName="mandatory">{{ 'recruitment.criteria.certificationMandatory' | translate }}</mat-checkbox>
       }
 
       @if (errorMessage()) {
@@ -148,10 +149,10 @@
 
       <div class="botones">
         @if (editingId()) {
-          <button mat-button type="button" (click)="cancelEdit()">Cancelar</button>
+          <button mat-button type="button" (click)="cancelEdit()">{{ 'common.cancel' | translate }}</button>
         }
         <button mat-flat-button type="submit" [disabled]="saving()">
-          {{ saving() ? 'Guardando...' : (editingId() ? 'Guardar cambios' : 'Agregar criterio') }}
+          {{ (saving() ? 'common.saving' : editingId() ? 'common.saveChanges' : 'recruitment.criteria.add') | translate }}
         </button>
       </div>
     </form>

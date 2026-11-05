@@ -1,3 +1,4 @@
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -8,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RecruitmentService } from '../../../services/recruitment.service';
+import { AiSuggestionI18nService } from '../../../services/ai-suggestion-i18n.service';
 import { JobPostingSteps } from '../job-posting-steps/job-posting-steps';
 import {
   CriterionOrigin,
@@ -29,12 +31,16 @@ import {
     MatCheckboxModule,
     MatSnackBarModule,
     JobPostingSteps,
+    TranslatePipe,
   ],
   templateUrl: './job-posting-criteria.html',
   styleUrl: './job-posting-criteria.css',
 })
 export class JobPostingCriteria implements OnInit {
   private fb = inject(FormBuilder);
+  private i18n = inject(TranslateService);
+  // Traduce las sugerencias de IA al idioma elegido
+  ai = inject(AiSuggestionI18nService);
   private route = inject(ActivatedRoute);
   private recruitmentService = inject(RecruitmentService);
   private snackBar = inject(MatSnackBar);
@@ -78,7 +84,7 @@ export class JobPostingCriteria implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.errorMessage.set(err.error?.message || 'No se pudo cargar la vacante.');
+        this.errorMessage.set(err.error?.message || this.i18n.instant('recruitment.jobForm.loadError'));
         this.loading.set(false);
       },
     });
@@ -112,7 +118,7 @@ export class JobPostingCriteria implements OnInit {
     const value = this.form.getRawValue();
     const isCertification = value.criterionType === 'CERTIFICATION';
     if (isCertification && !value.certificationName.trim()) {
-      this.errorMessage.set('Escribe el nombre de la certificación.');
+      this.errorMessage.set(this.i18n.instant('recruitment.criteria.certificationNameRequired'));
       return;
     }
 
@@ -136,7 +142,7 @@ export class JobPostingCriteria implements OnInit {
     call.subscribe({
       next: () => {
         this.saving.set(false);
-        this.snackBar.open(editingId ? 'Criterio actualizado.' : 'Criterio agregado.', 'OK', {
+        this.snackBar.open(this.i18n.instant(editingId ? 'recruitment.criteria.updated' : 'recruitment.criteria.added'), 'OK', {
           duration: 3000,
         });
         // Si venía de una sugerencia, ya no se muestra en la lista
@@ -147,21 +153,21 @@ export class JobPostingCriteria implements OnInit {
       },
       error: (err) => {
         this.saving.set(false);
-        this.errorMessage.set(err.error?.message || 'No se pudo guardar el criterio.');
+        this.errorMessage.set(err.error?.message || this.i18n.instant('recruitment.criteria.saveError'));
       },
     });
   }
 
   remove(criterion: EvaluationCriterion): void {
-    if (!confirm(`¿Quitar el criterio "${criterion.name}"?`)) return;
+    if (!confirm(this.i18n.instant('recruitment.criteria.confirmRemove', { name: criterion.name }))) return;
 
     this.recruitmentService.deleteCriterion(this.jobPostingId, criterion.id).subscribe({
       next: () => {
-        this.snackBar.open('Criterio eliminado.', 'OK', { duration: 3000 });
+        this.snackBar.open(this.i18n.instant('recruitment.criteria.removed'), 'OK', { duration: 3000 });
         this.load();
       },
       error: (err) => {
-        this.snackBar.open(err.error?.message || 'No se pudo quitar el criterio.', 'OK', {
+        this.snackBar.open(err.error?.message || this.i18n.instant('recruitment.criteria.removeError'), 'OK', {
           duration: 5000,
         });
       },
@@ -179,14 +185,14 @@ export class JobPostingCriteria implements OnInit {
         const nuevas = data.filter((s) => !existing.includes(s.name.toLowerCase()));
         this.suggestions.set(nuevas);
         if (nuevas.length === 0) {
-          this.snackBar.open('No hay sugerencias nuevas para esta vacante.', 'OK', {
+          this.snackBar.open(this.i18n.instant('recruitment.criteria.noSuggestions'), 'OK', {
             duration: 3000,
           });
         }
       },
       error: (err) => {
         this.suggesting.set(false);
-        this.snackBar.open(err.error?.message || 'No se pudieron obtener sugerencias.', 'OK', {
+        this.snackBar.open(err.error?.message || this.i18n.instant('recruitment.criteria.suggestError'), 'OK', {
           duration: 5000,
         });
       },
