@@ -94,7 +94,11 @@ export const routes: Routes = [
       },
       pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),
       // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
-      { path: 'interviews/invitation-test', component: InvitationTest },
+      {
+        path: 'interviews/invitation-test',
+        component: InvitationTest,
+        data: { roles: [ROLE_RECRUITER] },
+      },
 
       // Postulante (components/applicant)
       {
@@ -116,8 +120,12 @@ export const routes: Routes = [
       pending('recruitment/my-applications', 'Mis postulaciones', [ROLE_CANDIDATE]),
       pending('profiles/me', 'Mi perfil', [ROLE_CANDIDATE]),
       pending('profiles/certifications', 'Certificaciones', [ROLE_CANDIDATE]),
-      // US-08, maqueta con datos de prueba
-      { path: 'interviews/take-interview', component: TakeInterview },
+      // US-08: el postulante rinde su entrevista. "Mis postulaciones" (US-23) enlazará aquí.
+      {
+        path: 'interviews/take-interview/:applicationId',
+        component: TakeInterview,
+        data: { roles: [ROLE_CANDIDATE] },
+      },
 
       // 403
       { path: 'forbidden', component: Forbidden },

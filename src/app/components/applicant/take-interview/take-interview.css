@@ -95,3 +95,7 @@ h2 {
     flex-direction: column-reverse;
   }
 }
+
+.estado {
+  color: var(--mat-sys-on-surface-variant);
+}
