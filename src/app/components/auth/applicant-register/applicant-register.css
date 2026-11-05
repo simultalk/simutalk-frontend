@@ -1,34 +1,23 @@
-.pantalla {
-  min-height: 100vh;
+.exito {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 16px;
-}
-
-.tarjeta {
-  width: 100%;
-  max-width: 560px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
   gap: 8px;
-  margin-top: 16px;
+  padding: 12px 16px;
+  border-radius: var(--st-radius);
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  font-weight: 600;
 }
 
-.error {
-  color: var(--mat-sys-error);
-  margin: 0 0 8px;
+.exito span { flex: 1; }
+
+.ya-tengo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--st-text-secondary);
+  cursor: pointer;
 }
 
-.exito {
-  color: green;
-  margin: 0 0 8px;
-}
-
-.enlace {
-  text-align: center;
-  margin: 12px 0 0;
-}
+.ya-tengo input { accent-color: var(--st-primary); width: 16px; height: 16px; }

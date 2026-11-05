@@ -37,7 +37,7 @@
           <mat-chip-set aria-label="Alertas de integridad">
             @for (flag of a.integrityFlags; track $index) {
               <mat-chip [class]="'flag flag--' + flag.severity.toLowerCase()">
-                {{ flag.type }} · {{ severityLabel(flag.severity) }}
+                {{ flag.flagType === 'AI_GENERATED_CONTENT' ? 'Posible texto generado por IA' : 'Inconsistencia con el CV' }} · {{ severityLabel(flag.severity) }}
               </mat-chip>
             }
           </mat-chip-set>

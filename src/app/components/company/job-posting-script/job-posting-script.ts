@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { RecruitmentService } from '../../../services/recruitment.service';
+import { JobPostingSteps } from '../job-posting-steps/job-posting-steps';
 import { JobPosting, QuestionSuggestion } from '../../../models/recruitment.model';
 import { Question, QuestionOrigin } from '../../../models/question';
 
@@ -25,6 +26,7 @@ import { Question, QuestionOrigin } from '../../../models/question';
     MatSelectModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    JobPostingSteps,
   ],
   templateUrl: './job-posting-script.html',
   styleUrl: './job-posting-script.css',

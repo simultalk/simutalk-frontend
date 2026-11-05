@@ -1,16 +1,23 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -21,6 +28,7 @@ export class Login {
 
   loading = signal(false);
   errorMessage = signal('');
+  hidePassword = signal(true);
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -35,7 +43,9 @@ export class Login {
     this.loading.set(true);
     this.errorMessage.set('');
 
-    this.auth.signIn(this.form.getRawValue()).subscribe({
+    // Los postulantes se registran con su correo, así que el usuario puede ser un correo
+    const { username, password } = this.form.getRawValue();
+    this.auth.signIn({ username: username.trim(), password }).subscribe({
       next: () => {
         this.loading.set(false);
         this.router.navigateByUrl(this.auth.homeUrl());
@@ -44,7 +54,7 @@ export class Login {
         this.loading.set(false);
         this.errorMessage.set(
           error.status === 401
-            ? 'Usuario o contraseña incorrectos'
+            ? 'Usuario, correo o contraseña incorrectos'
             : 'No se pudo conectar con el servidor. Inténtalo de nuevo.'
         );
       },

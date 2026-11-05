@@ -8,6 +8,7 @@ import {
   ApplicantRegisterRequest,
   CompanyRegisterRequest,
   CandidateProfileResponse,
+  CompanyProfileResponse,
 } from '../models/registration.model';
 
 export class ApplicantRegistrationError {
@@ -20,9 +21,31 @@ export class RegistrationService {
   private auth = inject(AuthService);
   private apiUrl = environment.apiUrl;
 
-  // US: Registro de empresa
-  registerCompany(request: CompanyRegisterRequest): Observable<AccountResponse> {
-    return this.http.post<AccountResponse>(`${this.apiUrl}/companies/sign-up`, request);
+  // US-25: Registro de empresa. 1) crea la cuenta con rol reclutador, 2) inicia sesión,
+  // 3) crea el perfil de empresa con el id del usuario. El correo es el usuario.
+  registerCompany(request: CompanyRegisterRequest): Observable<CompanyProfileResponse> {
+    const credentials = { username: request.email.trim(), password: request.password };
+    const { password, ...profile } = request;
+
+    return this.http
+      .post<AccountResponse>(`${this.apiUrl}/authentication/sign-up`, {
+        ...credentials,
+        roles: ['ROLE_RECRUITER'],
+      })
+      .pipe(
+        switchMap(() => this.auth.signIn(credentials)),
+        switchMap((session) =>
+          this.http.post<CompanyProfileResponse>(`${this.apiUrl}/company-profiles`, {
+            ...profile,
+            email: credentials.username,
+            legalName: request.legalName.trim(),
+            tradeName: request.tradeName.trim(),
+            industry: request.industry.trim(),
+            district: request.district.trim(),
+            userId: session.id,
+          }),
+        ),
+      );
   }
 
   // US-26: Registro de postulante

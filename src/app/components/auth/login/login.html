@@ -1,23 +1,48 @@
 <div class="pantalla">
-  <mat-card class="tarjeta">
-    <mat-card-header>
-      <mat-card-title>SimuTalk</mat-card-title>
-      <mat-card-subtitle>Inicia sesión para continuar</mat-card-subtitle>
-    </mat-card-header>
+  <section class="marca" aria-hidden="true">
+    <div class="logo">
+      <img src="logo.svg" alt="" width="40" height="40" />
+      <span>Simu<strong>Talk</strong></span>
+    </div>
+    <h2>Preselección con entrevistas que explican cada puntaje.</h2>
+    <ul>
+      <li>Criterios ponderados que define tu empresa</li>
+      <li>Entrevistas asincrónicas, a la hora del postulante</li>
+      <li>Ranking con la evidencia de cada respuesta</li>
+    </ul>
+  </section>
 
-    <mat-card-content>
+  <main class="panel">
+    <div class="tarjeta">
+      <h1>Inicia sesión</h1>
+      <p class="sub">Entra con tu usuario o con el correo con el que te registraste.</p>
+
       <form [formGroup]="form" (ngSubmit)="submit()">
         <mat-form-field appearance="outline">
-          <mat-label>Usuario</mat-label>
+          <mat-label>Usuario o correo</mat-label>
           <input matInput formControlName="username" autocomplete="username" />
           @if (form.controls.username.hasError('required')) {
-            <mat-error>Ingresa tu usuario</mat-error>
+            <mat-error>Ingresa tu usuario o correo</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>Contraseña</mat-label>
-          <input matInput type="password" formControlName="password" autocomplete="current-password" />
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+            [attr.aria-label]="hidePassword() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+          >
+            <mat-icon fontSet="material-symbols-outlined">{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
           @if (form.controls.password.hasError('required')) {
             <mat-error>Ingresa tu contraseña</mat-error>
           }
@@ -27,10 +52,18 @@
           <p class="error" role="alert">{{ errorMessage() }}</p>
         }
 
-        <button mat-flat-button type="submit" [disabled]="loading()">
+        <button mat-flat-button class="ingresar" type="submit" [disabled]="loading()">
           {{ loading() ? 'Ingresando...' : 'Ingresar' }}
         </button>
       </form>
-    </mat-card-content>
-  </mat-card>
+
+      <div class="registro">
+        <p>¿No tienes cuenta?</p>
+        <div class="opciones">
+          <a mat-stroked-button routerLink="/register/applicant">Soy postulante</a>
+          <a mat-stroked-button routerLink="/register/company">Soy empresa</a>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>

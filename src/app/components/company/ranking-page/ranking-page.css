@@ -1,4 +1,4 @@
-.ranking { padding: 24px; }
+.ranking h1 { margin-top: 0; }
 .posting-select { width: min(420px, 100%); }
 .ranking-table { width: 100%; }
 

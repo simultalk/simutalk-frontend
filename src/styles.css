@@ -50,3 +50,164 @@ body {
   border-radius: var(--st-radius);
   padding: 24px;
 }
+
+/* Pantallas de registro: marca a la izquierda y formulario a la derecha. */
+.st-auth {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+}
+
+.st-auth-marca {
+  background: linear-gradient(160deg, var(--st-primary) 0%, var(--st-primary-dark) 100%);
+  color: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.st-auth-marca h2 { font-size: 26px; line-height: 1.25; margin: 0; }
+.st-auth-marca p { margin: 0; opacity: 0.9; }
+.st-auth-marca ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.st-auth-marca li { padding-left: 24px; position: relative; opacity: 0.92; }
+.st-auth-marca li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--st-accent);
+}
+
+.st-auth-logo { display: flex; align-items: center; gap: 10px; font-size: 20px; color: #fff; text-decoration: none; }
+.st-auth-logo img { background: #fff; border-radius: 10px; padding: 4px; }
+
+.st-auth-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.st-auth-panel {
+  padding: 40px 24px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.st-auth-form {
+  width: 100%;
+  max-width: 640px;
+  animation: st-entrar 0.35s ease-out;
+}
+
+.st-auth-form h1 { font-size: 26px; margin: 0; }
+.st-auth-sub { color: var(--st-text-secondary); font-size: 14px; margin: 6px 0 24px; }
+
+/* Cada bloque del formulario, en dos columnas */
+.st-auth-seccion {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  padding: 20px 20px 8px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+}
+
+.st-auth-seccion h3 {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--st-primary-dark);
+  margin: 0 0 12px;
+}
+
+.st-auth-seccion .completo { grid-column: 1 / -1; }
+
+.st-auth-acciones { display: flex; flex-direction: column; gap: 12px; }
+.st-auth-acciones button[type='submit'] { height: 44px; }
+.st-auth-error { color: var(--mat-sys-error); margin: 0; }
+.st-auth-enlace { text-align: center; margin: 4px 0 0; font-size: 14px; }
+
+@keyframes st-entrar {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Cada pantalla interna entra con una animación corta al navegar */
+main.contenido > :not(router-outlet) {
+  display: block;
+  animation: st-entrar 0.25s ease-out;
+}
+
+/* Tablas: resaltan la fila al pasar el mouse y en celular cada fila es una tarjeta */
+.st-tabla-responsive tbody tr { transition: background 0.15s; }
+.st-tabla-responsive tbody tr:hover { background: var(--st-background); }
+
+@media (max-width: 720px) {
+  main.contenido { padding: 16px !important; }
+  .st-page-title { font-size: 22px; }
+  .st-card { padding: 16px; }
+
+  /* La tarjeta que envuelve la tabla desaparece: cada fila ya es su propia tarjeta */
+  .st-card:has(> .st-tabla-responsive) { background: none; border: none; padding: 0; }
+
+  .st-tabla-responsive { display: block; width: 100%; }
+  .st-tabla-responsive thead { display: none; }
+  .st-tabla-responsive tbody { display: grid; gap: 12px; }
+
+  .st-tabla-responsive tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px 12px;
+    height: auto !important;
+    padding: 14px 16px;
+    background: var(--st-surface);
+    border: 1px solid var(--st-border);
+    border-radius: var(--st-radius);
+  }
+
+  .st-tabla-responsive tbody tr:hover { background: var(--st-surface); }
+
+  .st-tabla-responsive td {
+    display: block;
+    min-width: 0;
+    padding: 0 !important;
+    border: none !important;
+    white-space: normal !important;
+    font-size: 14px;
+  }
+
+  /* Título de la fila y acciones ocupan todo el ancho */
+  .st-tabla-responsive td.completo,
+  .st-tabla-responsive td.acciones { grid-column: 1 / -1; }
+
+  .st-tabla-responsive td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--st-text-secondary);
+  }
+
+  .st-tabla-responsive td.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0 -8px;
+    padding-top: 8px !important;
+    border-top: 1px solid var(--st-border) !important;
+  }
+}

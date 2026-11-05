@@ -118,17 +118,54 @@
   background: var(--st-background);
 }
 
-/* Pantallas pequeñas: se ocultan los textos largos */
+/* Celular: barra superior compacta y el menú pasa abajo, como en las apps */
 @media (max-width: 720px) {
+  .barra {
+    height: 56px;
+    padding: 0 16px;
+  }
+
   .usuario-texto {
     display: none;
   }
 
-  .menu {
-    width: 72px;
+  /* Cerrar sesión queda solo con el ícono */
+  .usuario button {
+    min-width: 0;
+    padding: 0 10px;
+    font-size: 0;
   }
 
-  .opcion span {
-    display: none;
+  .usuario button mat-icon {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .cuerpo {
+    flex-direction: column;
+  }
+
+  .contenido {
+    order: 1;
+  }
+
+  .menu {
+    order: 2;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 6px 8px;
+    border-right: none;
+    border-top: 1px solid var(--st-border);
+    overflow: visible;
+  }
+
+  .opcion {
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    font-size: 11px;
+    text-align: center;
   }
 }
