@@ -1,4 +1,4 @@
-<ol class="pasos" aria-label="Pasos para publicar la vacante">
+<ol class="pasos" [attr.data-label]="'recruitment.steps.label' | translate">
   @for (s of steps; track s.n) {
     <li
       [class.actual]="s.n === step()"
@@ -7,10 +7,10 @@
     >
       @if (jobId() && s.n !== step()) {
         <a [routerLink]="['/recruitment/my-job-postings', jobId(), s.path]">
-          <span class="numero">{{ s.n }}</span>{{ s.label }}
+          <span class="numero">{{ s.n }}</span>{{ s.label | translate }}
         </a>
       } @else {
-        <span class="numero">{{ s.n }}</span>{{ s.label }}
+        <span class="numero">{{ s.n }}</span>{{ s.label | translate }}
       }
     </li>
   }

@@ -1,3 +1,4 @@
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,12 +20,14 @@ import { JobPostingSteps } from '../job-posting-steps/job-posting-steps';
     MatSlideToggleModule,
     MatSnackBarModule,
     JobPostingSteps,
+    TranslatePipe,
   ],
   templateUrl: './create-job-posting.html',
   styleUrl: './create-job-posting.css',
 })
 export class CreateJobPosting implements OnInit {
   private fb = inject(FormBuilder);
+  private i18n = inject(TranslateService);
   private recruitmentService = inject(RecruitmentService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -65,7 +68,7 @@ export class CreateJobPosting implements OnInit {
         }
       },
       error: (err) => {
-        this.errorMessage.set(err.error?.message || 'No se pudo cargar la vacante.');
+        this.errorMessage.set(err.error?.message || this.i18n.instant('recruitment.jobForm.loadError'));
       },
     });
   }
@@ -86,9 +89,10 @@ export class CreateJobPosting implements OnInit {
     request.subscribe({
       next: (job) => {
         this.saving.set(false);
-        const message = this.jobPostingId
-          ? `Vacante "${job.title}" actualizada.`
-          : `Vacante "${job.title}" creada como borrador.`;
+        const message = this.i18n.instant(
+          this.jobPostingId ? 'recruitment.jobForm.updated' : 'recruitment.jobForm.created',
+          { title: job.title },
+        );
         this.snackBar.open(message, 'OK', { duration: 3000 });
         // Vacante nueva: sigue directo al paso 2 (criterios)
         this.router.navigate(
@@ -99,7 +103,7 @@ export class CreateJobPosting implements OnInit {
       },
       error: (err) => {
         this.saving.set(false);
-        this.errorMessage.set(err.error?.message || 'No se pudo guardar la vacante.');
+        this.errorMessage.set(err.error?.message || this.i18n.instant('recruitment.jobForm.saveError'));
       },
     });
   }
