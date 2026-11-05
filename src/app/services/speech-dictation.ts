@@ -34,13 +34,16 @@ export class SpeechDictationService {
   readonly listening = signal(false);
   readonly error = signal('');
 
-  /** Empieza a escuchar; cada frase reconocida se entrega a onText. */
-  start(onText: (text: string) => void): void {
+  /**
+   * Empieza a escuchar; cada frase reconocida se entrega a onText.
+   * @param lang idioma de la app (es-419, en-US): se dicta en ese idioma.
+   */
+  start(onText: (text: string) => void, lang: string | null = 'es-419'): void {
     if (!this.Recognition || this.listening()) {
       return;
     }
     const recognition = new this.Recognition();
-    recognition.lang = 'es-PE';
+    recognition.lang = lang?.startsWith('en') ? 'en-US' : 'es-PE';
     recognition.continuous = true;
     recognition.interimResults = false;
     recognition.onresult = (event) =>
@@ -75,19 +78,19 @@ export class SpeechDictationService {
   }
 }
 
-/** Explica en palabras del postulante por qué no funcionó el dictado. */
+/** Clave de traducción (interviews.dictation.*) que explica por qué no funcionó el dictado. */
 export function dictationErrorMessage(error: string): string {
   switch (error) {
     case 'not-allowed':
     case 'service-not-allowed':
-      return 'Permite el uso del micrófono para este sitio (ícono a la izquierda de la dirección) y vuelve a pulsar Dictar.';
+      return 'interviews.dictation.notAllowed';
     case 'audio-capture':
-      return 'No encontramos un micrófono conectado. Puedes escribir tu respuesta.';
+      return 'interviews.dictation.noMicrophone';
     case 'no-speech':
-      return 'No te escuchamos. Pulsa Dictar respuesta y habla cerca del micrófono.';
+      return 'interviews.dictation.noSpeech';
     case 'network':
-      return 'El dictado necesita internet y solo funciona en Google Chrome o Microsoft Edge. Puedes escribir tu respuesta.';
+      return 'interviews.dictation.network';
     default:
-      return 'No se pudo usar el dictado. Puedes escribir tu respuesta.';
+      return 'interviews.dictation.generic';
   }
 }

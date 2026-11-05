@@ -1,28 +1,32 @@
 <div class="pantalla">
   <header class="encabezado">
-    <p class="etiqueta">Entrevista asincrónica</p>
-    <h1>{{ jobTitle() || 'Tu entrevista' }}</h1>
+    <p class="etiqueta">{{ 'interviews.takeInterview.label' | translate }}</p>
+    <h1>{{ jobTitle() || ('interviews.takeInterview.titleFallback' | translate) }}</h1>
     @if (step() === 'question') {
       <div class="progreso">
-        <span class="paso">Pregunta {{ number() }} de {{ questions().length }}</span>
-        <mat-progress-bar mode="determinate" [value]="progress()" aria-label="Avance de la entrevista" />
+        <span class="paso">{{ 'interviews.takeInterview.progress' | translate: { current: number(), total: questions().length } }}</span>
+        <mat-progress-bar
+          mode="determinate"
+          [value]="progress()"
+          [attr.aria-label]="'interviews.takeInterview.progressLabel' | translate"
+        />
       </div>
     }
   </header>
 
   @switch (step()) {
     @case ('loading') {
-      <p class="estado" role="status">Cargando tu entrevista...</p>
+      <p class="estado" role="status">{{ 'interviews.takeInterview.loading' | translate }}</p>
     }
 
     @case ('unavailable') {
       <mat-card appearance="outlined" class="tarjeta">
         <mat-card-content>
-          <h2>No pudimos abrir la entrevista</h2>
-          <p>{{ unavailableMessage() }}</p>
+          <h2>{{ 'interviews.takeInterview.unavailableTitle' | translate }}</h2>
+          <p>{{ unavailableMessage() | translate }}</p>
         </mat-card-content>
         <mat-card-actions align="end">
-          <button mat-button type="button" (click)="load()">Reintentar</button>
+          <button mat-button type="button" (click)="load()">{{ 'interviews.takeInterview.retry' | translate }}</button>
         </mat-card-actions>
       </mat-card>
     }
@@ -30,23 +34,23 @@
     @case ('intro') {
       <mat-card appearance="outlined" class="tarjeta">
         <mat-card-content>
-          <h2>Antes de empezar</h2>
+          <h2>{{ 'interviews.takeInterview.introTitle' | translate }}</h2>
           <ul class="datos">
-            <li>Responderás <strong>una pregunta a la vez</strong>; cada una tiene su propio tiempo.</li>
-            <li>Puedes dictar tu respuesta con el micrófono o escribirla.</li>
-            <li>Una vez enviada, una respuesta ya no se puede cambiar.</li>
-            <li>Si sales, al volver sigues desde la primera pregunta que te falte.</li>
+            <li>{{ 'interviews.takeInterview.introOneAtATime' | translate }}</li>
+            <li>{{ 'interviews.takeInterview.introDictation' | translate }}</li>
+            <li>{{ 'interviews.takeInterview.introNoChanges' | translate }}</li>
+            <li>{{ 'interviews.takeInterview.introResume' | translate }}</li>
             @if (session(); as s) {
-              <li>Tienes hasta el <strong>{{ s.expiresAt | date: 'dd/MM/yyyy' }}</strong> para empezar.</li>
+              <li>{{ 'interviews.takeInterview.introDeadline' | translate: { date: (s.expiresAt | date: 'dd/MM/yyyy') } }}</li>
             }
           </ul>
           @if (errorMessage()) {
-            <p class="aviso" role="alert">{{ errorMessage() }}</p>
+            <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
           }
         </mat-card-content>
         <mat-card-actions align="end">
           <button mat-flat-button type="button" (click)="start()" [disabled]="sending()">
-            {{ sending() ? 'Empezando...' : 'Empezar' }}
+            {{ (sending() ? 'interviews.takeInterview.starting' : 'interviews.takeInterview.start') | translate }}
           </button>
         </mat-card-actions>
       </mat-card>
@@ -62,7 +66,7 @@
                 class="temporizador"
                 [class.alerta]="warning()"
                 role="timer"
-                [attr.aria-label]="'Tiempo restante ' + timeLabel()"
+                [attr.aria-label]="'interviews.takeInterview.timeLeft' | translate: { time: timeLabel() }"
               >
                 <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">timer</mat-icon>
                 <span>{{ timeLabel() }}</span>
@@ -70,25 +74,25 @@
             </div>
 
             @if (timeUp()) {
-              <p class="aviso" role="alert">Se acabó el tiempo de esta pregunta. Envía lo que alcanzaste a responder.</p>
+              <p class="aviso" role="alert">{{ 'interviews.takeInterview.timeUp' | translate }}</p>
             }
 
             <mat-form-field appearance="outline" class="respuesta">
-              <mat-label>Tu respuesta</mat-label>
+              <mat-label>{{ 'interviews.takeInterview.answerLabel' | translate }}</mat-label>
               <textarea matInput [formControl]="answer" rows="8"></textarea>
               @if (dictation.listening()) {
-                <mat-hint>Escuchando… habla con claridad y luego revisa el texto.</mat-hint>
+                <mat-hint>{{ 'interviews.takeInterview.listening' | translate }}</mat-hint>
               }
             </mat-form-field>
 
             @if (triedToSubmit() && !answer.value.trim()) {
-              <p class="aviso" role="alert">Responde la pregunta antes de enviar.</p>
+              <p class="aviso" role="alert">{{ 'interviews.takeInterview.answerRequired' | translate }}</p>
             }
             @if (errorMessage()) {
-              <p class="aviso" role="alert">{{ errorMessage() }}</p>
+              <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
             }
             @if (dictation.error()) {
-              <p class="aviso" role="alert">{{ dictation.error() }}</p>
+              <p class="aviso" role="alert">{{ dictation.error() | translate }}</p>
             }
           </mat-card-content>
 
@@ -96,12 +100,12 @@
             @if (dictation.supported()) {
               <button mat-stroked-button type="button" (click)="toggleDictation()" [disabled]="timeUp() || sending()">
                 <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ dictation.listening() ? 'stop' : 'mic' }}</mat-icon>
-                {{ dictation.listening() ? 'Detener dictado' : 'Dictar respuesta' }}
+                {{ (dictation.listening() ? 'interviews.takeInterview.stopDictation' : 'interviews.takeInterview.dictate') | translate }}
               </button>
             }
             <span class="espacio"></span>
             <button mat-flat-button type="button" (click)="submit()" [disabled]="sending()">
-              {{ sending() ? 'Enviando...' : 'Enviar' }}
+              {{ (sending() ? 'interviews.takeInterview.sending' : 'interviews.takeInterview.send') | translate }}
             </button>
           </mat-card-actions>
         </mat-card>
@@ -111,24 +115,33 @@
     @case ('answered') {
       <mat-card appearance="outlined" class="tarjeta">
         <mat-card-content>
-          <h2>Respondiste todas las preguntas</h2>
-          <p>Tus {{ answeredCount() }} respuestas ya quedaron guardadas.</p>
-          <p>Cuando la envíes, la empresa podrá evaluarla y ya no podrás cambiar tus respuestas.</p>
+          <h2>{{ 'interviews.takeInterview.answeredTitle' | translate }}</h2>
+          <p>{{ 'interviews.takeInterview.answeredSaved' | translate: { count: answeredCount() } }}</p>
+          <p>{{ 'interviews.takeInterview.answeredWarning' | translate }}</p>
           @if (errorMessage()) {
-            <p class="aviso" role="alert">{{ errorMessage() }}</p>
+            <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
           }
-          <button mat-flat-button type="button" (click)="finish()" [disabled]="sending()">
-            {{ sending() ? 'Enviando...' : 'Terminar y enviar entrevista' }}
-          </button>
         </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-flat-button type="button" (click)="finish()" [disabled]="sending()">
+            {{ (sending() ? 'interviews.takeInterview.finishing' : 'interviews.takeInterview.finish') | translate }}
+          </button>
+        </mat-card-actions>
       </mat-card>
     }
 
     @case ('completed') {
       <mat-card appearance="outlined" class="tarjeta">
         <mat-card-content>
-          <h2>Ya enviaste esta entrevista</h2>
-          <p>La empresa está revisando tus respuestas.</p>
+          <h2>{{ 'interviews.takeInterview.completedTitle' | translate }}</h2>
+          @if (session(); as s) {
+            @if (s.totalDurationSeconds > 0) {
+              <p class="resumen">
+                {{ 'interviews.takeInterview.completedSummary' | translate: { answered: s.answeredQuestions, duration: totalDuration() } }}
+              </p>
+            }
+          }
+          <p>{{ 'interviews.takeInterview.completedText' | translate }}</p>
         </mat-card-content>
       </mat-card>
     }
@@ -136,9 +149,9 @@
     @case ('expired') {
       <mat-card appearance="outlined" class="tarjeta">
         <mat-card-content>
-          <h2>La entrevista venció</h2>
+          <h2>{{ 'interviews.takeInterview.expiredTitle' | translate }}</h2>
           @if (session(); as s) {
-            <p>El plazo para empezarla era hasta el {{ s.expiresAt | date: 'dd/MM/yyyy' }}.</p>
+            <p>{{ 'interviews.takeInterview.expiredText' | translate: { date: (s.expiresAt | date: 'dd/MM/yyyy') } }}</p>
           }
         </mat-card-content>
       </mat-card>

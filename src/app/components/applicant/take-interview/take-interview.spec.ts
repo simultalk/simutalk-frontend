@@ -2,13 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, convertToParamMap } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { Observable, of, throwError } from 'rxjs';
 import { InterviewSession, InterviewSessionStatus } from '../../../models/interview-session';
 import { Answer, Question } from '../../../models/question';
 import { InterviewSessionService } from '../../../services/interview-session';
 import { RecruitmentService } from '../../../services/recruitment.service';
 import { SpeechDictationService } from '../../../services/speech-dictation';
-import { TakeInterview, formatSeconds, isPastDue, regularAnswerIds } from './take-interview';
+import { TakeInterview, formatDuration, formatSeconds, isPastDue, regularAnswerIds } from './take-interview';
 
 const question = (id: number, position: number, maxDurationSeconds = 120): Question => ({
   id,
@@ -57,6 +58,7 @@ describe('TakeInterview (US-08)', () => {
     getQuestions: ReturnType<typeof vi.fn>;
     getAnswers: ReturnType<typeof vi.fn>;
     recordAnswer: ReturnType<typeof vi.fn>;
+    complete: ReturnType<typeof vi.fn>;
   };
   let dictation: { supported: ReturnType<typeof signal<boolean>>; listening: ReturnType<typeof signal<boolean>>; error: ReturnType<typeof signal<string>>; start: ReturnType<typeof vi.fn>; stop: ReturnType<typeof vi.fn> };
   // Desordenadas a propósito: la pantalla debe seguir el orden de position.
@@ -66,6 +68,8 @@ describe('TakeInterview (US-08)', () => {
     TestBed.configureTestingModule({
       imports: [TakeInterview],
       providers: [
+        // Sin archivos de idioma: el pipe translate muestra la clave, así que las pruebas comparan claves.
+        provideTranslateService(),
         { provide: InterviewSessionService, useValue: api },
         { provide: RecruitmentService, useValue: { getJobPostingById: () => of({ title: 'Analista de Datos Junior' }) } },
         { provide: SpeechDictationService, useValue: dictation },
@@ -90,6 +94,9 @@ describe('TakeInterview (US-08)', () => {
       getAnswers: vi.fn().mockReturnValue(of([])),
       recordAnswer: vi.fn((_: number, body: { questionId: number }): Observable<Answer> =>
         of(answer(100 + body.questionId, body.questionId))),
+      complete: vi.fn().mockReturnValue(
+        of({ ...session('COMPLETED'), totalDurationSeconds: 725, answeredQuestions: 3 }),
+      ),
     };
     dictation = { supported: signal(true), listening: signal(false), error: signal(''), start: vi.fn(), stop: vi.fn() };
   });
@@ -102,7 +109,7 @@ describe('TakeInterview (US-08)', () => {
     expect(api.getByApplication).toHaveBeenCalledWith(50);
     expect(page.step()).toBe('intro');
     expect(text()).toContain('Analista de Datos Junior');
-    expect(text()).toContain('31/12/2099');
+    expect(text()).toContain('interviews.takeInterview.introDeadline');
     expect(api.getQuestions).not.toHaveBeenCalled();
   });
 
@@ -115,7 +122,8 @@ describe('TakeInterview (US-08)', () => {
     expect(api.start).toHaveBeenCalledWith(900);
     expect(api.getQuestions).toHaveBeenCalledWith(10);
     expect(page.questions().map((q) => q.id)).toEqual([2, 3, 4]);
-    expect(text()).toContain('Pregunta 1 de 3');
+    expect(page.number()).toBe(1);
+    expect(page.questions()).toHaveLength(3);
     expect(text()).toContain('Pregunta número 2');
     expect(page.timeLabel()).toBe('4:00');
   });
@@ -136,7 +144,7 @@ describe('TakeInterview (US-08)', () => {
       followUp: false,
     });
     expect(page.answerIds()).toEqual({ 2: 102 });
-    expect(text()).toContain('Pregunta 2 de 3');
+    expect(page.number()).toBe(2);
     expect(page.answer.value).toBe('');
     expect(page.progress()).toBeCloseTo(100 / 3);
   });
@@ -152,7 +160,44 @@ describe('TakeInterview (US-08)', () => {
 
     expect(page.step()).toBe('answered');
     expect(page.answerIds()).toEqual({ 2: 102, 3: 103, 4: 104 });
-    expect(text()).toContain('Tus 3 respuestas ya quedaron guardadas');
+    expect(text()).toContain('interviews.takeInterview.finish');
+  });
+
+  it('Terminar envía la entrevista y muestra la duración total (US-10)', () => {
+    const { page, render, text } = create();
+    page.start();
+    for (let i = 0; i < 3; i++) {
+      page.answer.setValue(`Respuesta ${i + 1}`);
+      page.submit();
+    }
+
+    page.finish();
+    render();
+
+    expect(api.complete).toHaveBeenCalledWith(900);
+    expect(page.step()).toBe('completed');
+    expect(page.totalDuration()).toBe('12 min 05 s');
+    expect(text()).toContain('interviews.takeInterview.completedTitle');
+    expect(text()).toContain('interviews.takeInterview.completedSummary');
+  });
+
+  it('si el backend no deja terminar, muestra su mensaje y se puede reintentar', () => {
+    api.complete.mockReturnValue(
+      throwError(() => new HttpErrorResponse({ status: 422, error: { message: 'Faltan responder 1 de 3 preguntas.' } })),
+    );
+    const { page, render, text } = create();
+    page.start();
+    for (let i = 0; i < 3; i++) {
+      page.answer.setValue(`Respuesta ${i + 1}`);
+      page.submit();
+    }
+
+    page.finish();
+    render();
+
+    expect(page.step()).toBe('answered');
+    expect(page.sending()).toBe(false);
+    expect(text()).toContain('Faltan responder 1 de 3 preguntas.');
   });
 
   it('si la entrevista ya estaba en curso, sigue desde la primera pregunta sin responder', () => {
@@ -164,7 +209,7 @@ describe('TakeInterview (US-08)', () => {
 
     expect(api.start).not.toHaveBeenCalled();
     expect(page.answerIds()).toEqual({ 2: 102 });
-    expect(text()).toContain('Pregunta 2 de 3');
+    expect(page.number()).toBe(2);
     expect(text()).toContain('Pregunta número 3');
   });
 
@@ -177,7 +222,7 @@ describe('TakeInterview (US-08)', () => {
     render();
 
     expect(api.recordAnswer).not.toHaveBeenCalled();
-    expect(text()).toContain('Responde la pregunta antes de enviar');
+    expect(text()).toContain('interviews.takeInterview.answerRequired');
   });
 
   it('si el envío falla, conserva lo escrito y explica qué pasó', () => {
@@ -191,16 +236,18 @@ describe('TakeInterview (US-08)', () => {
 
     expect(page.answer.value).toBe('Mi respuesta');
     expect(page.sending()).toBe(false);
-    expect(text()).toContain('revisa tu conexión');
-    expect(text()).toContain('Pregunta 1 de 3');
+    expect(text()).toContain('interviews.takeInterview.errors.sendNetwork');
+    expect(page.number()).toBe(1);
   });
 
   it('una respuesta ya guardada se trata como avance y se recarga el estado real', () => {
+    // El mensaje llega traducido por el interceptor: la pantalla no depende de su texto.
     api.recordAnswer.mockReturnValue(
-      throwError(() => new HttpErrorResponse({ status: 422, error: { message: 'Question 2 has already been answered' } })),
+      throwError(() => new HttpErrorResponse({ status: 422, error: { message: 'Esa pregunta ya fue respondida.' } })),
     );
     const { page } = create();
     page.start();
+    api.getByApplication.mockReturnValue(of(session('IN_PROGRESS')));
     api.getAnswers.mockReturnValue(of([answer(102, 2)]));
     page.answer.setValue('Repetida');
 
@@ -211,8 +258,8 @@ describe('TakeInterview (US-08)', () => {
   });
 
   it.each([
-    [404, 'Todavía no tienes una invitación'],
-    [403, 'pertenece a otro postulante'],
+    [404, 'interviews.takeInterview.errors.notInvited'],
+    [403, 'interviews.takeInterview.errors.forbidden'],
   ])('si no puede abrir la sesión (%i) lo explica', (status, expected) => {
     api.getByApplication.mockReturnValue(throwError(() => new HttpErrorResponse({ status })));
 
@@ -224,7 +271,7 @@ describe('TakeInterview (US-08)', () => {
 
   it('muestra los estados finales sin pedir el guion', () => {
     api.getByApplication.mockReturnValue(of(session('COMPLETED')));
-    expect(create().text()).toContain('Ya enviaste esta entrevista');
+    expect(create().text()).toContain('interviews.takeInterview.completedTitle');
     TestBed.resetTestingModule();
 
     api.getByApplication.mockReturnValue(of(session('PENDING', '2020-01-01')));
@@ -241,7 +288,7 @@ describe('TakeInterview (US-08)', () => {
     render();
 
     expect(page.timeUp()).toBe(true);
-    expect(text()).toContain('Se acabó el tiempo');
+    expect(text()).toContain('interviews.takeInterview.timeUp');
     expect(dictation.stop).toHaveBeenCalled();
   });
 });
@@ -253,6 +300,11 @@ describe('funciones de apoyo', () => {
     [600, '10:00'],
   ])('formatSeconds(%i) = %s', (seconds, expected) => {
     expect(formatSeconds(seconds)).toBe(expected);
+  });
+
+  it('formatDuration muestra minutos y segundos', () => {
+    expect(formatDuration(725)).toBe('12 min 05 s');
+    expect(formatDuration(59)).toBe('0 min 59 s');
   });
 
   it('la fecha límite vale hasta el final de ese día', () => {
