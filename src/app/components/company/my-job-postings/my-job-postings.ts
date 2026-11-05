@@ -60,4 +60,21 @@ export class MyJobPostings implements OnInit {
       },
     });
   }
+
+  // PATCH /job-postings/{id}/status con CLOSED: deja de recibir postulaciones
+  close(job: JobPosting): void {
+    if (!confirm(`¿Cerrar la vacante "${job.title}"? Ya no recibirá postulaciones.`)) return;
+
+    this.recruitmentService.changeJobPostingStatus(job.id, 'CLOSED').subscribe({
+      next: () => {
+        this.snackBar.open('Vacante cerrada.', 'OK', { duration: 3000 });
+        this.load();
+      },
+      error: (err) => {
+        this.snackBar.open(err.error?.message || 'No se pudo cerrar la vacante.', 'OK', {
+          duration: 5000,
+        });
+      },
+    });
+  }
 }

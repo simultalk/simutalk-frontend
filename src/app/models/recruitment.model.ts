@@ -95,6 +95,7 @@ export interface CriterionRequest {
   criterionType: 'COMPETENCY' | 'CERTIFICATION';
   certificationName: string | null;
   mandatory: boolean;
+  origin?: CriterionOrigin;
 }
 // Datos que se envían para crear una pregunta del guion (US-05)
 export interface QuestionRequest {
@@ -102,4 +103,23 @@ export interface QuestionRequest {
   statement: string;
   maxDurationSeconds: number;
   allowsFollowUp: boolean;
+  origin?: 'MANUAL' | 'AI_SUGGESTED';
+}
+
+// Origen de un criterio: lo escribió el reclutador o vino de una sugerencia (US-04)
+export type CriterionOrigin = 'MANUAL' | 'AI_SUGGESTED';
+
+// Criterio propuesto por la IA: sin peso y sin guardar (US-04)
+export interface CriterionSuggestion {
+  name: string;
+  description: string;
+  criterionType: 'COMPETENCY' | 'CERTIFICATION';
+  rationale: string;
+}
+
+// Pregunta propuesta por la IA para un criterio, sin guardar (US-04)
+export interface QuestionSuggestion {
+  criterionId: number;
+  statement: string;
+  rationale: string;
 }

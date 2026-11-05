@@ -13,6 +13,8 @@ import {
   CriterionRequest,
   EvaluationCriterion,
   QuestionRequest,
+  CriterionSuggestion,
+  QuestionSuggestion,
 } from '../models/recruitment.model';
 import { Question } from '../models/question';
 
@@ -62,6 +64,13 @@ export class RecruitmentService {
   deleteCriterion(jobPostingId: number, criterionId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/criteria/${criterionId}`);
   }
+  // POST /job-postings/{id}/criteria/suggestions (US-04)
+  suggestCriteria(jobPostingId: number): Observable<CriterionSuggestion[]> {
+    return this.http.post<CriterionSuggestion[]>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/criteria/suggestions`,
+      {},
+    );
+  }
 
   // GET /job-postings/{id}/questions (US-05)
   getQuestions(jobPostingId: number): Observable<Question[]> {
@@ -71,6 +80,24 @@ export class RecruitmentService {
   // POST /job-postings/{id}/questions (US-05)
   addQuestion(jobPostingId: number, request: QuestionRequest): Observable<Question> {
     return this.http.post<Question>(`${this.apiUrl}/job-postings/${jobPostingId}/questions`, request);
+  }
+
+  // PUT /job-postings/{id}/questions/{questionId} (US-05)
+  updateQuestion(jobPostingId: number, questionId: number, request: QuestionRequest): Observable<Question> {
+    return this.http.put<Question>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/questions/${questionId}`,
+      request,
+    );
+  }
+
+  // POST /job-postings/{id}/questions/suggestions?criterionId= (US-04)
+  suggestQuestions(jobPostingId: number, criterionId: number): Observable<QuestionSuggestion[]> {
+    const params = new HttpParams().set('criterionId', criterionId);
+    return this.http.post<QuestionSuggestion[]>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/questions/suggestions`,
+      {},
+      { params },
+    );
   }
 
   // DELETE /job-postings/{id}/questions/{questionId} (US-05)

@@ -17,3 +17,22 @@
 .fila mat-form-field { flex: 1; min-width: 180px; }
 .botones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
 .error { color: #b3261e; margin: 0; }
+
+
+.chip-ia {
+  display: inline-block;
+  margin-left: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: #fff4e5;
+  color: #a35c00;
+}
+
+.sugerencias { margin-top: 16px; max-width: 640px; }
+.cabecera-sugerencias { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.sugerencias .ayuda { margin: 0; }
+.sugerencia { display: flex; align-items: center; gap: 8px; padding: 12px 0; border-top: 1px solid var(--st-border); }
+.sugerencia-texto { flex: 1; }
+.motivo { font-style: italic; }

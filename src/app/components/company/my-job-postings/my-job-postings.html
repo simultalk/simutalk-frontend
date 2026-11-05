@@ -41,6 +41,9 @@
               @if (job.status !== 'PUBLISHED') {
                 <button mat-button class="eliminar" type="button" (click)="remove(job)">Eliminar</button>
               }
+              @if (job.status === 'PUBLISHED') {
+                <button mat-button class="eliminar" type="button" (click)="close(job)">Cerrar</button>
+              }
             </td>
           </tr>
         }

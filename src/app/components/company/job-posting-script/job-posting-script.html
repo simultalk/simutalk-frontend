@@ -52,6 +52,9 @@
               <p class="enunciado">{{ q.statement }}</p>
               <p class="datos">
                 <span class="chip">{{ criterionName(q.criterionId) }}</span>
+                @if (q.origin === 'AI_SUGGESTED') {
+                  <span class="chip ia">IA</span>
+                }
                 {{ q.maxDurationSeconds }} s
                 @if (q.allowsFollowUp) {
                   · permite repregunta
@@ -59,6 +62,7 @@
               </p>
             </div>
             @if (isDraft()) {
+              <button mat-button type="button" (click)="edit(q)">Editar</button>
               <button mat-button class="eliminar" type="button" (click)="remove(q)">Quitar</button>
             }
           </li>
@@ -71,8 +75,8 @@
     @if (competencies().length === 0) {
       <p class="aviso">Primero agrega al menos un criterio de tipo competencia.</p>
     } @else {
-      <form class="st-card formulario" [formGroup]="form" (ngSubmit)="add()">
-        <h2 class="subtitulo">Agregar pregunta</h2>
+      <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
+        <h2 class="subtitulo">{{ editingId() ? 'Editar pregunta' : 'Agregar pregunta' }}</h2>
 
         <mat-form-field appearance="outline">
           <mat-label>Criterio que evalúa</mat-label>
@@ -85,6 +89,25 @@
             <mat-error>Elige un criterio.</mat-error>
           }
         </mat-form-field>
+
+        <div class="sugerir">
+          <button mat-stroked-button type="button" (click)="suggest()" [disabled]="suggesting()">
+            {{ suggesting() ? 'Buscando...' : 'Sugerir preguntas con IA' }}
+          </button>
+          <span class="ayuda">Para el criterio elegido. Tú decides cuáles usar.</span>
+        </div>
+        @for (s of questionSuggestions(); track s.statement) {
+          <div class="sugerencia">
+            <div class="sugerencia-texto">
+              <span>{{ s.statement }}</span>
+              @if (s.rationale) {
+                <span class="motivo">{{ s.rationale }}</span>
+              }
+            </div>
+            <button mat-button type="button" (click)="useSuggestion(s)">Usar</button>
+            <button mat-button type="button" (click)="discardSuggestion(s)">Descartar</button>
+          </div>
+        }
 
         <mat-form-field appearance="outline">
           <mat-label>Pregunta</mat-label>
@@ -109,8 +132,11 @@
         }
 
         <div class="botones">
+          @if (editingId()) {
+            <button mat-button type="button" (click)="cancelEdit()">Cancelar</button>
+          }
           <button mat-flat-button type="submit" [disabled]="saving()">
-            {{ saving() ? 'Guardando...' : 'Agregar pregunta' }}
+            {{ saving() ? 'Guardando...' : (editingId() ? 'Guardar cambios' : 'Agregar pregunta') }}
           </button>
         </div>
       </form>

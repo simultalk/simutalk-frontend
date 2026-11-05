@@ -9,7 +9,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RecruitmentService } from '../../../services/recruitment.service';
 import {
+  CriterionOrigin,
   CriterionRequest,
+  CriterionSuggestion,
   EvaluationCriterion,
   JobPosting,
 } from '../../../models/recruitment.model';
@@ -42,6 +44,12 @@ export class JobPostingCriteria implements OnInit {
   errorMessage = signal('');
   // id del criterio que se está editando; null cuando se agrega uno nuevo
   editingId = signal<number | null>(null);
+
+  // Sugerencias de la IA que todavía no se usan (US-04)
+  suggestions = signal<CriterionSuggestion[]>([]);
+  suggesting = signal(false);
+  // Origen del criterio que está en el formulario
+  private origin: CriterionOrigin = 'MANUAL';
 
   criteria = computed(() => this.job()?.criteria ?? []);
   total = computed(() => this.criteria().reduce((sum, c) => sum + c.weight, 0));
@@ -85,10 +93,12 @@ export class JobPostingCriteria implements OnInit {
       certificationName: criterion.certificationName ?? '',
       mandatory: criterion.mandatory,
     });
+    this.scrollToForm();
   }
 
   cancelEdit(): void {
     this.editingId.set(null);
+    this.origin = 'MANUAL';
     this.form.reset();
   }
 
@@ -111,6 +121,7 @@ export class JobPostingCriteria implements OnInit {
       criterionType: value.criterionType,
       certificationName: isCertification ? value.certificationName : null,
       mandatory: isCertification ? value.mandatory : false,
+      origin: this.origin,
     };
 
     this.saving.set(true);
@@ -126,6 +137,9 @@ export class JobPostingCriteria implements OnInit {
         this.snackBar.open(editingId ? 'Criterio actualizado.' : 'Criterio agregado.', 'OK', {
           duration: 3000,
         });
+        // Si venía de una sugerencia, ya no se muestra en la lista
+        const name = request.name.toLowerCase();
+        this.suggestions.update((list) => list.filter((s) => s.name.toLowerCase() !== name));
         this.cancelEdit();
         this.load();
       },
@@ -150,5 +164,53 @@ export class JobPostingCriteria implements OnInit {
         });
       },
     });
+  }
+
+  // Pide a la IA criterios a partir de la descripción del puesto (US-04)
+  suggest(): void {
+    this.suggesting.set(true);
+    this.recruitmentService.suggestCriteria(this.jobPostingId).subscribe({
+      next: (data) => {
+        this.suggesting.set(false);
+        // No muestra las que ya están agregadas con el mismo nombre
+        const existing = this.criteria().map((c) => c.name.toLowerCase());
+        const nuevas = data.filter((s) => !existing.includes(s.name.toLowerCase()));
+        this.suggestions.set(nuevas);
+        if (nuevas.length === 0) {
+          this.snackBar.open('No hay sugerencias nuevas para esta vacante.', 'OK', {
+            duration: 3000,
+          });
+        }
+      },
+      error: (err) => {
+        this.suggesting.set(false);
+        this.snackBar.open(err.error?.message || 'No se pudieron obtener sugerencias.', 'OK', {
+          duration: 5000,
+        });
+      },
+    });
+  }
+
+  // Pasa la sugerencia al formulario; el peso lo decide el reclutador
+  useSuggestion(suggestion: CriterionSuggestion): void {
+    this.editingId.set(null);
+    this.errorMessage.set('');
+    this.origin = 'AI_SUGGESTED';
+    this.form.reset();
+    this.form.patchValue({
+      name: suggestion.name,
+      description: suggestion.description,
+      criterionType: suggestion.criterionType,
+      weight: Math.max(1, Math.min(100, 100 - this.total())),
+    });
+    this.scrollToForm();
+  }
+
+  discardSuggestion(suggestion: CriterionSuggestion): void {
+    this.suggestions.update((list) => list.filter((s) => s !== suggestion));
+  }
+
+  private scrollToForm(): void {
+    setTimeout(() => document.querySelector('.formulario')?.scrollIntoView({ behavior: 'smooth' }));
   }
 }
