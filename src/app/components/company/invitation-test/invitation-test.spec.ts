@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { of } from 'rxjs';
+import { provideTranslateService } from '@ngx-translate/core';
 import { InviteInterviewDialog } from '../invite-interview-dialog/invite-interview-dialog';
 import { InvitationTest } from './invitation-test';
 
@@ -11,7 +12,7 @@ describe('InvitationTest', () => {
     const open = vi.fn().mockReturnValue({ afterClosed: () => of(session) });
     TestBed.configureTestingModule({
       imports: [InvitationTest],
-      providers: [provideRouter([]), { provide: MatDialog, useValue: { open } }],
+      providers: [provideTranslateService(), provideRouter([]), { provide: MatDialog, useValue: { open } }],
     });
     const fixture = TestBed.createComponent(InvitationTest);
     const page = fixture.componentInstance;

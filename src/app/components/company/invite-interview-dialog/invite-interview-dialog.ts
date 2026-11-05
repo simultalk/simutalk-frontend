@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InterviewSession, InviteInterviewDialogData } from '../../../models/interview-session';
 import { InterviewSessionService } from '../../../services/interview-session';
 
@@ -29,8 +30,16 @@ const DEFAULT_DAYS_TO_ANSWER = 7;
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
+    TranslatePipe,
   ],
-  providers: [provideNativeDateAdapter(), { provide: MAT_DATE_LOCALE, useValue: 'es-PE' }],
+  providers: [
+    provideNativeDateAdapter(),
+    // El calendario se muestra en el idioma elegido en la app.
+    {
+      provide: MAT_DATE_LOCALE,
+      useFactory: () => (inject(TranslateService).getCurrentLang()?.startsWith('en') ? 'en-US' : 'es-PE'),
+    },
+  ],
   templateUrl: './invite-interview-dialog.html',
   styleUrl: './invite-interview-dialog.css',
 })
@@ -68,7 +77,7 @@ export class InviteInterviewDialog {
       error: (error: HttpErrorResponse) => {
         this.loading.set(false);
         this.dialogRef.disableClose = false;
-        this.errorMessage.set(inviteErrorMessage(error, this.data.applicationId));
+        this.errorMessage.set(inviteErrorMessage(error));
       },
     });
   }
@@ -81,33 +90,26 @@ export function toIsoDate(date: Date): string {
   return `${date.getFullYear()}-${month}-${day}`;
 }
 
-/** Traduce los errores del backend a un mensaje que el reclutador entienda. */
-export function inviteErrorMessage(error: HttpErrorResponse, applicationId: number): string {
-  const backendMessage: string = error.error?.message ?? '';
+/**
+ * Mensaje de error para el reclutador: una clave interviews.inviteDialog.errors.*, o el mensaje del
+ * backend, que errorMessageInterceptor ya tradujo (ya invitado, vacante sin preguntas, etapa incorrecta).
+ */
+export function inviteErrorMessage(error: HttpErrorResponse): string {
   switch (error.status) {
     case 0:
-      return 'No se pudo conectar con el servidor. Inténtalo de nuevo.';
+      return 'interviews.inviteDialog.errors.network';
     case 400:
-      return 'La fecha límite no es válida: elige una fecha a partir de mañana.';
+      return 'interviews.inviteDialog.errors.invalidDate';
     case 401:
-      return 'Tu sesión expiró. Vuelve a iniciar sesión.';
+      return 'interviews.inviteDialog.errors.sessionExpired';
     case 403:
-      return 'Solo el reclutador dueño de la vacante puede invitar a este postulante.';
+      return 'interviews.inviteDialog.errors.forbidden';
     case 404:
-      return `No existe la postulación ${applicationId}.`;
+      return 'interviews.inviteDialog.errors.notFound';
     case 422:
-      if (backendMessage.includes('already has an interview session')) {
-        return 'Este postulante ya fue invitado a la entrevista.';
-      }
-      if (backendMessage.includes('no interview questions')) {
-        return 'La vacante aún no tiene preguntas en su guion. Agrégalas antes de invitar.';
-      }
-      if (backendMessage.includes('RECEIVED')) {
-        return 'Solo se puede invitar a postulaciones que están en la etapa Recibida.';
-      }
-      return backendMessage || 'No se pudo enviar la invitación.';
+      return error.error?.message || 'interviews.inviteDialog.errors.generic';
     default:
-      return 'No se pudo enviar la invitación. Inténtalo de nuevo.';
+      return 'interviews.inviteDialog.errors.generic';
   }
 }
 
