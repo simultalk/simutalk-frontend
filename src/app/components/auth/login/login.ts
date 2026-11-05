@@ -6,11 +6,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
+import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, TranslatePipe, LanguageSwitcher],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -20,7 +22,8 @@ export class Login {
   private router = inject(Router);
 
   loading = signal(false);
-  errorMessage = signal('');
+  /** Clave de traducción del error a mostrar (vacía si no hay error). */
+  errorKey = signal('');
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -33,7 +36,7 @@ export class Login {
       return;
     }
     this.loading.set(true);
-    this.errorMessage.set('');
+    this.errorKey.set('');
 
     this.auth.signIn(this.form.getRawValue()).subscribe({
       next: () => {
@@ -42,10 +45,8 @@ export class Login {
       },
       error: (error: HttpErrorResponse) => {
         this.loading.set(false);
-        this.errorMessage.set(
-          error.status === 401
-            ? 'Usuario o contraseña incorrectos'
-            : 'No se pudo conectar con el servidor. Inténtalo de nuevo.'
+        this.errorKey.set(
+          error.status === 401 ? 'iam.login.invalidCredentials' : 'iam.login.serverError'
         );
       },
     });

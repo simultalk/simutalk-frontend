@@ -1,0 +1,24 @@
+<button
+  mat-button
+  type="button"
+  class="selector"
+  [matMenuTriggerFor]="menuIdiomas"
+  [attr.aria-label]="'shared.language.label' | translate"
+>
+  <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">translate</mat-icon>
+  {{ 'shared.language.' + language.current() | translate }}
+</button>
+
+<mat-menu #menuIdiomas="matMenu">
+  @for (lang of language.languages; track lang.code) {
+    <button
+      mat-menu-item
+      type="button"
+      [attr.lang]="lang.code"
+      [attr.aria-current]="lang.code === language.current() ? 'true' : null"
+      (click)="language.use(lang.code)"
+    >
+      {{ lang.label }}
+    </button>
+  }
+</mat-menu>

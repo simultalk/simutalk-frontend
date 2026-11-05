@@ -1,0 +1,53 @@
+{
+  "common": {
+    "home": "Inicio"
+  },
+  "shared": {
+    "language": {
+      "label": "Idioma",
+      "es-419": "Español",
+      "en-US": "English"
+    },
+    "layout": {
+      "goHome": "SimuTalk, ir al inicio",
+      "mainMenu": "Menú principal",
+      "logout": "Cerrar sesión"
+    },
+    "menu": {
+      "myJobPostings": "Mis vacantes",
+      "ranking": "Ranking",
+      "reports": "Reportes",
+      "jobPostings": "Vacantes",
+      "myApplications": "Mis postulaciones",
+      "myProfile": "Mi perfil",
+      "certifications": "Certificaciones"
+    },
+    "roles": {
+      "recruiter": "Reclutador",
+      "candidate": "Postulante",
+      "admin": "Administrador"
+    },
+    "forbidden": {
+      "title": "No tienes acceso a esta sección",
+      "message": "Tu cuenta no tiene permiso para ver esta página. Si crees que es un error, comunícate con el administrador.",
+      "backHome": "Volver al inicio"
+    },
+    "underConstruction": {
+      "title": "Esta sección está en construcción",
+      "message": "Muy pronto podrás usar «{{section}}» desde aquí."
+    }
+  },
+  "iam": {
+    "login": {
+      "subtitle": "Inicia sesión para continuar",
+      "username": "Usuario",
+      "password": "Contraseña",
+      "usernameRequired": "Ingresa tu usuario",
+      "passwordRequired": "Ingresa tu contraseña",
+      "submit": "Ingresar",
+      "submitting": "Ingresando...",
+      "invalidCredentials": "Usuario o contraseña incorrectos",
+      "serverError": "No se pudo conectar con el servidor. Inténtalo de nuevo."
+    }
+  }
+}

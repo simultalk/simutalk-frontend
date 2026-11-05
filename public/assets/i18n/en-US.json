@@ -1,0 +1,53 @@
+{
+  "common": {
+    "home": "Home"
+  },
+  "shared": {
+    "language": {
+      "label": "Language",
+      "es-419": "Español",
+      "en-US": "English"
+    },
+    "layout": {
+      "goHome": "SimuTalk, go to home",
+      "mainMenu": "Main menu",
+      "logout": "Sign out"
+    },
+    "menu": {
+      "myJobPostings": "My job postings",
+      "ranking": "Ranking",
+      "reports": "Reports",
+      "jobPostings": "Job postings",
+      "myApplications": "My applications",
+      "myProfile": "My profile",
+      "certifications": "Certifications"
+    },
+    "roles": {
+      "recruiter": "Recruiter",
+      "candidate": "Candidate",
+      "admin": "Administrator"
+    },
+    "forbidden": {
+      "title": "You don't have access to this section",
+      "message": "Your account doesn't have permission to view this page. If you think this is a mistake, contact the administrator.",
+      "backHome": "Back to home"
+    },
+    "underConstruction": {
+      "title": "This section is under construction",
+      "message": "You'll be able to use “{{section}}” here very soon."
+    }
+  },
+  "iam": {
+    "login": {
+      "subtitle": "Sign in to continue",
+      "username": "Username",
+      "password": "Password",
+      "usernameRequired": "Enter your username",
+      "passwordRequired": "Enter your password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "invalidCredentials": "Incorrect username or password",
+      "serverError": "Couldn't connect to the server. Please try again."
+    }
+  }
+}

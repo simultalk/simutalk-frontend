@@ -1,34 +1,38 @@
 <div class="pantalla">
+  <div class="idioma">
+    <app-language-switcher />
+  </div>
+
   <mat-card class="tarjeta">
     <mat-card-header>
       <mat-card-title>SimuTalk</mat-card-title>
-      <mat-card-subtitle>Inicia sesión para continuar</mat-card-subtitle>
+      <mat-card-subtitle>{{ 'iam.login.subtitle' | translate }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="submit()">
         <mat-form-field appearance="outline">
-          <mat-label>Usuario</mat-label>
+          <mat-label>{{ 'iam.login.username' | translate }}</mat-label>
           <input matInput formControlName="username" autocomplete="username" />
           @if (form.controls.username.hasError('required')) {
-            <mat-error>Ingresa tu usuario</mat-error>
+            <mat-error>{{ 'iam.login.usernameRequired' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Contraseña</mat-label>
+          <mat-label>{{ 'iam.login.password' | translate }}</mat-label>
           <input matInput type="password" formControlName="password" autocomplete="current-password" />
           @if (form.controls.password.hasError('required')) {
-            <mat-error>Ingresa tu contraseña</mat-error>
+            <mat-error>{{ 'iam.login.passwordRequired' | translate }}</mat-error>
           }
         </mat-form-field>
 
-        @if (errorMessage()) {
-          <p class="error" role="alert">{{ errorMessage() }}</p>
+        @if (errorKey()) {
+          <p class="error" role="alert">{{ errorKey() | translate }}</p>
         }
 
         <button mat-flat-button type="submit" [disabled]="loading()">
-          {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+          {{ (loading() ? 'iam.login.submitting' : 'iam.login.submit') | translate }}
         </button>
       </form>
     </mat-card-content>

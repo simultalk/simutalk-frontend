@@ -1,5 +1,5 @@
 <header class="barra">
-  <a class="marca" [routerLink]="auth.homeUrl()" aria-label="SimuTalk, ir al inicio">
+  <a class="marca" [routerLink]="auth.homeUrl()" [attr.aria-label]="'shared.layout.goHome' | translate">
     <img src="logo.svg" alt="" width="32" height="32" />
     <span>Simu<strong>Talk</strong></span>
   </a>
@@ -7,23 +7,24 @@
   <span class="espacio"></span>
 
   <div class="usuario">
+    <app-language-switcher />
     <span class="usuario-texto">
-      {{ username }}@if (roleLabel) {<span class="rol"> · {{ roleLabel }}</span>}
+      {{ username }}@if (roleLabel) {<span class="rol"> · {{ roleLabel | translate }}</span>}
     </span>
     <span class="avatar" aria-hidden="true">{{ initials }}</span>
     <button mat-stroked-button type="button" (click)="auth.signOut()">
       <mat-icon fontSet="material-symbols-outlined">logout</mat-icon>
-      Cerrar sesión
+      {{ 'shared.layout.logout' | translate }}
     </button>
   </div>
 </header>
 
 <div class="cuerpo">
-  <nav class="menu" aria-label="Menú principal">
+  <nav class="menu" [attr.aria-label]="'shared.layout.mainMenu' | translate">
     @for (item of menu; track item.route) {
       <a class="opcion" [routerLink]="item.route" routerLinkActive="activa" ariaCurrentWhenActive="page">
         <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ item.icon }}</mat-icon>
-        <span>{{ item.label }}</span>
+        <span>{{ item.label | translate }}</span>
       </a>
     }
   </nav>
