@@ -30,7 +30,7 @@ export const WARNING_SECONDS = 30;
  * 3. GET /job-postings/{jobPostingId}/questions y GET /interview-sessions/{sessionId}/answers
  * 4. Enviar: POST /interview-sessions/{sessionId}/answers. Se guarda el id de cada respuesta para la
  *    repregunta (US-09). Si el postulante sale y vuelve, sigue en la primera pregunta sin responder.
- * El botón Terminar (POST /completion) llega con la US-10.
+ * 5. Terminar (US-10): POST /interview-sessions/{sessionId}/completion cuando ya respondió todo.
  */
 @Component({
   selector: 'app-take-interview',
@@ -174,6 +174,28 @@ export class TakeInterview {
           this.errorMessage.set(sendErrorMessage(error));
         },
       });
+  }
+
+  /** US-10: envía la entrevista. Después la empresa ya puede evaluarla y el postulante no puede cambiarla. */
+  finish(): void {
+    const session = this.session();
+    if (!session || this.sending()) {
+      return;
+    }
+    this.sending.set(true);
+    this.errorMessage.set('');
+    this.sessions.complete(session.id).subscribe({
+      next: (completed) => {
+        this.sending.set(false);
+        this.session.set(completed);
+        this.step.set('completed');
+      },
+      error: (error: HttpErrorResponse) => {
+        this.sending.set(false);
+        // El backend explica qué falta (por ejemplo, preguntas sin responder)
+        this.errorMessage.set(error.error?.message || 'No se pudo enviar la entrevista. Inténtalo de nuevo.');
+      },
+    });
   }
 
   toggleDictation(): void {

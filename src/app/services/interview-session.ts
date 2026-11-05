@@ -40,6 +40,11 @@ export class InterviewSessionService {
     return this.http.post<Answer>(`${this.baseUrl}/interview-sessions/${sessionId}/answers`, request);
   }
 
+  /** US-10: el postulante termina y envía su entrevista. Pide que todas las preguntas estén respondidas. */
+  complete(sessionId: number): Observable<InterviewSession> {
+    return this.http.post<InterviewSession>(`${this.baseUrl}/interview-sessions/${sessionId}/completion`, {});
+  }
+
   /** Respuestas ya registradas: permiten retomar la entrevista donde quedó. */
   getAnswers(sessionId: number): Observable<Answer[]> {
     return this.http.get<Answer[]>(`${this.baseUrl}/interview-sessions/${sessionId}/answers`);

@@ -113,6 +113,13 @@
         <mat-card-content>
           <h2>Respondiste todas las preguntas</h2>
           <p>Tus {{ answeredCount() }} respuestas ya quedaron guardadas.</p>
+          <p>Cuando la envíes, la empresa podrá evaluarla y ya no podrás cambiar tus respuestas.</p>
+          @if (errorMessage()) {
+            <p class="aviso" role="alert">{{ errorMessage() }}</p>
+          }
+          <button mat-flat-button type="button" (click)="finish()" [disabled]="sending()">
+            {{ sending() ? 'Enviando...' : 'Terminar y enviar entrevista' }}
+          </button>
         </mat-card-content>
       </mat-card>
     }
