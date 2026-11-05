@@ -35,6 +35,7 @@
             <td class="acciones">
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">Criterios</a>
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">Guion</a>
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'pipeline']">Pipeline</a>
               @if (job.status !== 'CLOSED') {
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'edit']">Editar</a>
               }
