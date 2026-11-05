@@ -458,7 +458,9 @@
       "inviteSent": "Invitación enviada al postulante.",
       "movedTo": "Movida a «{{stage}}».",
       "moveError": "No se pudo cambiar la etapa.",
-      "close": "Cerrar"
+      "close": "Cerrar",
+      "viewEvaluation": "Ver evaluación",
+      "evaluationError": "No se pudo abrir la evaluación."
     },
     "myApplications": {
       "breadcrumb": "Inicio / Mis postulaciones",

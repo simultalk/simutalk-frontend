@@ -458,7 +458,9 @@
       "inviteSent": "Invitation sent to the candidate.",
       "movedTo": "Moved to \"{{stage}}\".",
       "moveError": "Could not change the stage.",
-      "close": "Close"
+      "close": "Close",
+      "viewEvaluation": "View evaluation",
+      "evaluationError": "The evaluation could not be opened."
     },
     "myApplications": {
       "breadcrumb": "Home / My applications",

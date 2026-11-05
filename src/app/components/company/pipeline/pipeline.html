@@ -46,6 +46,11 @@
                   {{ 'recruitment.pipeline.inviteButton' | translate }}
                 </button>
               }
+              @if (app.status === 'ASSESSED') {
+                <button mat-flat-button type="button" (click)="openEvaluation(app)">
+                  {{ 'recruitment.pipeline.viewEvaluation' | translate }}
+                </button>
+              }
               <button
                 mat-stroked-button
                 type="button"
