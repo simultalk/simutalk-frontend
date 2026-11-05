@@ -222,7 +222,8 @@
       "deleteError": "The job posting could not be deleted.",
       "confirmClose": "Close the job posting \"{{title}}\"? It will stop receiving applications.",
       "closed": "Job posting closed.",
-      "closeError": "The job posting could not be closed."
+      "closeError": "The job posting could not be closed.",
+      "pipeline": "Candidates"
     },
     "steps": {
       "label": "Steps to publish the job posting",
@@ -401,9 +402,7 @@
           "rationale": "Explaining the competency to someone else shows how well they master it"
         }
       }
-    }
-  },
-  "recruitment": {
+    },
     "applicationStatus": {
       "received": "Received",
       "interviewing": "Interviewing",

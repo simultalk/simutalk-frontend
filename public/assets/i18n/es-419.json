@@ -222,7 +222,8 @@
       "deleteError": "No se pudo eliminar la vacante.",
       "confirmClose": "¿Cerrar la vacante \"{{title}}\"? Ya no recibirá postulaciones.",
       "closed": "Vacante cerrada.",
-      "closeError": "No se pudo cerrar la vacante."
+      "closeError": "No se pudo cerrar la vacante.",
+      "pipeline": "Postulantes"
     },
     "steps": {
       "label": "Pasos para publicar la vacante",
@@ -401,9 +402,7 @@
           "rationale": "Explicar la competencia a otra persona revela cuánto la domina"
         }
       }
-    }
-  },
-  "recruitment": {
+    },
     "applicationStatus": {
       "received": "Recibida",
       "interviewing": "En entrevista",

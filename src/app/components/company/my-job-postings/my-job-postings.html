@@ -33,14 +33,9 @@
             <td [attr.data-label]="'recruitment.myJobPostings.colWeight' | translate">{{ job.totalWeight }} / 100</td>
             <td [attr.data-label]="'recruitment.myJobPostings.colStatus' | translate"><span class="estado" [class]="'estado ' + job.status">{{ 'recruitment.status.' + job.status | translate }}</span></td>
             <td class="acciones">
-<<<<<<< HEAD
-                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">Criterios</a>
-                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">Guion</a>
-                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'pipeline']">Pipeline</a>
-=======
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">{{ 'recruitment.myJobPostings.criteria' | translate }}</a>
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">{{ 'recruitment.myJobPostings.script' | translate }}</a>
->>>>>>> develop
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'pipeline']">{{ 'recruitment.myJobPostings.pipeline' | translate }}</a>
               @if (job.status !== 'CLOSED') {
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'edit']">{{ 'common.edit' | translate }}</a>
               }
