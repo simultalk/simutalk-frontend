@@ -103,6 +103,7 @@ export interface QuestionRequest {
   statement: string;
   maxDurationSeconds: number;
   allowsFollowUp: boolean;
+  origin?: 'MANUAL' | 'AI_SUGGESTED';
 }
 
 // Origen de un criterio: lo escribió el reclutador o vino de una sugerencia (US-04)

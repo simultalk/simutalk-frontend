@@ -11,7 +11,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { RecruitmentService } from '../../../services/recruitment.service';
 import { JobPosting } from '../../../models/recruitment.model';
-import { Question } from '../../../models/question';
+import { Question, QuestionOrigin } from '../../../models/question';
 
 @Component({
   selector: 'app-job-posting-script',
@@ -44,6 +44,10 @@ export class JobPostingScript implements OnInit {
   publishing = signal(false);
   errorMessage = signal('');
   publishError = signal('');
+  // id de la pregunta que se está editando; null cuando se agrega una nueva
+  editingId = signal<number | null>(null);
+  // Origen de la pregunta del formulario: se conserva al editar una sugerida por la IA
+  private origin: QuestionOrigin = 'MANUAL';
 
   isDraft = computed(() => this.job()?.status === 'DRAFT');
   totalWeight = computed(() => (this.job()?.criteria ?? []).reduce((sum, c) => sum + c.weight, 0));
@@ -89,7 +93,7 @@ export class JobPostingScript implements OnInit {
     return this.job()?.criteria?.find((c) => c.id === criterionId)?.name ?? '';
   }
 
-  add(): void {
+  save(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -97,18 +101,45 @@ export class JobPostingScript implements OnInit {
     this.saving.set(true);
     this.errorMessage.set('');
 
-    this.recruitmentService.addQuestion(this.jobPostingId, this.form.getRawValue()).subscribe({
+    const data = { ...this.form.getRawValue(), origin: this.origin };
+    const editingId = this.editingId();
+    const call = editingId
+      ? this.recruitmentService.updateQuestion(this.jobPostingId, editingId, data)
+      : this.recruitmentService.addQuestion(this.jobPostingId, data);
+
+    call.subscribe({
       next: () => {
         this.saving.set(false);
-        this.snackBar.open('Pregunta agregada.', 'OK', { duration: 3000 });
-        this.form.reset();
+        this.snackBar.open(editingId ? 'Pregunta actualizada.' : 'Pregunta agregada.', 'OK', {
+          duration: 3000,
+        });
+        this.cancelEdit();
         this.load();
       },
       error: (err) => {
         this.saving.set(false);
-        this.errorMessage.set(err.error?.message || 'No se pudo agregar la pregunta.');
+        this.errorMessage.set(err.error?.message || 'No se pudo guardar la pregunta.');
       },
     });
+  }
+
+  edit(question: Question): void {
+    this.editingId.set(question.id);
+    this.origin = question.origin;
+    this.errorMessage.set('');
+    this.form.setValue({
+      criterionId: question.criterionId,
+      statement: question.statement,
+      maxDurationSeconds: question.maxDurationSeconds,
+      allowsFollowUp: question.allowsFollowUp,
+    });
+    setTimeout(() => document.querySelector('.formulario')?.scrollIntoView({ behavior: 'smooth' }));
+  }
+
+  cancelEdit(): void {
+    this.editingId.set(null);
+    this.origin = 'MANUAL';
+    this.form.reset();
   }
 
   remove(question: Question): void {

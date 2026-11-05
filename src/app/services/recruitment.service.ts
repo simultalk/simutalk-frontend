@@ -81,6 +81,14 @@ export class RecruitmentService {
     return this.http.post<Question>(`${this.apiUrl}/job-postings/${jobPostingId}/questions`, request);
   }
 
+  // PUT /job-postings/{id}/questions/{questionId} (US-05)
+  updateQuestion(jobPostingId: number, questionId: number, request: QuestionRequest): Observable<Question> {
+    return this.http.put<Question>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/questions/${questionId}`,
+      request,
+    );
+  }
+
   // DELETE /job-postings/{id}/questions/{questionId} (US-05)
   deleteQuestion(jobPostingId: number, questionId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/job-postings/${jobPostingId}/questions/${questionId}`);
