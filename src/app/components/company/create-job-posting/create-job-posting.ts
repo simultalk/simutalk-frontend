@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RecruitmentService } from '../../../services/recruitment.service';
+import { JobPostingSteps } from '../job-posting-steps/job-posting-steps';
 
 @Component({
   selector: 'app-create-job-posting',
@@ -17,6 +18,7 @@ import { RecruitmentService } from '../../../services/recruitment.service';
     MatInputModule,
     MatSlideToggleModule,
     MatSnackBarModule,
+    JobPostingSteps,
   ],
   templateUrl: './create-job-posting.html',
   styleUrl: './create-job-posting.css',
@@ -88,7 +90,12 @@ export class CreateJobPosting implements OnInit {
           ? `Vacante "${job.title}" actualizada.`
           : `Vacante "${job.title}" creada como borrador.`;
         this.snackBar.open(message, 'OK', { duration: 3000 });
-        this.router.navigate(['/recruitment/my-job-postings']);
+        // Vacante nueva: sigue directo al paso 2 (criterios)
+        this.router.navigate(
+          this.jobPostingId
+            ? ['/recruitment/my-job-postings']
+            : ['/recruitment/my-job-postings', job.id, 'criteria'],
+        );
       },
       error: (err) => {
         this.saving.set(false);

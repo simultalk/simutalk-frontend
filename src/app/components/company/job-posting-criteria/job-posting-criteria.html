@@ -1,10 +1,17 @@
-<header class="st-page-header">
-  <p class="st-breadcrumb">
-    <a routerLink="/recruitment/my-job-postings">Mis vacantes</a> / Criterios
-  </p>
-  <h1 class="st-page-title">Criterios de evaluación</h1>
-  <p class="st-page-subtitle">{{ job()?.title }}</p>
+<header class="st-page-header encabezado">
+  <div>
+    <p class="st-breadcrumb">
+      <a routerLink="/recruitment/my-job-postings">Mis vacantes</a> / Criterios
+    </p>
+    <h1 class="st-page-title">Criterios de evaluación</h1>
+    <p class="st-page-subtitle">{{ job()?.title }}</p>
+  </div>
+  <a mat-flat-button [routerLink]="['/recruitment/my-job-postings', jobPostingId, 'script']">
+    Siguiente: guion
+  </a>
 </header>
+
+<app-job-posting-steps [step]="2" [jobId]="jobPostingId" />
 
 @if (loading()) {
   <p role="status">Cargando criterios...</p>

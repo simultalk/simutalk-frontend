@@ -6,6 +6,8 @@
   </p>
 </header>
 
+<app-job-posting-steps [step]="1" [jobId]="jobPostingId" />
+
 <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
   <mat-form-field appearance="outline">
     <mat-label>Título del puesto</mat-label>
