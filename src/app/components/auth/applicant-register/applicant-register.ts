@@ -1,3 +1,4 @@
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -6,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
+import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
 import { ApplicantRegistrationError, RegistrationService } from '../../../services/registration.service';
 
 function adultBirthDate(control: AbstractControl) {
@@ -27,12 +30,16 @@ function adultBirthDate(control: AbstractControl) {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    ThemeToggle,
+    LanguageSwitcher,
+    TranslatePipe,
   ],
   templateUrl: './applicant-register.html',
   styleUrl: './applicant-register.css',
 })
 export class ApplicantRegister {
   private fb = inject(FormBuilder);
+  private i18n = inject(TranslateService);
   private registration = inject(RegistrationService);
 
   loading = signal(false);
@@ -74,13 +81,13 @@ export class ApplicantRegister {
         const error = failure.cause;
         this.errorMessage.set(
           error instanceof HttpErrorResponse && error.status === 401
-            ? 'No se pudo iniciar sesión. Revisa el correo y la contraseña.'
+            ? this.i18n.instant('iam.applicantRegister.errorLogin')
             : failure.accountCreated
-              ? 'La cuenta ya existe, pero no se pudo completar el perfil. Revisa los datos y vuelve a intentar. ' +
+              ? this.i18n.instant('iam.applicantRegister.errorProfile') + ' ' +
                 (error instanceof HttpErrorResponse ? error.error?.message ?? '' : '')
               : error instanceof HttpErrorResponse && (error.status === 409 || error.status === 422)
-                ? 'No se pudo crear la cuenta; el correo puede estar registrado. Si ya tienes cuenta, selecciona completar perfil.'
-                : 'No se pudo crear la cuenta. Revisa los datos y la conexión e inténtalo de nuevo.'
+                ? this.i18n.instant('iam.applicantRegister.errorExists')
+                : this.i18n.instant('iam.applicantRegister.errorGeneric')
         );
       },
     });

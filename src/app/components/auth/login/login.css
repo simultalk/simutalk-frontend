@@ -7,7 +7,7 @@
 
 /* Lado izquierdo: la marca */
 .marca {
-  background: linear-gradient(160deg, var(--st-primary) 0%, var(--st-primary-dark) 100%);
+  background: linear-gradient(160deg, var(--st-brand) 0%, var(--st-brand-deep) 100%);
   color: #fff;
   padding: 48px;
   display: flex;
@@ -82,4 +82,7 @@ form { display: flex; flex-direction: column; gap: 4px; }
   position: absolute;
   top: 16px;
   right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }

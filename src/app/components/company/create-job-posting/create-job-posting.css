@@ -13,5 +13,5 @@
 }
 
 .mensaje { margin: 8px 0 0; font-size: 14px; }
-.error { color: #b3261e; }
+.error { color: var(--st-danger); }
 .exito { color: var(--st-primary-dark); }

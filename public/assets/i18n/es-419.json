@@ -1,6 +1,16 @@
 {
   "common": {
-    "home": "Inicio"
+    "home": "Inicio",
+    "cancel": "Cancelar",
+    "use": "Usar",
+    "discard": "Descartar",
+    "edit": "Editar",
+    "remove": "Quitar",
+    "delete": "Eliminar",
+    "saving": "Guardando...",
+    "saveChanges": "Guardar cambios",
+    "searching": "Buscando...",
+    "ai": "IA"
   },
   "shared": {
     "language": {
@@ -35,6 +45,47 @@
     "underConstruction": {
       "title": "Esta sección está en construcción",
       "message": "Muy pronto podrás usar «{{section}}» desde aquí."
+    },
+    "theme": {
+      "dark": "Modo oscuro"
+    },
+    "errors": {
+      "closedPosting": "Una vacante cerrada ya no se puede modificar.",
+      "alreadyClosed": "La vacante ya está cerrada.",
+      "backToDraft": "Una vacante no puede volver a borrador.",
+      "deletePublished": "Una vacante publicada no se puede eliminar. Ciérrala primero.",
+      "publishOnlyDraft": "Solo se puede publicar una vacante en borrador.",
+      "publishNeedsCriterion": "Para publicar, la vacante necesita al menos un criterio.",
+      "weightsTotal": "Los pesos de los criterios deben sumar {{expected}}. Ahora suman {{current}}.",
+      "missingQuestions": "Cada competencia necesita al menos una pregunta antes de publicar. Faltan: {{names}}.",
+      "duplicateCriterion": "Ya existe un criterio llamado \"{{name}}\" en esta vacante.",
+      "criteriaOnlyDraft": "Los criterios solo se pueden cambiar mientras la vacante es borrador.",
+      "anonymizedOnlyDraft": "El cribado anónimo solo se puede cambiar mientras la vacante es borrador.",
+      "suggestCriteriaOnlyDraft": "Solo se pueden sugerir criterios mientras la vacante es borrador.",
+      "suggestQuestionsOnlyDraft": "Solo se pueden sugerir preguntas mientras la vacante es borrador.",
+      "scriptOnlyDraft": "El guion solo se puede cambiar mientras la vacante es borrador.",
+      "questionsOnlyCompetency": "Las preguntas solo se asignan a criterios de tipo competencia.",
+      "noCompanyProfile": "Tu usuario no tiene un perfil de empresa.",
+      "applyOnlyPublished": "Solo se puede postular a vacantes publicadas.",
+      "alreadyApplied": "Ya postulaste a esta vacante.",
+      "noCandidateProfile": "Completa tu perfil de postulante antes de postular.",
+      "alreadyHasInterview": "Esta postulación ya tiene una entrevista.",
+      "inviteOnlyReceived": "Solo se puede invitar a postulaciones recién recibidas.",
+      "noQuestionsYet": "La vacante todavía no tiene preguntas.",
+      "alreadyAnswered": "Esa pregunta ya fue respondida.",
+      "noFollowUp": "Esa pregunta no permite repregunta.",
+      "followUpUsed": "Esa pregunta ya tuvo su repregunta.",
+      "unanswered": "Faltan responder {{missing}} de {{total}} preguntas.",
+      "assessOnlyCompleted": "Solo se puede evaluar una entrevista terminada.",
+      "alreadyAssessed": "Esta entrevista ya fue evaluada.",
+      "usernameTaken": "Ese usuario o correo ya está registrado.",
+      "documentTaken": "Ya existe un postulante con ese documento.",
+      "rucTaken": "Ya existe una empresa con el RUC {{ruc}}.",
+      "minAge": "Debes tener al menos {{age}} años.",
+      "notFound": "No se encontró el registro.",
+      "network": "No se pudo conectar con el servidor. Revisa tu conexión.",
+      "forbidden": "No tienes permiso para hacer esto.",
+      "server": "Ocurrió un error en el servidor. Intenta de nuevo."
     }
   },
   "iam": {
@@ -58,6 +109,298 @@
       "brandPoint1": "Criterios ponderados que define tu empresa",
       "brandPoint2": "Entrevistas asincrónicas, a la hora del postulante",
       "brandPoint3": "Ranking con la evidencia de cada respuesta"
+    },
+    "register": {
+      "backToLogin": "Volver al inicio de sesión",
+      "goToLogin": "SimuTalk, ir al inicio de sesión",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "login": "Inicia sesión",
+      "email": "Correo",
+      "emailHint": "Con este correo vas a iniciar sesión",
+      "emailRequired": "Ingresa el correo",
+      "emailInvalid": "Ingresa un correo válido",
+      "password": "Contraseña",
+      "passwordRequired": "Ingresa una contraseña",
+      "passwordInvalid": "Entre 8 y 72 caracteres",
+      "district": "Distrito",
+      "districtRequired": "Ingresa el distrito"
+    },
+    "applicantRegister": {
+      "brandTitle": "Postula y da tu entrevista cuando puedas.",
+      "brandText": "Las empresas te evalúan con criterios claros y ves por qué obtuviste tu puntaje.",
+      "brandPoint1": "Sin horarios: respondes desde tu celular o tu PC",
+      "brandPoint2": "Retroalimentación por cada criterio",
+      "brandPoint3": "Tus certificaciones verificadas suman",
+      "titleNew": "Crea tu cuenta de postulante",
+      "titleComplete": "Completa tu perfil",
+      "subtitle": "Toma menos de dos minutos. Todos los campos son obligatorios.",
+      "sectionData": "Tus datos",
+      "sectionAccess": "Contacto y acceso",
+      "firstName": "Nombres",
+      "firstNameRequired": "Ingresa tus nombres",
+      "lastName": "Apellidos",
+      "lastNameRequired": "Ingresa tus apellidos",
+      "minLength": "Debe tener al menos 2 caracteres",
+      "document": "DNI o carné de extranjería",
+      "documentInvalid": "DNI de 8 dígitos o CE de 9 a 12",
+      "birthDate": "Fecha de nacimiento",
+      "birthDateInvalid": "Debes tener al menos 18 años",
+      "districtPlaceholder": "Ej. La Victoria",
+      "experience": "Años de experiencia",
+      "experienceInvalid": "Número entero, 0 o más",
+      "emailLabel": "Correo electrónico",
+      "emailRequired": "Ingresa tu correo",
+      "phone": "Teléfono",
+      "phoneRequired": "Ingresa tu teléfono",
+      "phoneInvalid": "Solo dígitos, de 7 a 15",
+      "success": "Tu cuenta está lista.",
+      "seeJobs": "Ver vacantes",
+      "alreadyHave": "Ya tengo una cuenta de postulante y solo quiero completar mi perfil",
+      "submitting": "Guardando...",
+      "submitNew": "Crear cuenta",
+      "submitComplete": "Completar perfil",
+      "errorLogin": "No se pudo iniciar sesión. Revisa el correo y la contraseña.",
+      "errorProfile": "La cuenta ya existe, pero no se pudo completar el perfil. Revisa los datos y vuelve a intentar.",
+      "errorExists": "No se pudo crear la cuenta; el correo puede estar registrado. Si ya tienes cuenta, marca completar perfil.",
+      "errorGeneric": "No se pudo crear la cuenta. Revisa los datos y la conexión e inténtalo de nuevo."
+    },
+    "companyRegister": {
+      "brandTitle": "Preselecciona mejor y en menos tiempo.",
+      "brandText": "Define qué buscas, deja que los postulantes respondan a su ritmo y compara con evidencia.",
+      "brandPoint1": "Criterios ponderados que tú defines",
+      "brandPoint2": "Sugerencias de criterios y preguntas con IA",
+      "brandPoint3": "Ranking explicable por cada postulante",
+      "title": "Registra tu empresa",
+      "subtitle": "Al terminar entras directo a publicar tu primera vacante.",
+      "sectionCompany": "Datos de la empresa",
+      "sectionAccess": "Datos de acceso",
+      "legalName": "Razón social",
+      "legalNameRequired": "Ingresa la razón social",
+      "tradeName": "Nombre comercial",
+      "tradeNameRequired": "Ingresa el nombre comercial",
+      "ruc": "RUC",
+      "rucRequired": "Ingresa el RUC",
+      "rucInvalid": "11 dígitos, empieza en 10 o 20",
+      "industry": "Rubro",
+      "industryPlaceholder": "Ej. Retail",
+      "industryRequired": "Ingresa el rubro",
+      "size": "Tamaño",
+      "sizeMICRO": "Micro (hasta 10 trabajadores)",
+      "sizePEQUENA": "Pequeña (11 a 100)",
+      "sizeMEDIANA": "Mediana (101 a 250)",
+      "sizeGRANDE": "Grande (más de 250)",
+      "districtPlaceholder": "Ej. San Isidro",
+      "submit": "Registrar empresa",
+      "submitting": "Registrando...",
+      "success": "Empresa registrada. ¡Bienvenido a SimuTalk!",
+      "error": "No se pudo completar el registro. Inténtalo de nuevo."
+    }
+  },
+  "recruitment": {
+    "status": {
+      "DRAFT": "Borrador",
+      "PUBLISHED": "Publicada",
+      "CLOSED": "Cerrada"
+    },
+    "myJobPostings": {
+      "title": "Mis vacantes",
+      "subtitle": "Vacantes de tu empresa y su estado.",
+      "create": "Crear vacante",
+      "loading": "Cargando vacantes...",
+      "loadError": "No se pudieron cargar tus vacantes.",
+      "empty": "Todavía no tienes vacantes. Crea la primera.",
+      "colTitle": "Título",
+      "colClosing": "Cierre",
+      "colWeight": "Peso total",
+      "colStatus": "Estado",
+      "colActions": "Acciones",
+      "criteria": "Criterios",
+      "script": "Guion",
+      "close": "Cerrar",
+      "confirmDelete": "¿Eliminar la vacante \"{{title}}\"? No se puede deshacer.",
+      "deleted": "Vacante eliminada.",
+      "deleteError": "No se pudo eliminar la vacante.",
+      "confirmClose": "¿Cerrar la vacante \"{{title}}\"? Ya no recibirá postulaciones.",
+      "closed": "Vacante cerrada.",
+      "closeError": "No se pudo cerrar la vacante."
+    },
+    "steps": {
+      "label": "Pasos para publicar la vacante",
+      "data": "Datos",
+      "criteria": "Criterios",
+      "script": "Guion y publicación"
+    },
+    "jobForm": {
+      "crumbNew": "Nueva",
+      "crumbEdit": "Editar",
+      "titleNew": "Crear vacante",
+      "titleEdit": "Editar vacante",
+      "subtitleNew": "Completa los datos. La vacante se guarda como borrador.",
+      "subtitleEdit": "Cambia los datos y guarda.",
+      "jobTitle": "Título del puesto",
+      "jobTitleRequired": "El título es obligatorio.",
+      "description": "Descripción",
+      "descriptionRequired": "La descripción es obligatoria.",
+      "closingDate": "Fecha de cierre",
+      "closingDateRequired": "Elige una fecha de cierre.",
+      "anonymized": "Ocultar datos personales del postulante durante la preselección",
+      "create": "Crear vacante",
+      "loadError": "No se pudo cargar la vacante.",
+      "created": "Vacante \"{{title}}\" creada como borrador.",
+      "updated": "Vacante \"{{title}}\" actualizada.",
+      "saveError": "No se pudo guardar la vacante."
+    },
+    "criteria": {
+      "crumb": "Criterios",
+      "title": "Criterios de evaluación",
+      "next": "Siguiente: guion",
+      "loading": "Cargando criterios...",
+      "total": "Total: {{total}} / 100",
+      "totalHint": "· los pesos deben sumar 100 para poder publicar",
+      "notDraft": "La vacante ya no es borrador, así que sus criterios no se pueden cambiar.",
+      "empty": "Esta vacante todavía no tiene criterios.",
+      "colCriterion": "Criterio",
+      "colType": "Tipo",
+      "colWeight": "Peso",
+      "colActions": "Acciones",
+      "competency": "Competencia",
+      "certification": "Certificación",
+      "mandatory": "obligatoria",
+      "aiTitle": "Sugerencias con IA",
+      "aiHint": "Salen de la descripción del puesto. Tú eliges cuáles usar y con qué peso.",
+      "suggest": "Sugerir criterios",
+      "formAdd": "Agregar criterio",
+      "formEdit": "Editar criterio",
+      "name": "Nombre",
+      "nameRequired": "El nombre es obligatorio.",
+      "description": "Descripción",
+      "descriptionRequired": "La descripción es obligatoria.",
+      "weight": "Peso (1 a 100)",
+      "weightInvalid": "Pon un número entre 1 y 100.",
+      "type": "Tipo",
+      "certificationName": "Nombre de la certificación",
+      "certificationMandatory": "Es obligatoria para postular",
+      "certificationNameRequired": "Escribe el nombre de la certificación.",
+      "add": "Agregar criterio",
+      "added": "Criterio agregado.",
+      "updated": "Criterio actualizado.",
+      "saveError": "No se pudo guardar el criterio.",
+      "confirmRemove": "¿Quitar el criterio \"{{name}}\"?",
+      "removed": "Criterio eliminado.",
+      "removeError": "No se pudo quitar el criterio.",
+      "noSuggestions": "No hay sugerencias nuevas para esta vacante.",
+      "suggestError": "No se pudieron obtener sugerencias."
+    },
+    "script": {
+      "crumb": "Guion",
+      "title": "Guion de preguntas",
+      "publish": "Publicar vacante",
+      "publishing": "Publicando...",
+      "loading": "Cargando guion...",
+      "weights": "Pesos",
+      "questions": "Preguntas",
+      "missing": "Sin preguntas todavía:",
+      "notDraft": "La vacante ya no es borrador, así que el guion no se puede cambiar.",
+      "empty": "Todavía no hay preguntas en el guion.",
+      "dragHint": "Arrastra las preguntas para cambiar el orden.",
+      "followUp": "permite repregunta",
+      "needCompetency": "Primero agrega al menos un criterio de tipo competencia.",
+      "formAdd": "Agregar pregunta",
+      "formEdit": "Editar pregunta",
+      "criterion": "Criterio que evalúa",
+      "criterionRequired": "Elige un criterio.",
+      "suggest": "Sugerir preguntas con IA",
+      "suggestHint": "Para el criterio elegido. Tú decides cuáles usar.",
+      "question": "Pregunta",
+      "questionRequired": "Escribe la pregunta.",
+      "maxDuration": "Tiempo máximo de respuesta (segundos)",
+      "maxDurationInvalid": "Entre 30 y 600 segundos.",
+      "allowsFollowUp": "Permite repregunta",
+      "add": "Agregar pregunta",
+      "loadError": "No se pudo cargar el guion.",
+      "added": "Pregunta agregada.",
+      "updated": "Pregunta actualizada.",
+      "saveError": "No se pudo guardar la pregunta.",
+      "confirmRemove": "¿Quitar esta pregunta del guion?",
+      "removed": "Pregunta eliminada.",
+      "removeError": "No se pudo quitar la pregunta.",
+      "orderSaved": "Orden guardado.",
+      "orderError": "No se pudo guardar el orden.",
+      "confirmPublish": "¿Publicar la vacante? Después ya no podrás cambiar criterios ni preguntas.",
+      "published": "Vacante publicada.",
+      "publishError": "No se pudo publicar la vacante.",
+      "noSuggestions": "No hay sugerencias nuevas para este criterio.",
+      "suggestError": "No se pudieron obtener sugerencias."
+    },
+    "aiCatalog": {
+      "criteria": {
+        "analyticalThinking": {
+          "name": "Pensamiento analítico",
+          "description": "Descompone problemas y los resuelve apoyándose en datos."
+        },
+        "effectiveCommunication": {
+          "name": "Comunicación efectiva",
+          "description": "Explica ideas y hallazgos con claridad a públicos técnicos y no técnicos."
+        },
+        "technicalMastery": {
+          "name": "Dominio técnico",
+          "description": "Domina las herramientas y tecnologías propias del puesto."
+        },
+        "teamwork": {
+          "name": "Trabajo en equipo",
+          "description": "Colabora con otras personas y áreas para lograr objetivos comunes."
+        },
+        "customerFocus": {
+          "name": "Orientación al cliente",
+          "description": "Entiende y atiende las necesidades del cliente interno o externo."
+        },
+        "projectManagement": {
+          "name": "Gestión de proyectos",
+          "description": "Planifica, prioriza y da seguimiento a entregables y plazos."
+        },
+        "commercialFocus": {
+          "name": "Orientación comercial",
+          "description": "Identifica oportunidades de negocio y negocia con criterio."
+        },
+        "problemSolving": {
+          "name": "Resolución de problemas",
+          "description": "Identifica la causa de un problema y propone soluciones viables."
+        },
+        "adaptability": {
+          "name": "Adaptabilidad",
+          "description": "Se ajusta a cambios de contexto y aprende con rapidez."
+        }
+      },
+      "rationale": {
+        "general": "Competencia general recomendada para cualquier puesto",
+        "mentions": "La descripción menciona: {{words}}"
+      },
+      "questions": {
+        "behavioral": {
+          "statement": "Cuéntame una situación concreta en la que hayas puesto en práctica la competencia «{{name}}». ¿Qué hiciste y cuál fue el resultado?",
+          "rationale": "Pregunta conductual: una experiencia real muestra cómo aplicó la competencia"
+        },
+        "situational": {
+          "statement": "Para este puesto, «{{name}}» significa: «{{description}}». Describe paso a paso cómo lo harías ante un caso real.",
+          "rationale": "Pregunta situacional basada en la descripción del criterio"
+        },
+        "difficulty": {
+          "statement": "¿Cuál ha sido tu mayor dificultad relacionada con «{{name}}» y qué hiciste para superarla?",
+          "rationale": "Explora autocrítica y capacidad de aprendizaje sobre la competencia"
+        },
+        "hypothetical": {
+          "statement": "Imagina que en tu primer mes debes demostrar «{{name}}» con poco tiempo y poca información. ¿Qué harías primero y por qué?",
+          "rationale": "Pregunta hipotética: muestra cómo prioriza al aplicar la competencia"
+        },
+        "quality": {
+          "statement": "¿Cómo compruebas que tu trabajo cumple con lo siguiente: «{{description}}»? Da un ejemplo.",
+          "rationale": "Explora los criterios de calidad que aplica, a partir de la descripción del criterio"
+        },
+        "explain": {
+          "statement": "Si tuvieras que explicarle «{{name}}» a una persona nueva en el equipo, ¿qué le dirías y con qué ejemplo?",
+          "rationale": "Explicar la competencia a otra persona revela cuánto la domina"
+        }
+      }
     }
   }
 }

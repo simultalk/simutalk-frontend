@@ -1,0 +1,48 @@
+.interruptor {
+  position: relative;
+  width: 56px;
+  height: 30px;
+  padding: 0;
+  flex-shrink: 0;
+  border-radius: 999px;
+  border: 1px solid var(--st-border);
+  background: var(--st-primary-soft);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.interruptor:focus-visible {
+  outline: 2px solid var(--st-primary);
+  outline-offset: 2px;
+}
+
+/* La perilla lleva el ícono: sol en claro, luna en oscuro */
+.perilla {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--st-surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.25s ease, background 0.2s;
+}
+
+.oscuro .perilla {
+  transform: translateX(26px);
+  background: var(--st-primary);
+}
+
+.perilla mat-icon {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  color: var(--st-accent);
+}
+
+.oscuro .perilla mat-icon {
+  color: #fff;
+}

@@ -11,6 +11,42 @@
   --st-accent: #ff9500;
   --st-border: #e2e8f0;
   --st-radius: 12px;
+
+  /* Estados (usar estas variables en vez de colores fijos) */
+  --st-danger: #b3261e;
+  --st-danger-soft: #fdecea;
+  --st-warning: #a35c00;
+  --st-warning-soft: #fff4e5;
+  --st-neutral-soft: #f1f3f6;
+
+  /* Verde de la marca para fondos de color: no cambia en modo oscuro */
+  --st-brand: #1b6e5e;
+  --st-brand-deep: #0f5c4f;
+}
+
+/* Modo oscuro: mismas variables con otros valores; todas las pantallas cambian solas */
+html.dark {
+  --st-primary: #2f9b82;
+  --st-primary-dark: #7fd6c0;
+  --st-primary-soft: #16302a;
+  --st-background: #0f1419;
+  --st-surface: #1a2129;
+  --st-text: #e6edf3;
+  --st-text-secondary: #9aa7b5;
+  --st-border: #2c3640;
+
+  --st-danger: #ff8a80;
+  --st-danger-soft: #3b1f1f;
+  --st-warning: #ffb74d;
+  --st-warning-soft: #3a2a12;
+  --st-neutral-soft: #252d36;
+}
+
+/* Cambio de modo suave */
+body,
+.st-card,
+.st-auth-seccion {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 body {
@@ -53,13 +89,25 @@ body {
 
 /* Pantallas de registro: marca a la izquierda y formulario a la derecha. */
 .st-auth {
+  position: relative;
   min-height: 100vh;
   display: grid;
   grid-template-columns: 380px minmax(0, 1fr);
 }
 
+/* Interruptores arriba a la derecha (modo e idioma) */
+.st-auth-herramientas {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+}
+
 .st-auth-marca {
-  background: linear-gradient(160deg, var(--st-primary) 0%, var(--st-primary-dark) 100%);
+  background: linear-gradient(160deg, var(--st-brand) 0%, var(--st-brand-deep) 100%);
   color: #fff;
   padding: 40px;
   display: flex;
