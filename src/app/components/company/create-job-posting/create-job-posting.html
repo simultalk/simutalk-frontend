@@ -1,8 +1,8 @@
 <header class="st-page-header">
-  <p class="st-breadcrumb">Inicio / Mis vacantes / {{ jobPostingId ? 'Editar' : 'Nueva' }}</p>
-  <h1 class="st-page-title">{{ jobPostingId ? 'Editar vacante' : 'Crear vacante' }}</h1>
+  <p class="st-breadcrumb">{{ 'common.home' | translate }} / {{ 'recruitment.myJobPostings.title' | translate }} / {{ (jobPostingId ? 'recruitment.jobForm.crumbEdit' : 'recruitment.jobForm.crumbNew') | translate }}</p>
+  <h1 class="st-page-title">{{ (jobPostingId ? 'recruitment.jobForm.titleEdit' : 'recruitment.jobForm.titleNew') | translate }}</h1>
   <p class="st-page-subtitle">
-    {{ jobPostingId ? 'Cambia los datos y guarda.' : 'Completa los datos. La vacante se guarda como borrador.' }}
+    {{ (jobPostingId ? 'recruitment.jobForm.subtitleEdit' : 'recruitment.jobForm.subtitleNew') | translate }}
   </p>
 </header>
 
@@ -10,32 +10,32 @@
 
 <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
   <mat-form-field appearance="outline">
-    <mat-label>Título del puesto</mat-label>
+    <mat-label>{{ 'recruitment.jobForm.jobTitle' | translate }}</mat-label>
     <input matInput formControlName="title" maxlength="150" />
     @if (form.controls.title.hasError('required')) {
-      <mat-error>El título es obligatorio.</mat-error>
+      <mat-error>{{ 'recruitment.jobForm.jobTitleRequired' | translate }}</mat-error>
     }
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Descripción</mat-label>
+    <mat-label>{{ 'recruitment.jobForm.description' | translate }}</mat-label>
     <textarea matInput formControlName="description" rows="6" maxlength="4000"></textarea>
     <mat-hint align="end">{{ form.controls.description.value.length }}/4000</mat-hint>
     @if (form.controls.description.hasError('required')) {
-      <mat-error>La descripción es obligatoria.</mat-error>
+      <mat-error>{{ 'recruitment.jobForm.descriptionRequired' | translate }}</mat-error>
     }
   </mat-form-field>
 
   <mat-form-field appearance="outline">
-    <mat-label>Fecha de cierre</mat-label>
+    <mat-label>{{ 'recruitment.jobForm.closingDate' | translate }}</mat-label>
     <input matInput type="date" formControlName="closingDate" [min]="today" />
     @if (form.controls.closingDate.hasError('required')) {
-      <mat-error>Elige una fecha de cierre.</mat-error>
+      <mat-error>{{ 'recruitment.jobForm.closingDateRequired' | translate }}</mat-error>
     }
   </mat-form-field>
 
   <mat-slide-toggle formControlName="anonymizedScreening">
-    Ocultar datos personales del postulante durante la preselección
+    {{ 'recruitment.jobForm.anonymized' | translate }}
   </mat-slide-toggle>
 
   @if (errorMessage()) {
@@ -44,9 +44,9 @@
 
 
   <div class="acciones">
-    <button mat-button type="button" (click)="cancel()">Cancelar</button>
+    <button mat-button type="button" (click)="cancel()">{{ 'common.cancel' | translate }}</button>
     <button mat-flat-button type="submit" [disabled]="saving()">
-      {{ saving() ? 'Guardando...' : (jobPostingId ? 'Guardar cambios' : 'Crear vacante') }}
+      {{ (saving() ? 'common.saving' : jobPostingId ? 'common.saveChanges' : 'recruitment.jobForm.create') | translate }}
     </button>
   </div>
 </form>

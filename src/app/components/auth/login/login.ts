@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ import { LanguageSwitcher } from '../../shared/language-switcher/language-switch
     MatIconModule,
     TranslatePipe,
     LanguageSwitcher,
+    ThemeToggle,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',

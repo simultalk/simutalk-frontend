@@ -1,6 +1,16 @@
 {
   "common": {
-    "home": "Home"
+    "home": "Home",
+    "cancel": "Cancel",
+    "use": "Use",
+    "discard": "Discard",
+    "edit": "Edit",
+    "remove": "Remove",
+    "delete": "Delete",
+    "saving": "Saving...",
+    "saveChanges": "Save changes",
+    "searching": "Searching...",
+    "ai": "AI"
   },
   "shared": {
     "language": {
@@ -35,6 +45,47 @@
     "underConstruction": {
       "title": "This section is under construction",
       "message": "You'll be able to use “{{section}}” here very soon."
+    },
+    "theme": {
+      "dark": "Dark mode"
+    },
+    "errors": {
+      "closedPosting": "A closed job posting can no longer be modified.",
+      "alreadyClosed": "The job posting is already closed.",
+      "backToDraft": "A job posting cannot go back to draft.",
+      "deletePublished": "A published job posting cannot be deleted. Close it first.",
+      "publishOnlyDraft": "Only a draft job posting can be published.",
+      "publishNeedsCriterion": "To publish, the job posting needs at least one criterion.",
+      "weightsTotal": "The criteria weights must add up to {{expected}}. They currently add up to {{current}}.",
+      "missingQuestions": "Each competency needs at least one question before publishing. Missing: {{names}}.",
+      "duplicateCriterion": "A criterion named \"{{name}}\" already exists in this job posting.",
+      "criteriaOnlyDraft": "Criteria can only be changed while the job posting is a draft.",
+      "anonymizedOnlyDraft": "Anonymized screening can only be changed while the job posting is a draft.",
+      "suggestCriteriaOnlyDraft": "Criteria can only be suggested while the job posting is a draft.",
+      "suggestQuestionsOnlyDraft": "Questions can only be suggested while the job posting is a draft.",
+      "scriptOnlyDraft": "The script can only be changed while the job posting is a draft.",
+      "questionsOnlyCompetency": "Questions can only be assigned to competency criteria.",
+      "noCompanyProfile": "Your user has no company profile.",
+      "applyOnlyPublished": "You can only apply to published job postings.",
+      "alreadyApplied": "You already applied to this job posting.",
+      "noCandidateProfile": "Complete your candidate profile before applying.",
+      "alreadyHasInterview": "This application already has an interview.",
+      "inviteOnlyReceived": "Only newly received applications can be invited.",
+      "noQuestionsYet": "The job posting has no questions yet.",
+      "alreadyAnswered": "That question has already been answered.",
+      "noFollowUp": "That question does not allow a follow-up.",
+      "followUpUsed": "That question already had its follow-up.",
+      "unanswered": "{{missing}} of {{total}} questions are still unanswered.",
+      "assessOnlyCompleted": "Only a completed interview can be assessed.",
+      "alreadyAssessed": "This interview has already been assessed.",
+      "usernameTaken": "That username or email is already registered.",
+      "documentTaken": "A candidate with that document already exists.",
+      "rucTaken": "A company with RUC {{ruc}} already exists.",
+      "minAge": "You must be at least {{age}} years old.",
+      "notFound": "The record was not found.",
+      "network": "Could not connect to the server. Check your connection.",
+      "forbidden": "You do not have permission to do this.",
+      "server": "A server error occurred. Try again."
     }
   },
   "iam": {
@@ -58,6 +109,298 @@
       "brandPoint1": "Weighted criteria defined by your company",
       "brandPoint2": "Asynchronous interviews, on the candidate's schedule",
       "brandPoint3": "Ranking with evidence from every answer"
+    },
+    "register": {
+      "backToLogin": "Back to sign in",
+      "goToLogin": "SimuTalk, go to sign in",
+      "haveAccount": "Already have an account?",
+      "login": "Sign in",
+      "email": "Email",
+      "emailHint": "You will sign in with this email",
+      "emailRequired": "Enter the email",
+      "emailInvalid": "Enter a valid email",
+      "password": "Password",
+      "passwordRequired": "Enter a password",
+      "passwordInvalid": "Between 8 and 72 characters",
+      "district": "District",
+      "districtRequired": "Enter the district"
+    },
+    "applicantRegister": {
+      "brandTitle": "Apply and take your interview whenever you can.",
+      "brandText": "Companies evaluate you with clear criteria, and you see why you got your score.",
+      "brandPoint1": "No schedules: answer from your phone or your PC",
+      "brandPoint2": "Feedback for each criterion",
+      "brandPoint3": "Your verified certifications count",
+      "titleNew": "Create your candidate account",
+      "titleComplete": "Complete your profile",
+      "subtitle": "It takes less than two minutes. All fields are required.",
+      "sectionData": "Your details",
+      "sectionAccess": "Contact and access",
+      "firstName": "First names",
+      "firstNameRequired": "Enter your first names",
+      "lastName": "Last names",
+      "lastNameRequired": "Enter your last names",
+      "minLength": "At least 2 characters",
+      "document": "ID (DNI) or foreign resident card",
+      "documentInvalid": "8-digit DNI or 9 to 12-digit CE",
+      "birthDate": "Date of birth",
+      "birthDateInvalid": "You must be at least 18 years old",
+      "districtPlaceholder": "e.g. La Victoria",
+      "experience": "Years of experience",
+      "experienceInvalid": "Whole number, 0 or more",
+      "emailLabel": "Email",
+      "emailRequired": "Enter your email",
+      "phone": "Phone",
+      "phoneRequired": "Enter your phone",
+      "phoneInvalid": "Digits only, 7 to 15",
+      "success": "Your account is ready.",
+      "seeJobs": "See job postings",
+      "alreadyHave": "I already have a candidate account and only want to complete my profile",
+      "submitting": "Saving...",
+      "submitNew": "Create account",
+      "submitComplete": "Complete profile",
+      "errorLogin": "Could not sign in. Check the email and password.",
+      "errorProfile": "The account exists, but the profile could not be completed. Check the details and try again.",
+      "errorExists": "The account could not be created; the email may already be registered. If you have an account, check complete profile.",
+      "errorGeneric": "The account could not be created. Check the details and your connection and try again."
+    },
+    "companyRegister": {
+      "brandTitle": "Screen better, in less time.",
+      "brandText": "Define what you are looking for, let candidates answer at their own pace and compare with evidence.",
+      "brandPoint1": "Weighted criteria you define",
+      "brandPoint2": "AI suggestions for criteria and questions",
+      "brandPoint3": "Explainable ranking for each candidate",
+      "title": "Register your company",
+      "subtitle": "When you finish, you go straight to publishing your first job posting.",
+      "sectionCompany": "Company details",
+      "sectionAccess": "Access details",
+      "legalName": "Legal name",
+      "legalNameRequired": "Enter the legal name",
+      "tradeName": "Trade name",
+      "tradeNameRequired": "Enter the trade name",
+      "ruc": "RUC (tax ID)",
+      "rucRequired": "Enter the RUC",
+      "rucInvalid": "11 digits, starting with 10 or 20",
+      "industry": "Industry",
+      "industryPlaceholder": "e.g. Retail",
+      "industryRequired": "Enter the industry",
+      "size": "Size",
+      "sizeMICRO": "Micro (up to 10 employees)",
+      "sizePEQUENA": "Small (11 to 100)",
+      "sizeMEDIANA": "Medium (101 to 250)",
+      "sizeGRANDE": "Large (over 250)",
+      "districtPlaceholder": "e.g. San Isidro",
+      "submit": "Register company",
+      "submitting": "Registering...",
+      "success": "Company registered. Welcome to SimuTalk!",
+      "error": "The registration could not be completed. Try again."
+    }
+  },
+  "recruitment": {
+    "status": {
+      "DRAFT": "Draft",
+      "PUBLISHED": "Published",
+      "CLOSED": "Closed"
+    },
+    "myJobPostings": {
+      "title": "My job postings",
+      "subtitle": "Your company's job postings and their status.",
+      "create": "Create job posting",
+      "loading": "Loading job postings...",
+      "loadError": "Your job postings could not be loaded.",
+      "empty": "You don't have any job postings yet. Create the first one.",
+      "colTitle": "Title",
+      "colClosing": "Closes",
+      "colWeight": "Total weight",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "criteria": "Criteria",
+      "script": "Script",
+      "close": "Close",
+      "confirmDelete": "Delete the job posting \"{{title}}\"? This cannot be undone.",
+      "deleted": "Job posting deleted.",
+      "deleteError": "The job posting could not be deleted.",
+      "confirmClose": "Close the job posting \"{{title}}\"? It will stop receiving applications.",
+      "closed": "Job posting closed.",
+      "closeError": "The job posting could not be closed."
+    },
+    "steps": {
+      "label": "Steps to publish the job posting",
+      "data": "Details",
+      "criteria": "Criteria",
+      "script": "Script and publishing"
+    },
+    "jobForm": {
+      "crumbNew": "New",
+      "crumbEdit": "Edit",
+      "titleNew": "Create job posting",
+      "titleEdit": "Edit job posting",
+      "subtitleNew": "Fill in the details. The job posting is saved as a draft.",
+      "subtitleEdit": "Change the details and save.",
+      "jobTitle": "Job title",
+      "jobTitleRequired": "The title is required.",
+      "description": "Description",
+      "descriptionRequired": "The description is required.",
+      "closingDate": "Closing date",
+      "closingDateRequired": "Choose a closing date.",
+      "anonymized": "Hide candidates' personal data during screening",
+      "create": "Create job posting",
+      "loadError": "The job posting could not be loaded.",
+      "created": "Job posting \"{{title}}\" created as a draft.",
+      "updated": "Job posting \"{{title}}\" updated.",
+      "saveError": "The job posting could not be saved."
+    },
+    "criteria": {
+      "crumb": "Criteria",
+      "title": "Evaluation criteria",
+      "next": "Next: script",
+      "loading": "Loading criteria...",
+      "total": "Total: {{total}} / 100",
+      "totalHint": "· weights must add up to 100 to publish",
+      "notDraft": "The job posting is no longer a draft, so its criteria can't be changed.",
+      "empty": "This job posting has no criteria yet.",
+      "colCriterion": "Criterion",
+      "colType": "Type",
+      "colWeight": "Weight",
+      "colActions": "Actions",
+      "competency": "Competency",
+      "certification": "Certification",
+      "mandatory": "required",
+      "aiTitle": "AI suggestions",
+      "aiHint": "Based on the job description. You choose which ones to use and their weight.",
+      "suggest": "Suggest criteria",
+      "formAdd": "Add criterion",
+      "formEdit": "Edit criterion",
+      "name": "Name",
+      "nameRequired": "The name is required.",
+      "description": "Description",
+      "descriptionRequired": "The description is required.",
+      "weight": "Weight (1 to 100)",
+      "weightInvalid": "Enter a number between 1 and 100.",
+      "type": "Type",
+      "certificationName": "Certification name",
+      "certificationMandatory": "Required to apply",
+      "certificationNameRequired": "Enter the certification name.",
+      "add": "Add criterion",
+      "added": "Criterion added.",
+      "updated": "Criterion updated.",
+      "saveError": "The criterion could not be saved.",
+      "confirmRemove": "Remove the criterion \"{{name}}\"?",
+      "removed": "Criterion removed.",
+      "removeError": "The criterion could not be removed.",
+      "noSuggestions": "No new suggestions for this job posting.",
+      "suggestError": "Suggestions could not be loaded."
+    },
+    "script": {
+      "crumb": "Script",
+      "title": "Interview script",
+      "publish": "Publish job posting",
+      "publishing": "Publishing...",
+      "loading": "Loading script...",
+      "weights": "Weights",
+      "questions": "Questions",
+      "missing": "No questions yet:",
+      "notDraft": "The job posting is no longer a draft, so the script can't be changed.",
+      "empty": "There are no questions in the script yet.",
+      "dragHint": "Drag the questions to change their order.",
+      "followUp": "allows a follow-up",
+      "needCompetency": "First add at least one competency criterion.",
+      "formAdd": "Add question",
+      "formEdit": "Edit question",
+      "criterion": "Criterion it evaluates",
+      "criterionRequired": "Choose a criterion.",
+      "suggest": "Suggest questions with AI",
+      "suggestHint": "For the chosen criterion. You decide which ones to use.",
+      "question": "Question",
+      "questionRequired": "Write the question.",
+      "maxDuration": "Maximum answer time (seconds)",
+      "maxDurationInvalid": "Between 30 and 600 seconds.",
+      "allowsFollowUp": "Allows a follow-up question",
+      "add": "Add question",
+      "loadError": "The script could not be loaded.",
+      "added": "Question added.",
+      "updated": "Question updated.",
+      "saveError": "The question could not be saved.",
+      "confirmRemove": "Remove this question from the script?",
+      "removed": "Question removed.",
+      "removeError": "The question could not be removed.",
+      "orderSaved": "Order saved.",
+      "orderError": "The order could not be saved.",
+      "confirmPublish": "Publish the job posting? You won't be able to change criteria or questions afterwards.",
+      "published": "Job posting published.",
+      "publishError": "The job posting could not be published.",
+      "noSuggestions": "No new suggestions for this criterion.",
+      "suggestError": "Suggestions could not be loaded."
+    },
+    "aiCatalog": {
+      "criteria": {
+        "analyticalThinking": {
+          "name": "Analytical thinking",
+          "description": "Breaks problems down and solves them using data."
+        },
+        "effectiveCommunication": {
+          "name": "Effective communication",
+          "description": "Explains ideas and findings clearly to technical and non-technical audiences."
+        },
+        "technicalMastery": {
+          "name": "Technical expertise",
+          "description": "Masters the tools and technologies of the role."
+        },
+        "teamwork": {
+          "name": "Teamwork",
+          "description": "Works with other people and areas to reach shared goals."
+        },
+        "customerFocus": {
+          "name": "Customer focus",
+          "description": "Understands and meets the needs of internal or external customers."
+        },
+        "projectManagement": {
+          "name": "Project management",
+          "description": "Plans, prioritizes and follows up on deliverables and deadlines."
+        },
+        "commercialFocus": {
+          "name": "Commercial focus",
+          "description": "Spots business opportunities and negotiates with good judgment."
+        },
+        "problemSolving": {
+          "name": "Problem solving",
+          "description": "Finds the root cause of a problem and proposes workable solutions."
+        },
+        "adaptability": {
+          "name": "Adaptability",
+          "description": "Adjusts to changing contexts and learns quickly."
+        }
+      },
+      "rationale": {
+        "general": "General competency recommended for any role",
+        "mentions": "The description mentions: {{words}}"
+      },
+      "questions": {
+        "behavioral": {
+          "statement": "Tell me about a specific situation where you applied the competency “{{name}}”. What did you do and what was the result?",
+          "rationale": "Behavioral question: a real experience shows how they applied the competency"
+        },
+        "situational": {
+          "statement": "For this role, “{{name}}” means: “{{description}}”. Describe step by step how you would handle a real case.",
+          "rationale": "Situational question based on the criterion description"
+        },
+        "difficulty": {
+          "statement": "What has been your biggest difficulty related to “{{name}}”, and what did you do to overcome it?",
+          "rationale": "Explores self-criticism and the ability to learn about the competency"
+        },
+        "hypothetical": {
+          "statement": "Imagine that in your first month you must show “{{name}}” with little time and little information. What would you do first, and why?",
+          "rationale": "Hypothetical question: shows how they prioritize when applying the competency"
+        },
+        "quality": {
+          "statement": "How do you check that your work meets the following: “{{description}}”? Give an example.",
+          "rationale": "Explores the quality standards they apply, based on the criterion description"
+        },
+        "explain": {
+          "statement": "If you had to explain “{{name}}” to someone new on the team, what would you tell them, and with what example?",
+          "rationale": "Explaining the competency to someone else shows how well they master it"
+        }
+      }
     }
   },
   "recruitment": {

@@ -8,6 +8,7 @@ import { errorMessageInterceptor } from './interceptors/error-message.intercepto
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { DEFAULT_LANG, LanguageService } from './services/language.service';
+import { ThemeService } from './services/theme.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +22,6 @@ export const appConfig: ApplicationConfig = {
       loader: provideTranslateHttpLoader({ prefix: '/assets/i18n/', suffix: '.json' }),
     }),
     provideAppInitializer(() => inject(LanguageService).init()),
+    provideAppInitializer(() => inject(ThemeService).init()),
   ]
 };

@@ -25,4 +25,4 @@
 .tarjeta-acciones { display: flex; flex-direction: column; gap: 8px; }
 
 .vacia { font-size: 13px; color: var(--st-text-secondary); margin: 4px 0; }
-.error { color: #b3261e; }
+.error { color: var(--st-danger); }

@@ -1,3 +1,4 @@
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -10,6 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { RecruitmentService } from '../../../services/recruitment.service';
+import { AiSuggestionI18nService } from '../../../services/ai-suggestion-i18n.service';
 import { JobPostingSteps } from '../job-posting-steps/job-posting-steps';
 import { JobPosting, QuestionSuggestion } from '../../../models/recruitment.model';
 import { Question, QuestionOrigin } from '../../../models/question';
@@ -27,12 +29,16 @@ import { Question, QuestionOrigin } from '../../../models/question';
     MatCheckboxModule,
     MatSnackBarModule,
     JobPostingSteps,
+    TranslatePipe,
   ],
   templateUrl: './job-posting-script.html',
   styleUrl: './job-posting-script.css',
 })
 export class JobPostingScript implements OnInit {
   private fb = inject(FormBuilder);
+  private i18n = inject(TranslateService);
+  // Traduce las sugerencias de IA al idioma elegido
+  ai = inject(AiSuggestionI18nService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private recruitmentService = inject(RecruitmentService);
@@ -88,7 +94,7 @@ export class JobPostingScript implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.errorMessage.set(err.error?.message || 'No se pudo cargar el guion.');
+        this.errorMessage.set(err.error?.message || this.i18n.instant('recruitment.script.loadError'));
         this.loading.set(false);
       },
     });
@@ -115,7 +121,7 @@ export class JobPostingScript implements OnInit {
     call.subscribe({
       next: () => {
         this.saving.set(false);
-        this.snackBar.open(editingId ? 'Pregunta actualizada.' : 'Pregunta agregada.', 'OK', {
+        this.snackBar.open(this.i18n.instant(editingId ? 'recruitment.script.updated' : 'recruitment.script.added'), 'OK', {
           duration: 3000,
         });
         this.cancelEdit();
@@ -123,7 +129,7 @@ export class JobPostingScript implements OnInit {
       },
       error: (err) => {
         this.saving.set(false);
-        this.errorMessage.set(err.error?.message || 'No se pudo guardar la pregunta.');
+        this.errorMessage.set(err.error?.message || this.i18n.instant('recruitment.script.saveError'));
       },
     });
   }
@@ -163,12 +169,12 @@ export class JobPostingScript implements OnInit {
         const nuevas = data.filter((s) => !existing.includes(s.statement.toLowerCase()));
         this.questionSuggestions.set(nuevas);
         if (nuevas.length === 0) {
-          this.snackBar.open('No hay sugerencias nuevas para este criterio.', 'OK', { duration: 3000 });
+          this.snackBar.open(this.i18n.instant('recruitment.script.noSuggestions'), 'OK', { duration: 3000 });
         }
       },
       error: (err) => {
         this.suggesting.set(false);
-        this.snackBar.open(err.error?.message || 'No se pudieron obtener sugerencias.', 'OK', {
+        this.snackBar.open(err.error?.message || this.i18n.instant('recruitment.script.suggestError'), 'OK', {
           duration: 5000,
         });
       },
@@ -188,15 +194,15 @@ export class JobPostingScript implements OnInit {
   }
 
   remove(question: Question): void {
-    if (!confirm('¿Quitar esta pregunta del guion?')) return;
+    if (!confirm(this.i18n.instant('recruitment.script.confirmRemove'))) return;
 
     this.recruitmentService.deleteQuestion(this.jobPostingId, question.id).subscribe({
       next: () => {
-        this.snackBar.open('Pregunta eliminada.', 'OK', { duration: 3000 });
+        this.snackBar.open(this.i18n.instant('recruitment.script.removed'), 'OK', { duration: 3000 });
         this.load();
       },
       error: (err) => {
-        this.snackBar.open(err.error?.message || 'No se pudo quitar la pregunta.', 'OK', {
+        this.snackBar.open(err.error?.message || this.i18n.instant('recruitment.script.removeError'), 'OK', {
           duration: 5000,
         });
       },
@@ -217,9 +223,9 @@ export class JobPostingScript implements OnInit {
         list.map((q) => q.id),
       )
       .subscribe({
-        next: () => this.snackBar.open('Orden guardado.', 'OK', { duration: 2000 }),
+        next: () => this.snackBar.open(this.i18n.instant('recruitment.script.orderSaved'), 'OK', { duration: 2000 }),
         error: (err) => {
-          this.snackBar.open(err.error?.message || 'No se pudo guardar el orden.', 'OK', {
+          this.snackBar.open(err.error?.message || this.i18n.instant('recruitment.script.orderError'), 'OK', {
             duration: 5000,
           });
           this.load();
@@ -228,7 +234,7 @@ export class JobPostingScript implements OnInit {
   }
 
   publish(): void {
-    if (!confirm('¿Publicar la vacante? Después ya no podrás cambiar criterios ni preguntas.'))
+    if (!confirm(this.i18n.instant('recruitment.script.confirmPublish')))
       return;
 
     this.publishing.set(true);
@@ -236,13 +242,13 @@ export class JobPostingScript implements OnInit {
     this.recruitmentService.changeJobPostingStatus(this.jobPostingId, 'PUBLISHED').subscribe({
       next: () => {
         this.publishing.set(false);
-        this.snackBar.open('Vacante publicada.', 'OK', { duration: 3000 });
+        this.snackBar.open(this.i18n.instant('recruitment.script.published'), 'OK', { duration: 3000 });
         this.router.navigate(['/recruitment/my-job-postings']);
       },
       error: (err) => {
         this.publishing.set(false);
         // El backend explica qué falta (pesos, criterios o preguntas)
-        this.publishError.set(err.error?.message || 'No se pudo publicar la vacante.');
+        this.publishError.set(err.error?.message || this.i18n.instant('recruitment.script.publishError'));
       },
     });
   }

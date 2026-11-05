@@ -1,0 +1,61 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'recruitment.myApplications.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'recruitment.myApplications.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'recruitment.myApplications.subtitle' | translate }}</p>
+</header>
+
+@if (loading()) {
+  <p role="status">{{ 'recruitment.myApplications.loading' | translate }}</p>
+} @else if (errorMessage()) {
+  <p class="error" role="alert">{{ errorMessage() }}</p>
+} @else if (applications().length === 0) {
+  <p>
+    {{ 'recruitment.myApplications.empty' | translate }}
+    <a routerLink="/recruitment/job-postings">{{ 'recruitment.myApplications.seeJobs' | translate }}</a>
+  </p>
+} @else {
+  <div class="st-card">
+    <table class="tabla st-tabla-responsive">
+      <thead>
+        <tr>
+          <th>{{ 'recruitment.myApplications.colJob' | translate }}</th>
+          <th>{{ 'recruitment.myApplications.colDate' | translate }}</th>
+          <th>{{ 'recruitment.myApplications.colStatus' | translate }}</th>
+          <th>{{ 'recruitment.myApplications.colActions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (app of applications(); track app.id) {
+          <tr>
+            <td class="completo">
+              <strong>{{ app.jobPostingTitle ?? ('recruitment.myApplications.jobFallback' | translate: { id: app.jobPostingId }) }}</strong>
+              @if (app.companyName) {
+                <span class="empresa">{{ app.companyName }}</span>
+              }
+            </td>
+            <td [attr.data-label]="'recruitment.myApplications.colDate' | translate">
+              {{ app.appliedAt | date: 'dd/MM/yyyy' }}
+            </td>
+            <td [attr.data-label]="'recruitment.myApplications.colStatus' | translate">
+              <span class="estado" [class]="'estado ' + app.status">
+                {{ 'recruitment.applicationStatus.' + (app.status | lowercase) | translate }}
+              </span>
+            </td>
+            <td class="acciones">
+              @if (canTakeInterview(app)) {
+                <a mat-flat-button [routerLink]="['/interviews/take-interview', app.id]">
+                  {{ 'recruitment.myApplications.takeInterview' | translate }}
+                </a>
+              }
+              @if (canSeeFeedback(app)) {
+                <a mat-stroked-button [routerLink]="['/recruitment/my-applications', app.id, 'feedback']">
+                  {{ 'recruitment.myApplications.seeFeedback' | translate }}
+                </a>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}
