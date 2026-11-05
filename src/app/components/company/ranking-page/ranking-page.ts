@@ -8,6 +8,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { RankingService } from '../../../services/ranking';
+import { RecruitmentService } from '../../../services/recruitment.service';
 import {
   JobPostingSummary,
   RankingBadge,
@@ -40,6 +41,7 @@ export class RankingPageComponent implements OnInit {
   private readonly rankingService = inject(RankingService);
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
+  private readonly recruitmentService = inject(RecruitmentService);
 
   readonly jobPostings = signal<JobPostingSummary[]>([]);
   readonly ranking = signal<RankingEntry[]>([]);
@@ -97,8 +99,12 @@ export class RankingPageComponent implements OnInit {
     return this.badgeConfig[b] ?? { label: b, cssClass: '' };
   }
 
+  // El ranking trae la postulación; el detalle se abre por la sesión de entrevista de esa postulación
   goToAssessment(row: RankingEntry): void {
-    this.router.navigate(['/assessment/sessions', row.interviewSessionId]);
+    this.recruitmentService.getInterviewSessionByApplication(row.applicationId).subscribe({
+      next: (session) => this.router.navigate(['/assessment/sessions', session.id]),
+      error: (err: unknown) => this.showError(err),
+    });
   }
 
   private showError(err: any): void {
