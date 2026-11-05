@@ -222,7 +222,8 @@
       "deleteError": "The job posting could not be deleted.",
       "confirmClose": "Close the job posting \"{{title}}\"? It will stop receiving applications.",
       "closed": "Job posting closed.",
-      "closeError": "The job posting could not be closed."
+      "closeError": "The job posting could not be closed.",
+      "pipeline": "Candidates"
     },
     "steps": {
       "label": "Steps to publish the job posting",
@@ -401,6 +402,93 @@
           "rationale": "Explaining the competency to someone else shows how well they master it"
         }
       }
+    },
+    "applicationStatus": {
+      "received": "Received",
+      "interviewing": "Interviewing",
+      "assessed": "Assessed",
+      "shortlisted": "Shortlisted",
+      "rejected": "Rejected",
+      "hired": "Hired"
+    },
+    "jobList": {
+      "breadcrumb": "Home / Job postings",
+      "title": "Published job postings",
+      "subtitle": "Pick a job posting to see the details and apply.",
+      "searchLabel": "Search by title",
+      "loading": "Loading job postings...",
+      "loadError": "Could not load the published job postings.",
+      "empty": "No published job postings match that title.",
+      "anonymizedTag": "Anonymized screening",
+      "companyFallback": "Company #{{id}}",
+      "closes": "Closes: {{date}}",
+      "viewDetail": "View details and apply"
+    },
+    "jobDetail": {
+      "breadcrumb": "Home / Job postings / Details",
+      "back": "← Back to job postings",
+      "loading": "Loading job posting...",
+      "notFound": "The requested job posting does not exist.",
+      "loadError": "Could not load the job posting.",
+      "notPublished": "Applications are only accepted for published job postings.",
+      "companyAndClosing": "{{company}} · Closes on {{date}}",
+      "anonymizedNotice": "This job posting uses anonymized screening: your name is not shown in the first review.",
+      "applyButton": "Apply",
+      "applying": "Sending...",
+      "applySuccess": "Done! Your application was submitted.",
+      "alreadyApplied": "You have already applied to this job posting.",
+      "applyError": "Something went wrong while submitting your application."
+    },
+    "pipeline": {
+      "breadcrumb": "Home / My job postings / Pipeline",
+      "title": "Candidate pipeline",
+      "jobFallback": "Job posting #{{id}}",
+      "filterLabel": "Filter by stage",
+      "allStages": "All stages",
+      "backToJobs": "Back to My job postings",
+      "loading": "Loading applications...",
+      "loadError": "Could not load the applications.",
+      "jobNotFound": "The requested job posting does not exist.",
+      "emptyColumn": "No candidates in this stage.",
+      "candidateFallback": "Candidate #{{id}}",
+      "appliedOn": "Applied on {{date}}",
+      "inviteButton": "Invite to interview",
+      "moveButton": "Move to...",
+      "moveAria": "Change the stage of {{name}}",
+      "inviteSent": "Invitation sent to the candidate.",
+      "movedTo": "Moved to \"{{stage}}\".",
+      "moveError": "Could not change the stage.",
+      "close": "Close"
+    },
+    "myApplications": {
+      "breadcrumb": "Home / My applications",
+      "title": "My applications",
+      "subtitle": "Check which stage each of your applications is in.",
+      "loading": "Loading applications...",
+      "loadError": "Could not load your applications.",
+      "empty": "You have not applied to any job posting yet.",
+      "seeJobs": "See published job postings",
+      "colJob": "Job posting",
+      "colDate": "Applied on",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "jobFallback": "Job posting #{{id}}",
+      "takeInterview": "Take the interview",
+      "seeFeedback": "View feedback"
+    },
+    "applicationFeedback": {
+      "breadcrumb": "Home / My applications / Feedback",
+      "title": "Your feedback",
+      "subtitle": "This is how your interview was evaluated, criterion by criterion.",
+      "loading": "Loading feedback...",
+      "loadError": "Could not load your feedback.",
+      "notAvailable": "Your evaluation is not available yet.",
+      "applicationNotFound": "The requested application does not exist.",
+      "overallScore": "Weighted score",
+      "summary": "Summary",
+      "byCriterion": "Score by criterion",
+      "scoreOutOf": "{{score}} / 100",
+      "back": "Back to My applications"
     }
   }
 }

@@ -222,7 +222,8 @@
       "deleteError": "No se pudo eliminar la vacante.",
       "confirmClose": "¿Cerrar la vacante \"{{title}}\"? Ya no recibirá postulaciones.",
       "closed": "Vacante cerrada.",
-      "closeError": "No se pudo cerrar la vacante."
+      "closeError": "No se pudo cerrar la vacante.",
+      "pipeline": "Postulantes"
     },
     "steps": {
       "label": "Pasos para publicar la vacante",
@@ -401,6 +402,93 @@
           "rationale": "Explicar la competencia a otra persona revela cuánto la domina"
         }
       }
+    },
+    "applicationStatus": {
+      "received": "Recibida",
+      "interviewing": "En entrevista",
+      "assessed": "Evaluada",
+      "shortlisted": "Preseleccionada",
+      "rejected": "Rechazada",
+      "hired": "Contratada"
+    },
+    "jobList": {
+      "breadcrumb": "Inicio / Vacantes",
+      "title": "Vacantes publicadas",
+      "subtitle": "Elige una vacante para ver el detalle y postular.",
+      "searchLabel": "Buscar por título",
+      "loading": "Cargando vacantes...",
+      "loadError": "Error al cargar las vacantes publicadas.",
+      "empty": "No se encontraron vacantes publicadas con ese título.",
+      "anonymizedTag": "Cribado anonimizado",
+      "companyFallback": "Empresa #{{id}}",
+      "closes": "Cierra: {{date}}",
+      "viewDetail": "Ver detalle y postular"
+    },
+    "jobDetail": {
+      "breadcrumb": "Inicio / Vacantes / Detalle",
+      "back": "← Volver a vacantes",
+      "loading": "Cargando vacante...",
+      "notFound": "La vacante solicitada no existe.",
+      "loadError": "No se pudo cargar la vacante.",
+      "notPublished": "Solo se aceptan postulaciones a vacantes publicadas.",
+      "companyAndClosing": "{{company}} · Cierra el {{date}}",
+      "anonymizedNotice": "Esta vacante usa cribado anonimizado: tu nombre no se muestra en la primera revisión.",
+      "applyButton": "Postular",
+      "applying": "Enviando...",
+      "applySuccess": "¡Listo! Tu postulación fue registrada.",
+      "alreadyApplied": "Ya registraste una postulación para esta vacante.",
+      "applyError": "Ocurrió un error al procesar tu postulación."
+    },
+    "pipeline": {
+      "breadcrumb": "Inicio / Mis vacantes / Pipeline",
+      "title": "Pipeline de postulantes",
+      "jobFallback": "Vacante #{{id}}",
+      "filterLabel": "Filtrar por etapa",
+      "allStages": "Todas las etapas",
+      "backToJobs": "Volver a Mis vacantes",
+      "loading": "Cargando postulaciones...",
+      "loadError": "No se pudieron cargar las postulaciones.",
+      "jobNotFound": "La vacante solicitada no existe.",
+      "emptyColumn": "Sin postulantes en esta etapa.",
+      "candidateFallback": "Postulante #{{id}}",
+      "appliedOn": "Postuló el {{date}}",
+      "inviteButton": "Invitar a entrevista",
+      "moveButton": "Mover a...",
+      "moveAria": "Mover a {{name}} de etapa",
+      "inviteSent": "Invitación enviada al postulante.",
+      "movedTo": "Movida a «{{stage}}».",
+      "moveError": "No se pudo cambiar la etapa.",
+      "close": "Cerrar"
+    },
+    "myApplications": {
+      "breadcrumb": "Inicio / Mis postulaciones",
+      "title": "Mis postulaciones",
+      "subtitle": "Revisa en qué etapa está cada una de tus postulaciones.",
+      "loading": "Cargando postulaciones...",
+      "loadError": "No se pudieron cargar tus postulaciones.",
+      "empty": "Todavía no te has postulado a ninguna vacante.",
+      "seeJobs": "Ver vacantes publicadas",
+      "colJob": "Vacante",
+      "colDate": "Postulaste el",
+      "colStatus": "Estado",
+      "colActions": "Acciones",
+      "jobFallback": "Vacante #{{id}}",
+      "takeInterview": "Rendir entrevista",
+      "seeFeedback": "Ver retroalimentación"
+    },
+    "applicationFeedback": {
+      "breadcrumb": "Inicio / Mis postulaciones / Retroalimentación",
+      "title": "Tu retroalimentación",
+      "subtitle": "Así evaluamos tu entrevista, criterio por criterio.",
+      "loading": "Cargando retroalimentación...",
+      "loadError": "No se pudo cargar tu retroalimentación.",
+      "notAvailable": "Tu evaluación todavía no está disponible.",
+      "applicationNotFound": "La postulación solicitada no existe.",
+      "overallScore": "Puntaje ponderado",
+      "summary": "Resumen",
+      "byCriterion": "Puntaje por criterio",
+      "scoreOutOf": "{{score}} / 100",
+      "back": "Volver a Mis postulaciones"
     }
   }
 }

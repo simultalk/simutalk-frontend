@@ -1,0 +1,73 @@
+<header class="st-page-header encabezado">
+  <div>
+    <p class="st-breadcrumb">{{ 'recruitment.pipeline.breadcrumb' | translate }}</p>
+    <h1 class="st-page-title">{{ 'recruitment.pipeline.title' | translate }}</h1>
+    <p class="st-page-subtitle">
+      {{ jobPosting()?.title ?? ('recruitment.pipeline.jobFallback' | translate: { id: jobPostingId }) }}
+    </p>
+  </div>
+  <div class="herramientas">
+    <mat-form-field appearance="outline" subscriptSizing="dynamic">
+      <mat-label>{{ 'recruitment.pipeline.filterLabel' | translate }}</mat-label>
+      <mat-select [value]="stageFilter()" (selectionChange)="stageFilter.set($event.value)">
+        <mat-option value="">{{ 'recruitment.pipeline.allStages' | translate }}</mat-option>
+        @for (stage of stages; track stage) {
+          <mat-option [value]="stage">{{ 'recruitment.applicationStatus.' + (stage | lowercase) | translate }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <a mat-stroked-button routerLink="/recruitment/my-job-postings">{{ 'recruitment.pipeline.backToJobs' | translate }}</a>
+  </div>
+</header>
+
+@if (loading()) {
+  <p role="status">{{ 'recruitment.pipeline.loading' | translate }}</p>
+} @else if (errorMessage()) {
+  <p class="error" role="alert">{{ errorMessage() }}</p>
+} @else {
+  <div class="tablero">
+    @for (stage of visibleStages(); track stage) {
+      <section class="columna" [attr.aria-label]="'recruitment.applicationStatus.' + (stage | lowercase) | translate">
+        <h2 class="columna-titulo">
+          {{ 'recruitment.applicationStatus.' + (stage | lowercase) | translate }}
+          <span class="contador">{{ applicationsIn(stage).length }}</span>
+        </h2>
+
+        @for (app of applicationsIn(stage); track app.id) {
+          <article class="st-card tarjeta">
+            <p class="nombre">{{ candidateLabel(app) }}</p>
+            <p class="fecha">
+              {{ 'recruitment.pipeline.appliedOn' | translate: { date: (app.appliedAt | date: 'dd/MM/yyyy') } }}
+            </p>
+
+            <div class="tarjeta-acciones">
+              @if (app.status === 'RECEIVED') {
+                <button mat-flat-button type="button" (click)="invite(app)">
+                  {{ 'recruitment.pipeline.inviteButton' | translate }}
+                </button>
+              }
+              <button
+                mat-stroked-button
+                type="button"
+                [matMenuTriggerFor]="menu"
+                [disabled]="movingId() === app.id"
+                [attr.aria-label]="'recruitment.pipeline.moveAria' | translate: { name: candidateLabel(app) }"
+              >
+                {{ 'recruitment.pipeline.moveButton' | translate }}
+              </button>
+              <mat-menu #menu="matMenu">
+                @for (target of targetsFor(app); track target) {
+                  <button mat-menu-item type="button" (click)="moveTo(app, target)">
+                    {{ 'recruitment.applicationStatus.' + (target | lowercase) | translate }}
+                  </button>
+                }
+              </mat-menu>
+            </div>
+          </article>
+        } @empty {
+          <p class="vacia">{{ 'recruitment.pipeline.emptyColumn' | translate }}</p>
+        }
+      </section>
+    }
+  </div>
+}

@@ -1,0 +1,47 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'recruitment.applicationFeedback.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'recruitment.applicationFeedback.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'recruitment.applicationFeedback.subtitle' | translate }}</p>
+</header>
+
+@if (loading()) {
+  <p role="status">{{ 'recruitment.applicationFeedback.loading' | translate }}</p>
+} @else if (errorMessage()) {
+  <p class="error" role="alert">{{ errorMessage() }}</p>
+} @else if (assessment(); as a) {
+  <section class="st-card resumen" [attr.aria-label]="'recruitment.applicationFeedback.overallScore' | translate">
+    <p class="etiqueta">{{ 'recruitment.applicationFeedback.overallScore' | translate }}</p>
+    <p class="puntaje">{{ a.weightedScore | number: '1.0-1' }}</p>
+  </section>
+
+  @if (a.feedbackSummary) {
+    <section class="st-card" [attr.aria-label]="'recruitment.applicationFeedback.summary' | translate">
+      <h2 class="subtitulo">{{ 'recruitment.applicationFeedback.summary' | translate }}</h2>
+      <p>{{ a.feedbackSummary }}</p>
+    </section>
+  }
+
+  <section class="st-card" [attr.aria-label]="'recruitment.applicationFeedback.byCriterion' | translate">
+    <h2 class="subtitulo">{{ 'recruitment.applicationFeedback.byCriterion' | translate }}</h2>
+    @for (c of a.criterionScores; track c.id) {
+      <div class="criterio">
+        <div class="criterio-cabecera">
+          <span>{{ c.criterionName }}</span>
+          <strong>{{ 'recruitment.applicationFeedback.scoreOutOf' | translate: { score: (c.score | number: '1.0-1') } }}</strong>
+        </div>
+        <div
+          class="barra"
+          role="progressbar"
+          [attr.aria-label]="c.criterionName"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          [attr.aria-valuenow]="c.score"
+        >
+          <div class="barra-relleno" [style.width.%]="c.score"></div>
+        </div>
+      </div>
+    }
+  </section>
+}
+
+<a mat-stroked-button routerLink="/recruitment/my-applications">{{ 'recruitment.applicationFeedback.back' | translate }}</a>

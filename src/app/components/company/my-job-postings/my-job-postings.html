@@ -35,6 +35,7 @@
             <td class="acciones">
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">{{ 'recruitment.myJobPostings.criteria' | translate }}</a>
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">{{ 'recruitment.myJobPostings.script' | translate }}</a>
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'pipeline']">{{ 'recruitment.myJobPostings.pipeline' | translate }}</a>
               @if (job.status !== 'CLOSED') {
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'edit']">{{ 'common.edit' | translate }}</a>
               }

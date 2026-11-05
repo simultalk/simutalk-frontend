@@ -91,6 +91,12 @@ export const routes: Routes = [
             (m) => m.JobPostingScript,
           ),
       },
+      {
+        path: 'recruitment/my-job-postings/:id/pipeline',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/pipeline/pipeline').then((m) => m.Pipeline),
+      },
       pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),
       // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
       {
@@ -116,7 +122,22 @@ export const routes: Routes = [
             (m) => m.DetailJobPostingComponent,
           ),
       },
-      pending('recruitment/my-applications', 'Mis postulaciones', [ROLE_CANDIDATE]),
+      {
+        path: 'recruitment/my-applications',
+        data: { roles: [ROLE_CANDIDATE] },
+        loadComponent: () =>
+          import('./components/applicant/my-applications/my-applications').then(
+            (m) => m.MyApplications,
+          ),
+      },
+      {
+        path: 'recruitment/my-applications/:id/feedback',
+        data: { roles: [ROLE_CANDIDATE] },
+        loadComponent: () =>
+          import('./components/applicant/application-feedback/application-feedback').then(
+            (m) => m.ApplicationFeedback,
+          ),
+      },
       pending('profiles/me', 'Mi perfil', [ROLE_CANDIDATE]),
       pending('profiles/certifications', 'Certificaciones', [ROLE_CANDIDATE]),
       // US-08: el postulante rinde su entrevista. "Mis postulaciones" (US-23) enlazará aquí.
