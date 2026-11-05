@@ -52,6 +52,9 @@
               <p class="enunciado">{{ q.statement }}</p>
               <p class="datos">
                 <span class="chip">{{ criterionName(q.criterionId) }}</span>
+                @if (q.origin === 'AI_SUGGESTED') {
+                  <span class="chip ia">IA</span>
+                }
                 {{ q.maxDurationSeconds }} s
                 @if (q.allowsFollowUp) {
                   · permite repregunta
@@ -86,6 +89,25 @@
             <mat-error>Elige un criterio.</mat-error>
           }
         </mat-form-field>
+
+        <div class="sugerir">
+          <button mat-stroked-button type="button" (click)="suggest()" [disabled]="suggesting()">
+            {{ suggesting() ? 'Buscando...' : 'Sugerir preguntas con IA' }}
+          </button>
+          <span class="ayuda">Para el criterio elegido. Tú decides cuáles usar.</span>
+        </div>
+        @for (s of questionSuggestions(); track s.statement) {
+          <div class="sugerencia">
+            <div class="sugerencia-texto">
+              <span>{{ s.statement }}</span>
+              @if (s.rationale) {
+                <span class="motivo">{{ s.rationale }}</span>
+              }
+            </div>
+            <button mat-button type="button" (click)="useSuggestion(s)">Usar</button>
+            <button mat-button type="button" (click)="discardSuggestion(s)">Descartar</button>
+          </div>
+        }
 
         <mat-form-field appearance="outline">
           <mat-label>Pregunta</mat-label>

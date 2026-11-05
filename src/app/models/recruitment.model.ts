@@ -116,3 +116,10 @@ export interface CriterionSuggestion {
   criterionType: 'COMPETENCY' | 'CERTIFICATION';
   rationale: string;
 }
+
+// Pregunta propuesta por la IA para un criterio, sin guardar (US-04)
+export interface QuestionSuggestion {
+  criterionId: number;
+  statement: string;
+  rationale: string;
+}

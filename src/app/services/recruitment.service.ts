@@ -14,6 +14,7 @@ import {
   EvaluationCriterion,
   QuestionRequest,
   CriterionSuggestion,
+  QuestionSuggestion,
 } from '../models/recruitment.model';
 import { Question } from '../models/question';
 
@@ -86,6 +87,16 @@ export class RecruitmentService {
     return this.http.put<Question>(
       `${this.apiUrl}/job-postings/${jobPostingId}/questions/${questionId}`,
       request,
+    );
+  }
+
+  // POST /job-postings/{id}/questions/suggestions?criterionId= (US-04)
+  suggestQuestions(jobPostingId: number, criterionId: number): Observable<QuestionSuggestion[]> {
+    const params = new HttpParams().set('criterionId', criterionId);
+    return this.http.post<QuestionSuggestion[]>(
+      `${this.apiUrl}/job-postings/${jobPostingId}/questions/suggestions`,
+      {},
+      { params },
     );
   }
 

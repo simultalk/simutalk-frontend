@@ -51,3 +51,10 @@
 .botones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
 .error { color: #b3261e; margin: 0; }
 .caja { margin-bottom: 12px; }
+
+.chip.ia { background: #fff4e5; color: #a35c00; }
+
+.sugerir { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.sugerencia { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid var(--st-border); }
+.sugerencia-texto { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.motivo { font-size: 13px; font-style: italic; color: var(--st-text-secondary); }

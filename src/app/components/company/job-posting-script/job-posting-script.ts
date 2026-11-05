@@ -10,7 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { forkJoin } from 'rxjs';
 import { RecruitmentService } from '../../../services/recruitment.service';
-import { JobPosting } from '../../../models/recruitment.model';
+import { JobPosting, QuestionSuggestion } from '../../../models/recruitment.model';
 import { Question, QuestionOrigin } from '../../../models/question';
 
 @Component({
@@ -48,6 +48,9 @@ export class JobPostingScript implements OnInit {
   editingId = signal<number | null>(null);
   // Origen de la pregunta del formulario: se conserva al editar una sugerida por la IA
   private origin: QuestionOrigin = 'MANUAL';
+  // Sugerencias de la IA que todavía no se usan (US-04)
+  questionSuggestions = signal<QuestionSuggestion[]>([]);
+  suggesting = signal(false);
 
   isDraft = computed(() => this.job()?.status === 'DRAFT');
   totalWeight = computed(() => (this.job()?.criteria ?? []).reduce((sum, c) => sum + c.weight, 0));
@@ -140,6 +143,46 @@ export class JobPostingScript implements OnInit {
     this.editingId.set(null);
     this.origin = 'MANUAL';
     this.form.reset();
+  }
+
+  // Pide a la IA preguntas para el criterio elegido en el formulario (US-04)
+  suggest(): void {
+    const criterionId = this.form.controls.criterionId.value;
+    if (!criterionId) {
+      this.form.controls.criterionId.markAsTouched();
+      return;
+    }
+    this.suggesting.set(true);
+    this.recruitmentService.suggestQuestions(this.jobPostingId, criterionId).subscribe({
+      next: (data) => {
+        this.suggesting.set(false);
+        // No muestra las que ya están en el guion
+        const existing = this.questions().map((q) => q.statement.toLowerCase());
+        const nuevas = data.filter((s) => !existing.includes(s.statement.toLowerCase()));
+        this.questionSuggestions.set(nuevas);
+        if (nuevas.length === 0) {
+          this.snackBar.open('No hay sugerencias nuevas para este criterio.', 'OK', { duration: 3000 });
+        }
+      },
+      error: (err) => {
+        this.suggesting.set(false);
+        this.snackBar.open(err.error?.message || 'No se pudieron obtener sugerencias.', 'OK', {
+          duration: 5000,
+        });
+      },
+    });
+  }
+
+  // Pasa la sugerencia al formulario; el tiempo y la repregunta los decide el reclutador
+  useSuggestion(suggestion: QuestionSuggestion): void {
+    this.editingId.set(null);
+    this.origin = 'AI_SUGGESTED';
+    this.form.patchValue({ criterionId: suggestion.criterionId, statement: suggestion.statement });
+    this.questionSuggestions.update((list) => list.filter((s) => s !== suggestion));
+  }
+
+  discardSuggestion(suggestion: QuestionSuggestion): void {
+    this.questionSuggestions.update((list) => list.filter((s) => s !== suggestion));
   }
 
   remove(question: Question): void {
