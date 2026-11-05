@@ -50,3 +50,106 @@ body {
   border-radius: var(--st-radius);
   padding: 24px;
 }
+
+/* Pantallas de registro: marca a la izquierda y formulario a la derecha. */
+.st-auth {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+}
+
+.st-auth-marca {
+  background: linear-gradient(160deg, var(--st-primary) 0%, var(--st-primary-dark) 100%);
+  color: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.st-auth-marca h2 { font-size: 26px; line-height: 1.25; margin: 0; }
+.st-auth-marca p { margin: 0; opacity: 0.9; }
+.st-auth-marca ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.st-auth-marca li { padding-left: 24px; position: relative; opacity: 0.92; }
+.st-auth-marca li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--st-accent);
+}
+
+.st-auth-logo { display: flex; align-items: center; gap: 10px; font-size: 20px; color: #fff; text-decoration: none; }
+.st-auth-logo img { background: #fff; border-radius: 10px; padding: 4px; }
+
+.st-auth-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.st-auth-panel {
+  padding: 40px 24px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.st-auth-form {
+  width: 100%;
+  max-width: 640px;
+  animation: st-entrar 0.35s ease-out;
+}
+
+.st-auth-form h1 { font-size: 26px; margin: 0; }
+.st-auth-sub { color: var(--st-text-secondary); font-size: 14px; margin: 6px 0 24px; }
+
+/* Cada bloque del formulario, en dos columnas */
+.st-auth-seccion {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  padding: 20px 20px 8px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+}
+
+.st-auth-seccion h3 {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--st-primary-dark);
+  margin: 0 0 12px;
+}
+
+.st-auth-seccion .completo { grid-column: 1 / -1; }
+
+.st-auth-acciones { display: flex; flex-direction: column; gap: 12px; }
+.st-auth-acciones button[type='submit'] { height: 44px; }
+.st-auth-error { color: var(--mat-sys-error); margin: 0; }
+.st-auth-enlace { text-align: center; margin: 4px 0 0; font-size: 14px; }
+
+@keyframes st-entrar {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Celular: la marca pasa arriba y todo va en una columna */
+@media (max-width: 860px) {
+  .st-auth { grid-template-columns: 1fr; }
+  .st-auth-marca { padding: 20px 24px; gap: 12px; }
+  .st-auth-marca h2 { font-size: 20px; }
+  .st-auth-marca ul, .st-auth-marca p { display: none; }
+  .st-auth-volver { margin-top: 0; }
+  .st-auth-panel { padding: 24px 16px; }
+  .st-auth-seccion { grid-template-columns: 1fr; }
+}

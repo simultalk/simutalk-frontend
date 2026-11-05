@@ -1,11 +1,22 @@
 // Modelos para el registro de cuentas en el contexto IAM.
 
-// US: Registro de empresa
+// US-25: Registro de empresa
+export type CompanySize = 'MICRO' | 'PEQUENA' | 'MEDIANA' | 'GRANDE';
+
 export interface CompanyRegisterRequest {
-  businessName: string; // razón social
-  ruc: string; // RUC (11 dígitos)
-  corporateEmail: string; // correo corporativo
+  legalName: string; // razón social
+  tradeName: string; // nombre comercial
+  industry: string; // rubro
+  ruc: string; // 11 dígitos, empieza en 10 o 20
+  companySize: CompanySize;
+  district: string;
+  email: string; // también es el usuario para iniciar sesión
   password: string;
+}
+
+export interface CompanyProfileResponse {
+  id: number;
+  userId: number;
 }
 
 // US-26: Registro de postulante
