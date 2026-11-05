@@ -143,13 +143,71 @@ body {
   to { opacity: 1; transform: none; }
 }
 
-/* Celular: la marca pasa arriba y todo va en una columna */
-@media (max-width: 860px) {
-  .st-auth { grid-template-columns: 1fr; }
-  .st-auth-marca { padding: 20px 24px; gap: 12px; }
-  .st-auth-marca h2 { font-size: 20px; }
-  .st-auth-marca ul, .st-auth-marca p { display: none; }
-  .st-auth-volver { margin-top: 0; }
-  .st-auth-panel { padding: 24px 16px; }
-  .st-auth-seccion { grid-template-columns: 1fr; }
+/* Cada pantalla interna entra con una animación corta al navegar */
+main.contenido > :not(router-outlet) {
+  display: block;
+  animation: st-entrar 0.25s ease-out;
+}
+
+/* Tablas: resaltan la fila al pasar el mouse y en celular cada fila es una tarjeta */
+.st-tabla-responsive tbody tr { transition: background 0.15s; }
+.st-tabla-responsive tbody tr:hover { background: var(--st-background); }
+
+@media (max-width: 720px) {
+  main.contenido { padding: 16px !important; }
+  .st-page-title { font-size: 22px; }
+  .st-card { padding: 16px; }
+
+  /* La tarjeta que envuelve la tabla desaparece: cada fila ya es su propia tarjeta */
+  .st-card:has(> .st-tabla-responsive) { background: none; border: none; padding: 0; }
+
+  .st-tabla-responsive { display: block; width: 100%; }
+  .st-tabla-responsive thead { display: none; }
+  .st-tabla-responsive tbody { display: grid; gap: 12px; }
+
+  .st-tabla-responsive tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px 12px;
+    height: auto !important;
+    padding: 14px 16px;
+    background: var(--st-surface);
+    border: 1px solid var(--st-border);
+    border-radius: var(--st-radius);
+  }
+
+  .st-tabla-responsive tbody tr:hover { background: var(--st-surface); }
+
+  .st-tabla-responsive td {
+    display: block;
+    min-width: 0;
+    padding: 0 !important;
+    border: none !important;
+    white-space: normal !important;
+    font-size: 14px;
+  }
+
+  /* Título de la fila y acciones ocupan todo el ancho */
+  .st-tabla-responsive td.completo,
+  .st-tabla-responsive td.acciones { grid-column: 1 / -1; }
+
+  .st-tabla-responsive td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--st-text-secondary);
+  }
+
+  .st-tabla-responsive td.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0 -8px;
+    padding-top: 8px !important;
+    border-top: 1px solid var(--st-border) !important;
+  }
 }
