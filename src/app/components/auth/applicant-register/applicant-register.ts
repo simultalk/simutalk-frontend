@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { ApplicantRegistrationError, RegistrationService } from '../../../services/registration.service';
 
 function adultBirthDate(control: AbstractControl) {
@@ -27,6 +28,7 @@ function adultBirthDate(control: AbstractControl) {
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    ThemeToggle,
   ],
   templateUrl: './applicant-register.html',
   styleUrl: './applicant-register.css',

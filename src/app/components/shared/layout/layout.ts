@@ -5,10 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 import { LanguageSwitcher } from '../language-switcher/language-switcher';
+import { ThemeToggle } from '../theme-toggle/theme-toggle';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatButtonModule, MatIconModule, TranslatePipe, LanguageSwitcher],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, MatButtonModule, MatIconModule, TranslatePipe, LanguageSwitcher, ThemeToggle],
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })

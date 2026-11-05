@@ -1,6 +1,16 @@
 {
   "common": {
-    "home": "Home"
+    "home": "Home",
+    "cancel": "Cancel",
+    "use": "Use",
+    "discard": "Discard",
+    "edit": "Edit",
+    "remove": "Remove",
+    "delete": "Delete",
+    "saving": "Saving...",
+    "saveChanges": "Save changes",
+    "searching": "Searching...",
+    "ai": "AI"
   },
   "shared": {
     "language": {
@@ -35,6 +45,9 @@
     "underConstruction": {
       "title": "This section is under construction",
       "message": "You'll be able to use “{{section}}” here very soon."
+    },
+    "theme": {
+      "dark": "Dark mode"
     }
   },
   "iam": {
@@ -58,6 +71,213 @@
       "brandPoint1": "Weighted criteria defined by your company",
       "brandPoint2": "Asynchronous interviews, on the candidate's schedule",
       "brandPoint3": "Ranking with evidence from every answer"
+    }
+  },
+  "recruitment": {
+    "status": {
+      "DRAFT": "Draft",
+      "PUBLISHED": "Published",
+      "CLOSED": "Closed"
+    },
+    "myJobPostings": {
+      "title": "My job postings",
+      "subtitle": "Your company's job postings and their status.",
+      "create": "Create job posting",
+      "loading": "Loading job postings...",
+      "loadError": "Your job postings could not be loaded.",
+      "empty": "You don't have any job postings yet. Create the first one.",
+      "colTitle": "Title",
+      "colClosing": "Closes",
+      "colWeight": "Total weight",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "criteria": "Criteria",
+      "script": "Script",
+      "close": "Close",
+      "confirmDelete": "Delete the job posting \"{{title}}\"? This cannot be undone.",
+      "deleted": "Job posting deleted.",
+      "deleteError": "The job posting could not be deleted.",
+      "confirmClose": "Close the job posting \"{{title}}\"? It will stop receiving applications.",
+      "closed": "Job posting closed.",
+      "closeError": "The job posting could not be closed."
+    },
+    "steps": {
+      "label": "Steps to publish the job posting",
+      "data": "Details",
+      "criteria": "Criteria",
+      "script": "Script and publishing"
+    },
+    "jobForm": {
+      "crumbNew": "New",
+      "crumbEdit": "Edit",
+      "titleNew": "Create job posting",
+      "titleEdit": "Edit job posting",
+      "subtitleNew": "Fill in the details. The job posting is saved as a draft.",
+      "subtitleEdit": "Change the details and save.",
+      "jobTitle": "Job title",
+      "jobTitleRequired": "The title is required.",
+      "description": "Description",
+      "descriptionRequired": "The description is required.",
+      "closingDate": "Closing date",
+      "closingDateRequired": "Choose a closing date.",
+      "anonymized": "Hide candidates' personal data during screening",
+      "create": "Create job posting",
+      "loadError": "The job posting could not be loaded.",
+      "created": "Job posting \"{{title}}\" created as a draft.",
+      "updated": "Job posting \"{{title}}\" updated.",
+      "saveError": "The job posting could not be saved."
+    },
+    "criteria": {
+      "crumb": "Criteria",
+      "title": "Evaluation criteria",
+      "next": "Next: script",
+      "loading": "Loading criteria...",
+      "total": "Total: {{total}} / 100",
+      "totalHint": "· weights must add up to 100 to publish",
+      "notDraft": "The job posting is no longer a draft, so its criteria can't be changed.",
+      "empty": "This job posting has no criteria yet.",
+      "colCriterion": "Criterion",
+      "colType": "Type",
+      "colWeight": "Weight",
+      "colActions": "Actions",
+      "competency": "Competency",
+      "certification": "Certification",
+      "mandatory": "required",
+      "aiTitle": "AI suggestions",
+      "aiHint": "Based on the job description. You choose which ones to use and their weight.",
+      "suggest": "Suggest criteria",
+      "formAdd": "Add criterion",
+      "formEdit": "Edit criterion",
+      "name": "Name",
+      "nameRequired": "The name is required.",
+      "description": "Description",
+      "descriptionRequired": "The description is required.",
+      "weight": "Weight (1 to 100)",
+      "weightInvalid": "Enter a number between 1 and 100.",
+      "type": "Type",
+      "certificationName": "Certification name",
+      "certificationMandatory": "Required to apply",
+      "certificationNameRequired": "Enter the certification name.",
+      "add": "Add criterion",
+      "added": "Criterion added.",
+      "updated": "Criterion updated.",
+      "saveError": "The criterion could not be saved.",
+      "confirmRemove": "Remove the criterion \"{{name}}\"?",
+      "removed": "Criterion removed.",
+      "removeError": "The criterion could not be removed.",
+      "noSuggestions": "No new suggestions for this job posting.",
+      "suggestError": "Suggestions could not be loaded."
+    },
+    "script": {
+      "crumb": "Script",
+      "title": "Interview script",
+      "publish": "Publish job posting",
+      "publishing": "Publishing...",
+      "loading": "Loading script...",
+      "weights": "Weights",
+      "questions": "Questions",
+      "missing": "No questions yet:",
+      "notDraft": "The job posting is no longer a draft, so the script can't be changed.",
+      "empty": "There are no questions in the script yet.",
+      "dragHint": "Drag the questions to change their order.",
+      "followUp": "allows a follow-up",
+      "needCompetency": "First add at least one competency criterion.",
+      "formAdd": "Add question",
+      "formEdit": "Edit question",
+      "criterion": "Criterion it evaluates",
+      "criterionRequired": "Choose a criterion.",
+      "suggest": "Suggest questions with AI",
+      "suggestHint": "For the chosen criterion. You decide which ones to use.",
+      "question": "Question",
+      "questionRequired": "Write the question.",
+      "maxDuration": "Maximum answer time (seconds)",
+      "maxDurationInvalid": "Between 30 and 600 seconds.",
+      "allowsFollowUp": "Allows a follow-up question",
+      "add": "Add question",
+      "loadError": "The script could not be loaded.",
+      "added": "Question added.",
+      "updated": "Question updated.",
+      "saveError": "The question could not be saved.",
+      "confirmRemove": "Remove this question from the script?",
+      "removed": "Question removed.",
+      "removeError": "The question could not be removed.",
+      "orderSaved": "Order saved.",
+      "orderError": "The order could not be saved.",
+      "confirmPublish": "Publish the job posting? You won't be able to change criteria or questions afterwards.",
+      "published": "Job posting published.",
+      "publishError": "The job posting could not be published.",
+      "noSuggestions": "No new suggestions for this criterion.",
+      "suggestError": "Suggestions could not be loaded."
+    },
+    "aiCatalog": {
+      "criteria": {
+        "analyticalThinking": {
+          "name": "Analytical thinking",
+          "description": "Breaks problems down and solves them using data."
+        },
+        "effectiveCommunication": {
+          "name": "Effective communication",
+          "description": "Explains ideas and findings clearly to technical and non-technical audiences."
+        },
+        "technicalMastery": {
+          "name": "Technical expertise",
+          "description": "Masters the tools and technologies of the role."
+        },
+        "teamwork": {
+          "name": "Teamwork",
+          "description": "Works with other people and areas to reach shared goals."
+        },
+        "customerFocus": {
+          "name": "Customer focus",
+          "description": "Understands and meets the needs of internal or external customers."
+        },
+        "projectManagement": {
+          "name": "Project management",
+          "description": "Plans, prioritizes and follows up on deliverables and deadlines."
+        },
+        "commercialFocus": {
+          "name": "Commercial focus",
+          "description": "Spots business opportunities and negotiates with good judgment."
+        },
+        "problemSolving": {
+          "name": "Problem solving",
+          "description": "Finds the root cause of a problem and proposes workable solutions."
+        },
+        "adaptability": {
+          "name": "Adaptability",
+          "description": "Adjusts to changing contexts and learns quickly."
+        }
+      },
+      "rationale": {
+        "general": "General competency recommended for any role",
+        "mentions": "The description mentions: {{words}}"
+      },
+      "questions": {
+        "behavioral": {
+          "statement": "Tell me about a specific situation where you applied the competency “{{name}}”. What did you do and what was the result?",
+          "rationale": "Behavioral question: a real experience shows how they applied the competency"
+        },
+        "situational": {
+          "statement": "For this role, “{{name}}” means: “{{description}}”. Describe step by step how you would handle a real case.",
+          "rationale": "Situational question based on the criterion description"
+        },
+        "difficulty": {
+          "statement": "What has been your biggest difficulty related to “{{name}}”, and what did you do to overcome it?",
+          "rationale": "Explores self-criticism and the ability to learn about the competency"
+        },
+        "hypothetical": {
+          "statement": "Imagine that in your first month you must show “{{name}}” with little time and little information. What would you do first, and why?",
+          "rationale": "Hypothetical question: shows how they prioritize when applying the competency"
+        },
+        "quality": {
+          "statement": "How do you check that your work meets the following: “{{description}}”? Give an example.",
+          "rationale": "Explores the quality standards they apply, based on the criterion description"
+        },
+        "explain": {
+          "statement": "If you had to explain “{{name}}” to someone new on the team, what would you tell them, and with what example?",
+          "rationale": "Explaining the competency to someone else shows how well they master it"
+        }
+      }
     }
   }
 }

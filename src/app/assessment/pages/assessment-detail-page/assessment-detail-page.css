@@ -5,7 +5,7 @@
 .criterion {
   margin: 16px 0;
   padding: 16px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid var(--st-border);
   border-radius: 8px;
 }
 .criterion h3 { margin: 0; }
@@ -18,7 +18,7 @@
 
 mark {
   background: #ffe08a;
-  color: inherit;
+  color: #1a2230; /* texto oscuro sobre amarillo, también en modo oscuro */
   padding: 0 2px;
   border-radius: 2px;
 }

@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { RegistrationService } from '../../../services/registration.service';
 import { CompanySize } from '../../../models/registration.model';
 
@@ -21,6 +22,7 @@ import { CompanySize } from '../../../models/registration.model';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    ThemeToggle,
     MatSnackBarModule,
   ],
   templateUrl: './company-register.html',

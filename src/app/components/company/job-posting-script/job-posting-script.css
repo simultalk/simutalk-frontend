@@ -9,7 +9,7 @@
 }
 
 .resumen { margin: 0 0 8px; }
-.resumen strong { color: #b3261e; }
+.resumen strong { color: var(--st-danger); }
 .resumen strong.ok { color: var(--st-primary-dark); }
 .aviso, .ayuda { color: var(--st-text-secondary); font-size: 14px; }
 
@@ -23,7 +23,7 @@
   color: var(--st-primary-dark);
   margin-right: 6px;
 }
-.chip.falta { background: #fdecea; color: #b3261e; }
+.chip.falta { background: var(--st-danger-soft); color: var(--st-danger); }
 
 .lista { list-style: none; padding: 0; margin: 0; }
 .pregunta {
@@ -39,7 +39,7 @@
 .texto { flex: 1; }
 .enunciado { margin: 0 0 4px; }
 .datos { margin: 0; font-size: 13px; color: var(--st-text-secondary); }
-.eliminar { color: #b3261e; }
+.eliminar { color: var(--st-danger); }
 
 /* Arrastrar y soltar */
 .cdk-drag-preview { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); border-radius: var(--st-radius); }
@@ -49,10 +49,10 @@
 .formulario { display: flex; flex-direction: column; gap: 8px; max-width: 640px; margin-top: 16px; }
 .subtitulo { font-size: 18px; margin: 0 0 8px; }
 .botones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
-.error { color: #b3261e; margin: 0; }
+.error { color: var(--st-danger); margin: 0; }
 .caja { margin-bottom: 12px; }
 
-.chip.ia { background: #fff4e5; color: #a35c00; }
+.chip.ia { background: var(--st-warning-soft); color: var(--st-warning); }
 
 .sugerir { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
 .sugerencia { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid var(--st-border); }

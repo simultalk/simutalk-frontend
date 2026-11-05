@@ -10,7 +10,7 @@ html {
       color: (
         primary: brand.$primary-palette,
         tertiary: brand.$tertiary-palette,
-        theme-type: light,
+        theme-type: color-scheme,
       ),
       typography: Inter,
       density: 0,
@@ -20,10 +20,17 @@ html {
   // Color primario exacto de la marca.
   --mat-sys-primary: #1b6e5e;
   --mat-sys-on-primary: #ffffff;
+  color-scheme: light;
+}
+
+// Modo oscuro: la clase "dark" en <html> la pone ThemeService
+html.dark {
+  color-scheme: dark;
+  --mat-sys-primary: #7fd6c0;
+  --mat-sys-on-primary: #00382d;
 }
 
 body {
-  color-scheme: light;
   background-color: var(--mat-sys-surface);
   color: var(--mat-sys-on-surface);
   font: var(--mat-sys-body-medium);
