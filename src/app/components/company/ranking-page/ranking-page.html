@@ -13,6 +13,22 @@
       }
     </mat-select>
   </mat-form-field>
+  
+  <div class="anonymize-bar">
+    <mat-slide-toggle
+      [checked]="isAnonymous()"
+      [disabled]="forced() || selectedId() === null"
+      (change)="onAnonymizedChange($event.checked)"
+    >
+      Cribado anonimizado
+    </mat-slide-toggle>
+
+    @if (forced()) {
+      <p class="anonymize-notice" role="status">
+        Esta vacante exige cribado anonimizado: los nombres están ocultos y no se puede desactivar.
+      </p>
+    }
+  </div>
 
   @if (loadingRanking()) {
     <mat-progress-spinner mode="indeterminate" diameter="40" aria-label="Cargando ranking" />
@@ -30,7 +46,7 @@
 
       <ng-container matColumnDef="candidate">
         <th mat-header-cell *matHeaderCellDef>Candidato</th>
-        <td mat-cell *matCellDef="let row" data-label="Candidato">{{ row.candidateName ?? row.candidateCode }}</td>
+        <td mat-cell *matCellDef="let row" data-label="Candidato">{{ displayName(row) }}</td>
       </ng-container>
 
       <ng-container matColumnDef="weightedScore">
@@ -72,7 +88,7 @@
         class="clickable-row"
         tabindex="0"
         role="link"
-        [attr.aria-label]="'Ver evaluación de ' + (row.candidateName ?? row.candidateCode)"
+        [attr.aria-label]="'Ver evaluación de ' + displayName(row)"
         (click)="goToAssessment(row)"
         (keydown.enter)="goToAssessment(row)"
       ></tr>
