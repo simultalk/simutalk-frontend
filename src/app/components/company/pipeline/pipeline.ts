@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { DatePipe, LowerCasePipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -46,6 +46,7 @@ export const PIPELINE_STAGES: ApplicationStatus[] = [
 })
 export class Pipeline implements OnInit {
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   private readonly recruitment = inject(RecruitmentService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
@@ -121,6 +122,15 @@ export class Pipeline implements OnInit {
           this.load();
         }
       });
+  }
+
+  /** Postulante que ya terminó su entrevista: abre su evaluación (ahí se calcula si todavía no existe). */
+  openEvaluation(app: Application): void {
+    this.recruitment.getInterviewSessionByApplication(app.id).subscribe({
+      next: (session) => this.router.navigate(['/assessment/sessions', session.id]),
+      error: (err) =>
+        this.notify(err.error?.message || this.translate.instant('recruitment.pipeline.evaluationError'), 6000),
+    });
   }
 
   /** US-18: si el backend rechaza la transición, se muestra su mensaje y la tarjeta no se mueve. */
