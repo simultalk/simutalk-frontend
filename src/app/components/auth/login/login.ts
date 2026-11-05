@@ -6,7 +6,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
+import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +19,8 @@ import { AuthService } from '../../../services/auth.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    TranslatePipe,
+    LanguageSwitcher,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -27,7 +31,8 @@ export class Login {
   private router = inject(Router);
 
   loading = signal(false);
-  errorMessage = signal('');
+  /** Clave de traducción del error a mostrar (vacía si no hay error). */
+  errorKey = signal('');
   hidePassword = signal(true);
 
   form = this.fb.nonNullable.group({
@@ -41,7 +46,7 @@ export class Login {
       return;
     }
     this.loading.set(true);
-    this.errorMessage.set('');
+    this.errorKey.set('');
 
     // Los postulantes se registran con su correo, así que el usuario puede ser un correo
     const { username, password } = this.form.getRawValue();
@@ -52,10 +57,8 @@ export class Login {
       },
       error: (error: HttpErrorResponse) => {
         this.loading.set(false);
-        this.errorMessage.set(
-          error.status === 401
-            ? 'Usuario, correo o contraseña incorrectos'
-            : 'No se pudo conectar con el servidor. Inténtalo de nuevo.'
+        this.errorKey.set(
+          error.status === 401 ? 'iam.login.invalidCredentials' : 'iam.login.serverError'
         );
       },
     });

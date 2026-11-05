@@ -1,0 +1,63 @@
+{
+  "common": {
+    "home": "Home"
+  },
+  "shared": {
+    "language": {
+      "label": "Language",
+      "es-419": "Español",
+      "en-US": "English"
+    },
+    "layout": {
+      "goHome": "SimuTalk, go to home",
+      "mainMenu": "Main menu",
+      "logout": "Sign out"
+    },
+    "menu": {
+      "myJobPostings": "My job postings",
+      "ranking": "Ranking",
+      "reports": "Reports",
+      "jobPostings": "Job postings",
+      "myApplications": "My applications",
+      "myProfile": "My profile",
+      "certifications": "Certifications"
+    },
+    "roles": {
+      "recruiter": "Recruiter",
+      "candidate": "Candidate",
+      "admin": "Administrator"
+    },
+    "forbidden": {
+      "title": "You don't have access to this section",
+      "message": "Your account doesn't have permission to view this page. If you think this is a mistake, contact the administrator.",
+      "backHome": "Back to home"
+    },
+    "underConstruction": {
+      "title": "This section is under construction",
+      "message": "You'll be able to use “{{section}}” here very soon."
+    }
+  },
+  "iam": {
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Use your username or the email you registered with.",
+      "username": "Username or email",
+      "password": "Password",
+      "usernameRequired": "Enter your username or email",
+      "passwordRequired": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "submit": "Sign in",
+      "submitting": "Signing in...",
+      "invalidCredentials": "Incorrect username, email or password",
+      "serverError": "Couldn't connect to the server. Please try again.",
+      "noAccount": "Don't have an account?",
+      "registerCandidate": "I'm a candidate",
+      "registerCompany": "I'm a company",
+      "brandTitle": "Screening with interviews that explain every score.",
+      "brandPoint1": "Weighted criteria defined by your company",
+      "brandPoint2": "Asynchronous interviews, on the candidate's schedule",
+      "brandPoint3": "Ranking with evidence from every answer"
+    }
+  }
+}

@@ -1,33 +1,37 @@
 <div class="pantalla">
+  <div class="idioma">
+    <app-language-switcher />
+  </div>
+
   <section class="marca" aria-hidden="true">
     <div class="logo">
       <img src="logo.svg" alt="" width="40" height="40" />
       <span>Simu<strong>Talk</strong></span>
     </div>
-    <h2>Preselección con entrevistas que explican cada puntaje.</h2>
+    <h2>{{ 'iam.login.brandTitle' | translate }}</h2>
     <ul>
-      <li>Criterios ponderados que define tu empresa</li>
-      <li>Entrevistas asincrónicas, a la hora del postulante</li>
-      <li>Ranking con la evidencia de cada respuesta</li>
+      <li>{{ 'iam.login.brandPoint1' | translate }}</li>
+      <li>{{ 'iam.login.brandPoint2' | translate }}</li>
+      <li>{{ 'iam.login.brandPoint3' | translate }}</li>
     </ul>
   </section>
 
   <main class="panel">
     <div class="tarjeta">
-      <h1>Inicia sesión</h1>
-      <p class="sub">Entra con tu usuario o con el correo con el que te registraste.</p>
+      <h1>{{ 'iam.login.title' | translate }}</h1>
+      <p class="sub">{{ 'iam.login.subtitle' | translate }}</p>
 
       <form [formGroup]="form" (ngSubmit)="submit()">
         <mat-form-field appearance="outline">
-          <mat-label>Usuario o correo</mat-label>
+          <mat-label>{{ 'iam.login.username' | translate }}</mat-label>
           <input matInput formControlName="username" autocomplete="username" />
           @if (form.controls.username.hasError('required')) {
-            <mat-error>Ingresa tu usuario o correo</mat-error>
+            <mat-error>{{ 'iam.login.usernameRequired' | translate }}</mat-error>
           }
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Contraseña</mat-label>
+          <mat-label>{{ 'iam.login.password' | translate }}</mat-label>
           <input
             matInput
             [type]="hidePassword() ? 'password' : 'text'"
@@ -39,29 +43,29 @@
             matSuffix
             type="button"
             (click)="hidePassword.set(!hidePassword())"
-            [attr.aria-label]="hidePassword() ? 'Mostrar contraseña' : 'Ocultar contraseña'"
+            [attr.aria-label]="(hidePassword() ? 'iam.login.showPassword' : 'iam.login.hidePassword') | translate"
           >
             <mat-icon fontSet="material-symbols-outlined">{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
           </button>
           @if (form.controls.password.hasError('required')) {
-            <mat-error>Ingresa tu contraseña</mat-error>
+            <mat-error>{{ 'iam.login.passwordRequired' | translate }}</mat-error>
           }
         </mat-form-field>
 
-        @if (errorMessage()) {
-          <p class="error" role="alert">{{ errorMessage() }}</p>
+        @if (errorKey()) {
+          <p class="error" role="alert">{{ errorKey() | translate }}</p>
         }
 
         <button mat-flat-button class="ingresar" type="submit" [disabled]="loading()">
-          {{ loading() ? 'Ingresando...' : 'Ingresar' }}
+          {{ (loading() ? 'iam.login.submitting' : 'iam.login.submit') | translate }}
         </button>
       </form>
 
       <div class="registro">
-        <p>¿No tienes cuenta?</p>
+        <p>{{ 'iam.login.noAccount' | translate }}</p>
         <div class="opciones">
-          <a mat-stroked-button routerLink="/register/applicant">Soy postulante</a>
-          <a mat-stroked-button routerLink="/register/company">Soy empresa</a>
+          <a mat-stroked-button routerLink="/register/applicant">{{ 'iam.login.registerCandidate' | translate }}</a>
+          <a mat-stroked-button routerLink="/register/company">{{ 'iam.login.registerCompany' | translate }}</a>
         </div>
       </div>
     </div>

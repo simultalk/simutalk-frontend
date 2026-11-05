@@ -73,3 +73,13 @@ form { display: flex; flex-direction: column; gap: 4px; }
   .marca ul { display: none; }
   .tarjeta { padding: 24px; }
 }
+
+.pantalla {
+  position: relative;
+}
+
+.idioma {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
