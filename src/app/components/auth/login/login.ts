@@ -1,18 +1,27 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthService } from '../../../services/auth.service';
 import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatInputModule, MatButtonModule, TranslatePipe, LanguageSwitcher],
+  imports: [
+    ReactiveFormsModule,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    TranslatePipe,
+    LanguageSwitcher,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -24,6 +33,7 @@ export class Login {
   loading = signal(false);
   /** Clave de traducción del error a mostrar (vacía si no hay error). */
   errorKey = signal('');
+  hidePassword = signal(true);
 
   form = this.fb.nonNullable.group({
     username: ['', Validators.required],
@@ -38,7 +48,9 @@ export class Login {
     this.loading.set(true);
     this.errorKey.set('');
 
-    this.auth.signIn(this.form.getRawValue()).subscribe({
+    // Los postulantes se registran con su correo, así que el usuario puede ser un correo
+    const { username, password } = this.form.getRawValue();
+    this.auth.signIn({ username: username.trim(), password }).subscribe({
       next: () => {
         this.loading.set(false);
         this.router.navigateByUrl(this.auth.homeUrl());

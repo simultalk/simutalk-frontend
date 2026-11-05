@@ -39,15 +39,25 @@
   },
   "iam": {
     "login": {
-      "subtitle": "Inicia sesión para continuar",
-      "username": "Usuario",
+      "title": "Inicia sesión",
+      "subtitle": "Entra con tu usuario o con el correo con el que te registraste.",
+      "username": "Usuario o correo",
       "password": "Contraseña",
-      "usernameRequired": "Ingresa tu usuario",
+      "usernameRequired": "Ingresa tu usuario o correo",
       "passwordRequired": "Ingresa tu contraseña",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
       "submit": "Ingresar",
       "submitting": "Ingresando...",
-      "invalidCredentials": "Usuario o contraseña incorrectos",
-      "serverError": "No se pudo conectar con el servidor. Inténtalo de nuevo."
+      "invalidCredentials": "Usuario, correo o contraseña incorrectos",
+      "serverError": "No se pudo conectar con el servidor. Inténtalo de nuevo.",
+      "noAccount": "¿No tienes cuenta?",
+      "registerCandidate": "Soy postulante",
+      "registerCompany": "Soy empresa",
+      "brandTitle": "Preselección con entrevistas que explican cada puntaje.",
+      "brandPoint1": "Criterios ponderados que define tu empresa",
+      "brandPoint2": "Entrevistas asincrónicas, a la hora del postulante",
+      "brandPoint3": "Ranking con la evidencia de cada respuesta"
     }
   }
 }

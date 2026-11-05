@@ -143,7 +143,7 @@ export class AssessmentDetailPageComponent implements OnInit {
       return {
         id: cs.id,
         name: cs.criterionName,
-        weight: cs.weight,
+        weight: cs.weightApplied,
         score: cs.score,
         evidenceCount: evidences.length,
         answers: answerViews,

@@ -39,15 +39,25 @@
   },
   "iam": {
     "login": {
-      "subtitle": "Sign in to continue",
-      "username": "Username",
+      "title": "Sign in",
+      "subtitle": "Use your username or the email you registered with.",
+      "username": "Username or email",
       "password": "Password",
-      "usernameRequired": "Enter your username",
+      "usernameRequired": "Enter your username or email",
       "passwordRequired": "Enter your password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
       "submit": "Sign in",
       "submitting": "Signing in...",
-      "invalidCredentials": "Incorrect username or password",
-      "serverError": "Couldn't connect to the server. Please try again."
+      "invalidCredentials": "Incorrect username, email or password",
+      "serverError": "Couldn't connect to the server. Please try again.",
+      "noAccount": "Don't have an account?",
+      "registerCandidate": "I'm a candidate",
+      "registerCompany": "I'm a company",
+      "brandTitle": "Screening with interviews that explain every score.",
+      "brandPoint1": "Weighted criteria defined by your company",
+      "brandPoint2": "Asynchronous interviews, on the candidate's schedule",
+      "brandPoint3": "Ranking with evidence from every answer"
     }
   }
 }

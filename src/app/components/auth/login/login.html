@@ -3,13 +3,24 @@
     <app-language-switcher />
   </div>
 
-  <mat-card class="tarjeta">
-    <mat-card-header>
-      <mat-card-title>SimuTalk</mat-card-title>
-      <mat-card-subtitle>{{ 'iam.login.subtitle' | translate }}</mat-card-subtitle>
-    </mat-card-header>
+  <section class="marca" aria-hidden="true">
+    <div class="logo">
+      <img src="logo.svg" alt="" width="40" height="40" />
+      <span>Simu<strong>Talk</strong></span>
+    </div>
+    <h2>{{ 'iam.login.brandTitle' | translate }}</h2>
+    <ul>
+      <li>{{ 'iam.login.brandPoint1' | translate }}</li>
+      <li>{{ 'iam.login.brandPoint2' | translate }}</li>
+      <li>{{ 'iam.login.brandPoint3' | translate }}</li>
+    </ul>
+  </section>
 
-    <mat-card-content>
+  <main class="panel">
+    <div class="tarjeta">
+      <h1>{{ 'iam.login.title' | translate }}</h1>
+      <p class="sub">{{ 'iam.login.subtitle' | translate }}</p>
+
       <form [formGroup]="form" (ngSubmit)="submit()">
         <mat-form-field appearance="outline">
           <mat-label>{{ 'iam.login.username' | translate }}</mat-label>
@@ -21,7 +32,21 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{ 'iam.login.password' | translate }}</mat-label>
-          <input matInput type="password" formControlName="password" autocomplete="current-password" />
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            autocomplete="current-password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+            [attr.aria-label]="(hidePassword() ? 'iam.login.showPassword' : 'iam.login.hidePassword') | translate"
+          >
+            <mat-icon fontSet="material-symbols-outlined">{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
           @if (form.controls.password.hasError('required')) {
             <mat-error>{{ 'iam.login.passwordRequired' | translate }}</mat-error>
           }
@@ -31,10 +56,18 @@
           <p class="error" role="alert">{{ errorKey() | translate }}</p>
         }
 
-        <button mat-flat-button type="submit" [disabled]="loading()">
+        <button mat-flat-button class="ingresar" type="submit" [disabled]="loading()">
           {{ (loading() ? 'iam.login.submitting' : 'iam.login.submit') | translate }}
         </button>
       </form>
-    </mat-card-content>
-  </mat-card>
+
+      <div class="registro">
+        <p>{{ 'iam.login.noAccount' | translate }}</p>
+        <div class="opciones">
+          <a mat-stroked-button routerLink="/register/applicant">{{ 'iam.login.registerCandidate' | translate }}</a>
+          <a mat-stroked-button routerLink="/register/company">{{ 'iam.login.registerCompany' | translate }}</a>
+        </div>
+      </div>
+    </div>
+  </main>
 </div>

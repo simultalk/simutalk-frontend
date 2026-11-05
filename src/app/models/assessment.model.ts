@@ -1,16 +1,18 @@
 export type IntegritySeverity = 'LOW' | 'MEDIUM' | 'HIGH';
 
+export type IntegrityFlagType = 'AI_GENERATED_CONTENT' | 'CV_INCONSISTENCY';
+
 export interface IntegrityFlag {
-  type: string;
+  flagType: IntegrityFlagType;
   severity: IntegritySeverity;
-  description?: string;
+  detail?: string;
 }
 
 export interface CriterionScore {
   id: number;              // criterionScoreId
   criterionId?: number;
   criterionName: string;
-  weight: number;          // peso aplicado
+  weightApplied: number;   // peso aplicado
   score: number;           // puntaje del criterio
 }
 

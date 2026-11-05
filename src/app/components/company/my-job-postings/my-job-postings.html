@@ -15,7 +15,7 @@
   <p>Todavía no tienes vacantes. Crea la primera.</p>
 } @else {
   <div class="st-card">
-    <table class="tabla">
+    <table class="tabla st-tabla-responsive">
       <thead>
       <tr>
         <th>Título</th>
@@ -28,10 +28,10 @@
       <tbody>
         @for (job of jobPostings(); track job.id) {
           <tr>
-            <td>{{ job.title }}</td>
-            <td>{{ job.closingDate | date: 'dd/MM/yyyy' }}</td>
-            <td>{{ job.totalWeight }} / 100</td>
-            <td><span class="estado" [class]="'estado ' + job.status">{{ statusLabels[job.status] }}</span></td>
+            <td class="completo"><strong>{{ job.title }}</strong></td>
+            <td data-label="Cierre">{{ job.closingDate | date: 'dd/MM/yyyy' }}</td>
+            <td data-label="Peso total">{{ job.totalWeight }} / 100</td>
+            <td data-label="Estado"><span class="estado" [class]="'estado ' + job.status">{{ statusLabels[job.status] }}</span></td>
             <td class="acciones">
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">Criterios</a>
                 <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">Guion</a>

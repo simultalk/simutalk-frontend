@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RecruitmentService } from '../../../services/recruitment.service';
+import { JobPostingSteps } from '../job-posting-steps/job-posting-steps';
 import {
   CriterionOrigin,
   CriterionRequest,
@@ -27,6 +28,7 @@ import {
     MatSelectModule,
     MatCheckboxModule,
     MatSnackBarModule,
+    JobPostingSteps,
   ],
   templateUrl: './job-posting-criteria.html',
   styleUrl: './job-posting-criteria.css',
