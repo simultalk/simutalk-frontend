@@ -1,5 +1,5 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { Injector, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { catchError, throwError } from 'rxjs';
 
@@ -54,9 +54,11 @@ const ERRORES: [RegExp, string, string[]?][] = [
 const POR_ESTADO: Record<number, string> = { 0: 'network', 403: 'forbidden', 500: 'server' };
 
 export const errorMessageInterceptor: HttpInterceptorFn = (req, next) => {
-  const i18n = inject(TranslateService);
+  // TranslateService se pide recién cuando hay un error: pedirlo antes crea una dependencia
+  // circular, porque el propio TranslateService carga los idiomas con HttpClient.
+  const injector = inject(Injector);
 
-  const traducir = (mensaje: string): string => {
+  const traducir = (i18n: TranslateService, mensaje: string): string => {
     for (const [patron, clave, nombres = []] of ERRORES) {
       const m = patron.exec(mensaje);
       if (!m) continue;
@@ -69,9 +71,10 @@ export const errorMessageInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
+      const i18n = injector.get(TranslateService);
       const original: string | undefined = error.error?.message;
       const porEstado = POR_ESTADO[error.status];
-      const message = original ? traducir(original) : porEstado ? i18n.instant(`shared.errors.${porEstado}`) : undefined;
+      const message = original ? traducir(i18n, original) : porEstado ? i18n.instant(`shared.errors.${porEstado}`) : undefined;
       if (!message) return throwError(() => error);
 
       return throwError(
