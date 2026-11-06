@@ -402,5 +402,23 @@
         }
       }
     }
+  },
+  "assessment": {
+  "integrity": {
+    "title": "Señales de integridad",
+    "disclaimer": "Estas señales son indicios para que los revises con tu propio criterio. No son una decisión automática del sistema ni descalifican al postulante: la decisión final siempre la toma una persona.",
+    "empty": "No se detectaron señales de integridad en esta evaluación.",
+    "detail": "Detalle",
+    "type": {
+      "AI": { "label": "Posible contenido generado por IA", "help": "Alguna respuesta tiene características de texto generado por una herramienta de IA. Conviene pedir al postulante que explique la respuesta con sus palabras." },
+      "CV": { "label": "Inconsistencia con el CV", "help": "Lo que el postulante respondió no coincide con lo que declara en su CV. Revisa ambos antes de sacar conclusiones." },
+      "OTHER": { "label": "Otra señal de integridad", "help": "El sistema marcó un comportamiento que vale la pena revisar manualmente." }
+    },
+    "severity": {
+      "LOW": { "label": "Severidad baja", "help": "Indicio leve; puede tener una explicación normal." },
+      "MEDIUM": { "label": "Severidad media", "help": "Indicio moderado; se recomienda revisarlo antes de decidir." },
+      "HIGH": { "label": "Severidad alta", "help": "Indicio fuerte; revísalo con atención, pero sigue sin ser una conclusión definitiva." }
+      }
+    }
   }
 }
