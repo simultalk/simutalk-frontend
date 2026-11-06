@@ -139,7 +139,12 @@ export const routes: Routes = [
           ),
       },
       pending('profiles/me', 'Mi perfil', [ROLE_CANDIDATE]),
-      pending('profiles/certifications', 'Certificaciones', [ROLE_CANDIDATE]),
+      {
+        path: 'profiles/certifications',
+        data: { roles: [ROLE_CANDIDATE] },
+        loadComponent: () =>
+          import('./components/applicant/certifications/certifications').then((m) => m.Certifications),
+      },
       // US-08: el postulante rinde su entrevista. "Mis postulaciones" (US-23) enlazará aquí.
       {
         path: 'interviews/take-interview/:applicationId',
