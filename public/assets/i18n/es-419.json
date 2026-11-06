@@ -620,6 +620,26 @@
       }
     }
   },
+  "analytics": {
+    "reports": {
+      "breadcrumb": "Inicio / Reportes",
+      "title": "Reportes",
+      "subtitle": "Resultados de tus vacantes publicadas.",
+      "loading": "Cargando vacantes...",
+      "loadError": "No se pudieron cargar tus vacantes. Inténtalo de nuevo.",
+      "noJobPostings": "Todavía no tienes vacantes publicadas. Los reportes aparecen cuando publicas una.",
+      "jobPosting": "Vacante",
+      "carbonTitle": "Huella de carbono evitada",
+      "carbonExplanation": "Son los viajes a entrevistas presenciales que los postulantes no tuvieron que hacer porque rindieron la entrevista asincrónica desde donde estaban.",
+      "loadingReport": "Cargando reporte...",
+      "carbonError": "No se pudo cargar el reporte de huella. Inténtalo de nuevo.",
+      "kgCo2e": "kg de CO₂e evitados",
+      "trips": "traslados evitados",
+      "km": "km evitados",
+      "carbonEmpty": "Aún no hay entrevistas completadas en esta vacante.",
+      "sdg": "Aporta al ODS 11.6: reducir el impacto ambiental de las ciudades, en especial la calidad del aire."
+    }
+  },
   "assessment": {
     "integrity": {
       "title": "Señales de integridad",

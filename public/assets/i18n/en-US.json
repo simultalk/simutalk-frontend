@@ -620,6 +620,26 @@
       }
     }
   },
+  "analytics": {
+    "reports": {
+      "breadcrumb": "Home / Reports",
+      "title": "Reports",
+      "subtitle": "Results of your published job postings.",
+      "loading": "Loading job postings...",
+      "loadError": "Your job postings could not be loaded. Try again.",
+      "noJobPostings": "You have no published job postings yet. Reports appear once you publish one.",
+      "jobPosting": "Job posting",
+      "carbonTitle": "Carbon footprint avoided",
+      "carbonExplanation": "These are the trips to in-person interviews that candidates did not have to make because they took the asynchronous interview from wherever they were.",
+      "loadingReport": "Loading report...",
+      "carbonError": "The footprint report could not be loaded. Try again.",
+      "kgCo2e": "kg of CO₂e avoided",
+      "trips": "trips avoided",
+      "km": "km avoided",
+      "carbonEmpty": "There are no completed interviews for this job posting yet.",
+      "sdg": "Contributes to SDG 11.6: reducing the environmental impact of cities, especially air quality."
+    }
+  },
   "assessment": {
     "integrity": {
       "title": "Integrity signals",
