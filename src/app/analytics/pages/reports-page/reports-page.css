@@ -1,5 +1,5 @@
-.reports { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
-.reports__title { margin: 0; }
+.reports { display: flex; flex-direction: column; gap: 16px; }
+.reports .st-page-header { margin-bottom: 0; }
 .reports__selector { max-width: 420px; }
 .reports__grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 .reports__card mat-card-content { padding-top: 16px; }
@@ -7,6 +7,32 @@
 .reports__empty, .reports__hint { margin: 0; opacity: 0.8; }
 .reports__error { display: flex; align-items: center; gap: 12px; margin: 0; }
 .reports__retry { cursor: pointer; }
+
+/* US-21 · Huella de carbono */
+.huella__titulo { font-size: 18px; margin: 0 0 4px; }
+.huella__explicacion { color: var(--st-text-secondary); margin: 0 0 16px; max-width: 720px; }
+.huella__resumen { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+.huella__dato {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  background: var(--st-background);
+}
+.huella__dato--destacado { background: var(--st-primary-soft); border-color: transparent; }
+.huella__valor { font-size: 28px; font-weight: 700; color: var(--st-text); }
+.huella__dato--destacado .huella__valor { color: var(--st-primary-dark); }
+.huella__etiqueta { font-size: 14px; color: var(--st-text-secondary); }
+.huella__ayuda { color: var(--st-text-secondary); font-size: 14px; margin: 12px 0 0; }
+.huella__ods {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--st-border);
+  font-size: 13px;
+  color: var(--st-text-secondary);
+}
 
 /* Visualmente oculto, pero disponible para lectores de pantalla */
 .sr-only {

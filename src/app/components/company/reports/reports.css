@@ -1,0 +1,32 @@
+.selector { width: 100%; max-width: 480px; }
+.subtitulo { font-size: 18px; margin: 0 0 4px; }
+.explicacion { color: var(--st-text-secondary); margin: 0 0 16px; max-width: 720px; }
+.error { color: var(--st-danger); margin: 0; }
+.ayuda { color: var(--st-text-secondary); font-size: 14px; margin: 12px 0 0; }
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  background: var(--st-background);
+}
+.tarjeta.destacada { background: var(--st-primary-soft); border-color: transparent; }
+.valor { font-size: 28px; font-weight: 700; color: var(--st-text); }
+.destacada .valor { color: var(--st-primary-dark); }
+.etiqueta { font-size: 14px; color: var(--st-text-secondary); }
+
+.ods {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--st-border);
+  font-size: 13px;
+  color: var(--st-text-secondary);
+}

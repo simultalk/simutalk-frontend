@@ -1,5 +1,9 @@
 <section class="reports">
-  <h1 class="reports__title">{{ 'analytics.reports.title' | translate }}</h1>
+  <header class="st-page-header">
+    <p class="st-breadcrumb">{{ 'analytics.reports.breadcrumb' | translate }}</p>
+    <h1 class="st-page-title">{{ 'analytics.reports.title' | translate }}</h1>
+    <p class="st-page-subtitle">{{ 'analytics.reports.subtitle' | translate }}</p>
+  </header>
 
   <!-- Espacio reservado: tarjetas de resumen de empresa (GET /reports/companies/{id}/summary) -->
 
@@ -100,6 +104,30 @@
       </mat-card>
     </div>
 
-    <!-- Espacio reservado: reporte de huella de carbono (US-21, Alexis) -->
+    <!-- US-21 · Huella de carbono evitada -->
+    @if (carbon(); as c) {
+      <section class="st-card huella" aria-labelledby="titulo-huella">
+        <h2 id="titulo-huella" class="huella__titulo">{{ 'analytics.reports.carbonTitle' | translate }}</h2>
+        <p class="huella__explicacion">{{ 'analytics.reports.carbonExplanation' | translate }}</p>
+        <div class="huella__resumen">
+          <div class="huella__dato huella__dato--destacado">
+            <span class="huella__valor">{{ c.totalKgCo2eAvoided | number: '1.0-2' }}</span>
+            <span class="huella__etiqueta">{{ 'analytics.reports.kgCo2e' | translate }}</span>
+          </div>
+          <div class="huella__dato">
+            <span class="huella__valor">{{ c.tripsAvoided | number: '1.0-0' }}</span>
+            <span class="huella__etiqueta">{{ 'analytics.reports.trips' | translate }}</span>
+          </div>
+          <div class="huella__dato">
+            <span class="huella__valor">{{ c.totalKmAvoided | number: '1.0-1' }}</span>
+            <span class="huella__etiqueta">{{ 'analytics.reports.km' | translate }}</span>
+          </div>
+        </div>
+        @if (c.tripsAvoided === 0) {
+          <p class="huella__ayuda">{{ 'analytics.reports.carbonEmpty' | translate }}</p>
+        }
+        <p class="huella__ods">{{ 'analytics.reports.sdg' | translate }}</p>
+      </section>
+    }
   }
 </section>
