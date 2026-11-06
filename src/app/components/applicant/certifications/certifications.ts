@@ -25,7 +25,7 @@ function expiresAfterIssued(group: AbstractControl): ValidationErrors | null {
   return toIsoDate(expiresAt) > toIsoDate(issuedAt) ? null : { expiresBeforeIssued: true };
 }
 
-/** US-15: el postulante registra sus certificaciones. */
+/** US-15: el postulante registra sus certificaciones. US-16: las verifica con el emisor. */
 @Component({
   selector: 'app-certifications',
   imports: [
@@ -63,6 +63,8 @@ export class Certifications implements OnInit {
   saving = signal(false);
   loadError = signal('');
   errorMessage = signal('');
+  // id de la certificación que se está verificando (US-16)
+  verifyingId = signal<number | null>(null);
 
   form = this.fb.group(
     {
@@ -146,6 +148,38 @@ export class Certifications implements OnInit {
       },
       error: (err) => {
         this.snackBar.open(err.error?.message || this.i18n.instant('profiles.certifications.removeError'), 'OK', {
+          duration: 5000,
+        });
+      },
+    });
+  }
+
+  /** Solo se consulta al emisor si tiene código y aún no se verificó (US-16). */
+  canVerify(certification: Certification): boolean {
+    return certification.verificationStatus === 'UNVERIFIED' && !!certification.credentialCode?.trim();
+  }
+
+  verify(certification: Certification): void {
+    this.verifyingId.set(certification.id);
+    this.profileService.verifyCertification(this.candidateId, certification.id).subscribe({
+      next: (result) => {
+        this.verifyingId.set(null);
+        this.certifications.update((list) =>
+          list.map((c) => (c.id === result.certification.id ? result.certification : c)),
+        );
+        const key = !result.conclusive
+          ? 'profiles.certifications.verifyInconclusive'
+          : result.matched
+            ? 'profiles.certifications.verifyMatched'
+            : 'profiles.certifications.verifyNotMatched';
+        const message = this.i18n.instant(key);
+        this.snackBar.open(result.detail ? `${message}. ${result.detail}` : message, 'OK', {
+          duration: result.conclusive && result.matched ? 4000 : 7000,
+        });
+      },
+      error: (err) => {
+        this.verifyingId.set(null);
+        this.snackBar.open(err.error?.message || this.i18n.instant('profiles.certifications.verifyError'), 'OK', {
           duration: 5000,
         });
       },

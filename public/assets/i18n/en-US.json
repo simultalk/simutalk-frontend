@@ -241,7 +241,13 @@
       "saveError": "The certification could not be saved. Try again.",
       "confirmRemove": "Delete the certification \"{{title}}\"?",
       "removed": "Certification deleted",
-      "removeError": "The certification could not be deleted."
+      "removeError": "The certification could not be deleted.",
+      "verify": "Verify with the issuer",
+      "verifying": "Verifying...",
+      "verifyMatched": "Verified by the issuer",
+      "verifyNotMatched": "The issuer does not recognize the code",
+      "verifyInconclusive": "The issuer could not be reached, try again later",
+      "verifyError": "The certification could not be verified. Try again."
     }
   },
   "recruitment": {

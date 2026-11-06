@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Certification, CertificationRequest } from '../models/profile.model';
+import { Certification, CertificationRequest, CertificationVerification } from '../models/profile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +30,14 @@ export class ProfileService {
   deleteCertification(candidateId: number, certificationId: number): Observable<void> {
     return this.http.delete<void>(
       `${this.apiUrl}/candidate-profiles/${candidateId}/certifications/${certificationId}`,
+    );
+  }
+
+  // POST /candidate-profiles/{id}/certifications/{certificationId}/verification (US-16)
+  verifyCertification(candidateId: number, certificationId: number): Observable<CertificationVerification> {
+    return this.http.post<CertificationVerification>(
+      `${this.apiUrl}/candidate-profiles/${candidateId}/certifications/${certificationId}/verification`,
+      {},
     );
   }
 }

@@ -241,7 +241,13 @@
       "saveError": "No se pudo guardar la certificación. Inténtalo de nuevo.",
       "confirmRemove": "¿Eliminar la certificación \"{{title}}\"?",
       "removed": "Certificación eliminada",
-      "removeError": "No se pudo eliminar la certificación."
+      "removeError": "No se pudo eliminar la certificación.",
+      "verify": "Verificar con el emisor",
+      "verifying": "Verificando...",
+      "verifyMatched": "Verificada por el emisor",
+      "verifyNotMatched": "El emisor no reconoce el código",
+      "verifyInconclusive": "No se pudo consultar al emisor, inténtalo más tarde",
+      "verifyError": "No se pudo verificar la certificación. Inténtalo de nuevo."
     }
   },
   "recruitment": {

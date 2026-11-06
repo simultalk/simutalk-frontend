@@ -23,3 +23,11 @@ export interface CertificationRequest {
   issuedAt: string; // yyyy-MM-dd
   expiresAt: string | null; // yyyy-MM-dd
 }
+
+/** Respuesta de POST .../certifications/{id}/verification (US-16). */
+export interface CertificationVerification {
+  certification: Certification;
+  matched: boolean;
+  conclusive: boolean;
+  detail: string | null;
+}

@@ -49,6 +49,11 @@
                 }
               </td>
               <td class="acciones">
+                @if (canVerify(c)) {
+                  <button mat-stroked-button type="button" [disabled]="verifyingId() === c.id" (click)="verify(c)">
+                    {{ (verifyingId() === c.id ? 'profiles.certifications.verifying' : 'profiles.certifications.verify') | translate }}
+                  </button>
+                }
                 <button mat-button class="eliminar" type="button" (click)="remove(c)">
                   {{ 'common.remove' | translate }}
                 </button>
