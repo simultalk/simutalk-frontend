@@ -1,8 +1,8 @@
 <div class="st-auth">
-  <div class="st-auth-herramientas">
+  <header class="st-auth-herramientas">
     <app-theme-toggle />
     <app-language-switcher />
-  </div>
+  </header>
 
   <aside class="st-auth-marca">
     <a class="st-auth-logo" routerLink="/login" [attr.aria-label]="'iam.register.goToLogin' | translate">
@@ -28,7 +28,7 @@
       <p class="st-auth-sub">{{ 'iam.applicantRegister.subtitle' | translate }}</p>
 
       <section class="st-auth-seccion">
-        <h3>{{ 'iam.applicantRegister.sectionData' | translate }}</h3>
+        <h2>{{ 'iam.applicantRegister.sectionData' | translate }}</h2>
 
         <mat-form-field appearance="outline">
           <mat-label>{{ 'iam.applicantRegister.firstName' | translate }}</mat-label>
@@ -84,7 +84,7 @@
       </section>
 
       <section class="st-auth-seccion">
-        <h3>{{ 'iam.applicantRegister.sectionAccess' | translate }}</h3>
+        <h2>{{ 'iam.applicantRegister.sectionAccess' | translate }}</h2>
 
         <mat-form-field appearance="outline" class="completo">
           <mat-label>{{ 'iam.applicantRegister.emailLabel' | translate }}</mat-label>

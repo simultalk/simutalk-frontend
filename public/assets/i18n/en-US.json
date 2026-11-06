@@ -49,6 +49,10 @@
     "theme": {
       "dark": "Dark mode"
     },
+        "a11y": {
+      "skipToContent": "Skip to content",
+      "board": "Candidate board by stage"
+    },
     "errors": {
       "closedPosting": "A closed job posting can no longer be modified.",
       "alreadyClosed": "The job posting is already closed.",
