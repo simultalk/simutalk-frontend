@@ -14,6 +14,11 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
 
+  // Idioma elegido en la app (LanguageService lo pone en <html lang>): el backend lo pasa a la IA.
+  if (isApiCall && !req.headers.has('Accept-Language')) {
+    req = req.clone({ setHeaders: { 'Accept-Language': document.documentElement.lang || 'es-419' } });
+  }
+
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       if (error.status === 401 && isApiCall && !isSignIn && auth.isLoggedIn()) {

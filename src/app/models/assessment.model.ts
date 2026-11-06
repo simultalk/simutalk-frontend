@@ -22,7 +22,7 @@ export interface Assessment {
   weightedScore: number;
   feedbackSummary?: string;
   criterionScores: CriterionScore[];
-  integrityFlags: IntegrityFlag[];
+  integrityFlags?: IntegrityFlag[];
 }
 
 export interface Evidence {

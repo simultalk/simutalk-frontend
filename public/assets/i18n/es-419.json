@@ -49,6 +49,10 @@
     "theme": {
       "dark": "Modo oscuro"
     },
+    "a11y": {
+      "skipToContent": "Saltar al contenido",
+      "board": "Tablero de postulantes por etapa"
+    },
     "errors": {
       "closedPosting": "Una vacante cerrada ya no se puede modificar.",
       "alreadyClosed": "La vacante ya está cerrada.",
@@ -194,6 +198,56 @@
       "submitting": "Registrando...",
       "success": "Empresa registrada. ¡Bienvenido a SimuTalk!",
       "error": "No se pudo completar el registro. Inténtalo de nuevo."
+    }
+  },
+  "profiles": {
+    "certifications": {
+      "breadcrumb": "Inicio / Mi perfil / Certificaciones",
+      "title": "Certificaciones",
+      "subtitle": "Registra tus certificaciones para que las empresas las tengan en cuenta al evaluarte.",
+      "loading": "Cargando certificaciones...",
+      "loadError": "No se pudieron cargar tus certificaciones. Inténtalo de nuevo.",
+      "empty": "Todavía no registras certificaciones.",
+      "colCertification": "Certificación",
+      "colCode": "Código",
+      "colIssuedAt": "Emisión",
+      "colExpiresAt": "Vencimiento",
+      "colStatus": "Estado",
+      "colActions": "Acciones",
+      "noCode": "Sin código",
+      "noExpiry": "No vence",
+      "status": {
+        "VERIFIED": "Verificada",
+        "UNVERIFIED": "Sin verificar",
+        "REJECTED": "Rechazada",
+        "EXPIRED": "Vencida"
+      },
+      "formAdd": "Agregar certificación",
+      "name": "Nombre de la certificación",
+      "nameRequired": "Escribe el nombre de la certificación",
+      "issuer": "Entidad emisora",
+      "issuerRequired": "Escribe la entidad que la emitió",
+      "code": "Código de credencial (opcional)",
+      "codeHint": "Es el código que aparece en tu certificado",
+      "noCodeWarning": "Sin código de credencial, esta certificación nunca se podrá verificar con el emisor.",
+      "issuedAt": "Fecha de emisión",
+      "issuedAtRequired": "Elige la fecha de emisión",
+      "issuedAtFuture": "La fecha de emisión no puede ser futura",
+      "expiresAt": "Fecha de vencimiento (opcional)",
+      "expiresAtHint": "Déjala vacía si no vence",
+      "expiresBeforeIssued": "La fecha de vencimiento debe ser posterior a la de emisión.",
+      "add": "Agregar certificación",
+      "added": "Certificación agregada",
+      "saveError": "No se pudo guardar la certificación. Inténtalo de nuevo.",
+      "confirmRemove": "¿Eliminar la certificación \"{{title}}\"?",
+      "removed": "Certificación eliminada",
+      "removeError": "No se pudo eliminar la certificación.",
+      "verify": "Verificar con el emisor",
+      "verifying": "Verificando...",
+      "verifyMatched": "Verificada por el emisor",
+      "verifyNotMatched": "El emisor no reconoce el código",
+      "verifyInconclusive": "No se pudo consultar al emisor, inténtalo más tarde",
+      "verifyError": "No se pudo verificar la certificación. Inténtalo de nuevo."
     }
   },
   "recruitment": {
@@ -493,33 +547,157 @@
       "back": "Volver a Mis postulaciones"
     }
   },
-  "analytics": {
-  "reports": {
-    "title": "Reportes de vacante",
-    "selectPosting": "Vacante",
-    "selectHint": "Elige una vacante para ver sus reportes.",
-    "error": "No se pudieron cargar los reportes.",
-    "retry": "Reintentar"
-  },
-  "funnel": {
-    "title": "Embudo de selección",
-    "subtitle": "Postulantes en cada etapa del proceso",
-    "series": "Postulantes",
-    "empty": "Esta vacante aún no tiene postulaciones.",
-    "stage": {
-      "RECEIVED": "Recibidos",
-      "INTERVIEWING": "En entrevista",
-      "ASSESSED": "Evaluados",
-      "SHORTLISTED": "Preseleccionados",
-      "REJECTED": "Rechazados",
-      "HIRED": "Contratados"
+  "interviews": {
+    "takeInterview": {
+      "label": "Entrevista asincrónica",
+      "titleFallback": "Tu entrevista",
+      "progress": "Pregunta {{current}} de {{total}}",
+      "progressLabel": "Avance de la entrevista",
+      "loading": "Cargando tu entrevista...",
+      "unavailableTitle": "No pudimos abrir la entrevista",
+      "retry": "Reintentar",
+      "introTitle": "Antes de empezar",
+      "introOneAtATime": "Responderás una pregunta a la vez; cada una tiene su propio tiempo.",
+      "introDictation": "Puedes dictar tu respuesta con el micrófono o escribirla.",
+      "introNoChanges": "Una vez enviada, una respuesta ya no se puede cambiar.",
+      "introResume": "Si sales, al volver sigues desde la primera pregunta que te falte.",
+      "introDeadline": "Tienes hasta el {{date}} para empezar.",
+      "start": "Empezar",
+      "starting": "Empezando...",
+      "timeLeft": "Tiempo restante {{time}}",
+      "timeUp": "Se acabó el tiempo de esta pregunta. Envía lo que alcanzaste a responder.",
+      "answerLabel": "Tu respuesta",
+      "listening": "Escuchando… habla con claridad y luego revisa el texto.",
+      "answerRequired": "Responde la pregunta antes de enviar.",
+      "dictate": "Dictar respuesta",
+      "stopDictation": "Detener dictado",
+      "send": "Enviar",
+      "sending": "Enviando...",
+      "answeredTitle": "Respondiste todas las preguntas",
+      "answeredSaved": "Tus {{count}} respuestas ya quedaron guardadas.",
+      "answeredWarning": "Cuando la envíes, la empresa podrá evaluarla y ya no podrás cambiar tus respuestas.",
+      "finish": "Terminar y enviar entrevista",
+      "finishing": "Enviando...",
+      "completedTitle": "Entrevista enviada",
+      "completedSummary": "Respondiste {{answered}} preguntas en {{duration}}.",
+      "completedText": "La empresa ya puede revisar tus respuestas. Te avisaremos por correo cómo sigue tu postulación.",
+      "expiredTitle": "La entrevista venció",
+      "expiredText": "El plazo para empezarla era hasta el {{date}}.",
+      "errors": {
+        "noApplication": "La dirección no indica a qué postulación pertenece la entrevista.",
+        "network": "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+        "forbidden": "Esta entrevista pertenece a otro postulante.",
+        "notInvited": "Todavía no tienes una invitación a entrevista para esta postulación.",
+        "loadFailed": "No se pudo cargar la entrevista. Inténtalo de nuevo en unos minutos.",
+        "sendNetwork": "No se pudo enviar: revisa tu conexión. Tu respuesta sigue escrita, vuelve a intentarlo.",
+        "sendFailed": "No se pudo enviar tu respuesta. Tu texto sigue escrito, vuelve a intentarlo.",
+        "finishFailed": "No se pudo enviar la entrevista. Inténtalo de nuevo."
+      }
+    },
+    "dictation": {
+      "notAllowed": "Permite el uso del micrófono para este sitio (ícono a la izquierda de la dirección) y vuelve a pulsar Dictar.",
+      "noMicrophone": "No encontramos un micrófono conectado. Puedes escribir tu respuesta.",
+      "noSpeech": "No te escuchamos. Pulsa Dictar respuesta y habla cerca del micrófono.",
+      "network": "El dictado necesita internet y solo funciona en Google Chrome o Microsoft Edge. Puedes escribir tu respuesta.",
+      "generic": "No se pudo usar el dictado. Puedes escribir tu respuesta."
+    },
+    "inviteDialog": {
+      "title": "Invitar a entrevista",
+      "explanation": "El postulante podrá rendir la entrevista asincrónica cuando le acomode, hasta la fecha límite. Le llegará un correo con la invitación.",
+      "deadlineLabel": "Fecha límite",
+      "deadlineHint": "Último día para iniciar la entrevista",
+      "deadlineRequired": "Elige una fecha límite",
+      "deadlineMin": "La fecha debe ser a partir de mañana",
+      "send": "Enviar invitación",
+      "sending": "Enviando...",
+      "errors": {
+        "network": "No se pudo conectar con el servidor. Inténtalo de nuevo.",
+        "invalidDate": "La fecha límite no es válida: elige una fecha a partir de mañana.",
+        "sessionExpired": "Tu sesión expiró. Vuelve a iniciar sesión.",
+        "forbidden": "Solo el reclutador dueño de la vacante puede invitar a este postulante.",
+        "notFound": "No existe esa postulación.",
+        "generic": "No se pudo enviar la invitación. Inténtalo de nuevo."
+      }
     }
   },
-  "criteria": {
-    "title": "Puntaje medio por criterio",
-    "subtitle": "Promedio de las evaluaciones de la vacante",
-    "series": "Puntaje medio",
-    "empty": "Aún no hay evaluaciones calculadas para esta vacante."
+  "analytics": {
+    "reports": {
+      "breadcrumb": "Inicio / Reportes",
+      "title": "Reportes",
+      "subtitle": "Resultados de tus vacantes publicadas.",
+      "loading": "Cargando vacantes...",
+      "loadError": "No se pudieron cargar tus vacantes. Inténtalo de nuevo.",
+      "noJobPostings": "Todavía no tienes vacantes publicadas. Los reportes aparecen cuando publicas una.",
+      "jobPosting": "Vacante",
+      "carbonTitle": "Huella de carbono evitada",
+      "carbonExplanation": "Son los viajes a entrevistas presenciales que los postulantes no tuvieron que hacer porque rindieron la entrevista asincrónica desde donde estaban.",
+      "loadingReport": "Cargando reporte...",
+      "carbonError": "No se pudo cargar el reporte de huella. Inténtalo de nuevo.",
+      "kgCo2e": "kg de CO₂e evitados",
+      "trips": "traslados evitados",
+      "km": "km evitados",
+      "carbonEmpty": "Aún no hay entrevistas completadas en esta vacante.",
+      "sdg": "Aporta al ODS 11.6: reducir el impacto ambiental de las ciudades, en especial la calidad del aire.",
+      "selectPosting": "Vacante",
+      "selectHint": "Elige una vacante para ver sus reportes.",
+      "error": "No se pudieron cargar los reportes.",
+      "retry": "Reintentar"
+    },
+    "funnel": {
+      "title": "Embudo de selección",
+      "subtitle": "Postulantes en cada etapa del proceso",
+      "series": "Postulantes",
+      "empty": "Esta vacante aún no tiene postulaciones.",
+      "stage": {
+        "RECEIVED": "Recibidos",
+        "INTERVIEWING": "En entrevista",
+        "ASSESSED": "Evaluados",
+        "SHORTLISTED": "Preseleccionados",
+        "REJECTED": "Rechazados",
+        "HIRED": "Contratados"
+      }
+    },
+    "criteria": {
+      "title": "Puntaje medio por criterio",
+      "subtitle": "Promedio de las evaluaciones de la vacante",
+      "series": "Puntaje medio",
+      "empty": "Aún no hay evaluaciones calculadas para esta vacante."
+    }
+  },
+  "assessment": {
+    "integrity": {
+      "title": "Señales de integridad",
+      "disclaimer": "Estas señales son indicios para que los revises con tu propio criterio. No son una decisión automática del sistema ni descalifican al postulante: la decisión final siempre la toma una persona.",
+      "empty": "No se detectaron señales de integridad en esta evaluación.",
+      "detail": "Detalle",
+      "type": {
+        "AI": {
+          "label": "Posible contenido generado por IA",
+          "help": "Alguna respuesta tiene características de texto generado por una herramienta de IA. Conviene pedir al postulante que explique la respuesta con sus palabras."
+        },
+        "CV": {
+          "label": "Inconsistencia con el CV",
+          "help": "Lo que el postulante respondió no coincide con lo que declara en su CV. Revisa ambos antes de sacar conclusiones."
+        },
+        "OTHER": {
+          "label": "Otra señal de integridad",
+          "help": "El sistema marcó un comportamiento que vale la pena revisar manualmente."
+        }
+      },
+      "severity": {
+        "LOW": {
+          "label": "Severidad baja",
+          "help": "Indicio leve; puede tener una explicación normal."
+        },
+        "MEDIUM": {
+          "label": "Severidad media",
+          "help": "Indicio moderado; se recomienda revisarlo antes de decidir."
+        },
+        "HIGH": {
+          "label": "Severidad alta",
+          "help": "Indicio fuerte; revísalo con atención, pero sigue sin ser una conclusión definitiva."
+        }
+      }
+    }
   }
-}
 }

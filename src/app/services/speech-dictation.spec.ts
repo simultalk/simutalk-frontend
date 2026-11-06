@@ -52,6 +52,15 @@ describe('SpeechDictationService', () => {
     expect(onText).toHaveBeenCalledWith('contaría los duplicados');
   });
 
+  it('dicta en inglés cuando la app está en inglés', () => {
+    (window as unknown as Record<string, unknown>)['webkitSpeechRecognition'] = FakeRecognition;
+    const service = TestBed.inject(SpeechDictationService);
+
+    service.start(vi.fn(), 'en-US');
+
+    expect(FakeRecognition.last.lang).toBe('en-US');
+  });
+
   it('si el micrófono está bloqueado lo explica', () => {
     (window as unknown as Record<string, unknown>)['webkitSpeechRecognition'] = FakeRecognition;
     const service = TestBed.inject(SpeechDictationService);
@@ -59,7 +68,7 @@ describe('SpeechDictationService', () => {
     service.start(vi.fn());
     FakeRecognition.last.onerror?.({ error: 'not-allowed' });
 
-    expect(service.error()).toContain('Permite el uso del micrófono');
+    expect(service.error()).toBe('interviews.dictation.notAllowed');
     expect(service.listening()).toBe(false);
   });
 
@@ -74,13 +83,13 @@ describe('SpeechDictationService', () => {
     service.start(vi.fn());
 
     expect(service.listening()).toBe(false);
-    expect(service.error()).toBe('No se pudo usar el dictado. Puedes escribir tu respuesta.');
+    expect(service.error()).toBe('interviews.dictation.generic');
   });
 
   it.each([
-    ['audio-capture', 'No encontramos un micrófono'],
-    ['no-speech', 'No te escuchamos'],
-    ['network', 'solo funciona en Google Chrome o Microsoft Edge'],
+    ['audio-capture', 'interviews.dictation.noMicrophone'],
+    ['no-speech', 'interviews.dictation.noSpeech'],
+    ['network', 'interviews.dictation.network'],
   ])('explica el error %s', (error, expected) => {
     expect(dictationErrorMessage(error)).toContain(expected);
   });

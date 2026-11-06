@@ -1,0 +1,54 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'analytics.reports.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'analytics.reports.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'analytics.reports.subtitle' | translate }}</p>
+</header>
+
+@if (loading()) {
+  <p role="status">{{ 'analytics.reports.loading' | translate }}</p>
+} @else if (errorMessage()) {
+  <p class="error" role="alert">{{ errorMessage() }}</p>
+} @else if (jobPostings().length === 0) {
+  <div class="st-card">
+    <p>{{ 'analytics.reports.noJobPostings' | translate }}</p>
+  </div>
+} @else {
+  <mat-form-field appearance="outline" class="selector">
+    <mat-label>{{ 'analytics.reports.jobPosting' | translate }}</mat-label>
+    <mat-select [value]="selectedId()" (selectionChange)="select($event.value)">
+      @for (j of jobPostings(); track j.id) {
+        <mat-option [value]="j.id">{{ j.title }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <section class="st-card" aria-labelledby="titulo-huella">
+    <h2 id="titulo-huella" class="subtitulo">{{ 'analytics.reports.carbonTitle' | translate }}</h2>
+    <p class="explicacion">{{ 'analytics.reports.carbonExplanation' | translate }}</p>
+
+    @if (loadingReport()) {
+      <p role="status">{{ 'analytics.reports.loadingReport' | translate }}</p>
+    } @else if (reportError()) {
+      <p class="error" role="alert">{{ reportError() }}</p>
+    } @else if (carbon(); as c) {
+      <div class="resumen">
+        <div class="tarjeta destacada">
+          <span class="valor">{{ c.totalKgCo2eAvoided | number: '1.0-2' }}</span>
+          <span class="etiqueta">{{ 'analytics.reports.kgCo2e' | translate }}</span>
+        </div>
+        <div class="tarjeta">
+          <span class="valor">{{ c.tripsAvoided | number: '1.0-0' }}</span>
+          <span class="etiqueta">{{ 'analytics.reports.trips' | translate }}</span>
+        </div>
+        <div class="tarjeta">
+          <span class="valor">{{ c.totalKmAvoided | number: '1.0-1' }}</span>
+          <span class="etiqueta">{{ 'analytics.reports.km' | translate }}</span>
+        </div>
+      </div>
+      @if (c.tripsAvoided === 0) {
+        <p class="ayuda">{{ 'analytics.reports.carbonEmpty' | translate }}</p>
+      }
+      <p class="ods">{{ 'analytics.reports.sdg' | translate }}</p>
+    }
+  </section>
+}

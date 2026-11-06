@@ -1,4 +1,5 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -13,10 +14,12 @@ import { RankingService } from '../../../services/ranking';
 import { getChartPalette } from '../../chart-palette';
 import { CriterionAverage, FunnelStageCount } from '../../model/job-posting-report';
 import { ReportService } from '../../services/report.service';
+import { AnalyticsService } from '../../../services/analytics.service';
+import { CarbonSavingsReport } from '../../../models/analytics.model';
 
 @Component({
   selector: 'app-reports-page',
-  imports: [BaseChartDirective, MatCardModule, MatProgressBarModule, MatSelectModule, TranslatePipe],
+  imports: [BaseChartDirective, DecimalPipe, MatCardModule, MatProgressBarModule, MatSelectModule, TranslatePipe],
   templateUrl: './reports-page.html',
   styleUrl: './reports-page.css',
   // Chart.js se registra aquí (y no en app.config) para que viaje en el chunk diferido
@@ -26,6 +29,7 @@ import { ReportService } from '../../services/report.service';
 })
 export class ReportsPage implements OnInit {
   private readonly reportService = inject(ReportService);
+  private readonly analyticsService = inject(AnalyticsService);
   private readonly rankingService = inject(RankingService);
   private readonly translate = inject(TranslateService);
   private readonly snackBar = inject(MatSnackBar);
@@ -38,6 +42,8 @@ export class ReportsPage implements OnInit {
   readonly error = signal(false);
   readonly funnel = signal<FunnelStageCount[]>([]);
   readonly criteria = signal<CriterionAverage[]>([]);
+  /** US-21: huella de carbono evitada por la vacante. */
+  readonly carbon = signal<CarbonSavingsReport | null>(null);
 
   /** Cambia cuando se carga o cambia el idioma, para recalcular las etiquetas. */
   private readonly i18nTick = toSignal(
@@ -139,10 +145,12 @@ export class ReportsPage implements OnInit {
     forkJoin({
       funnel: this.reportService.getFunnel(id),
       criteria: this.reportService.getCriterionAverages(id),
+      carbon: this.analyticsService.getCarbonSavings(id),
     }).subscribe({
-      next: ({ funnel, criteria }) => {
+      next: ({ funnel, criteria, carbon }) => {
         this.funnel.set(funnel);
         this.criteria.set(criteria);
+        this.carbon.set(carbon);
         this.loading.set(false);
       },
       error: () => {

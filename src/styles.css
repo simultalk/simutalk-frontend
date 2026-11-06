@@ -171,7 +171,7 @@ body {
   column-gap: 16px;
 }
 
-.st-auth-seccion h3 {
+.st-auth-seccion h2 {
   grid-column: 1 / -1;
   font-size: 14px;
   font-weight: 700;
@@ -258,4 +258,15 @@ main.contenido > :not(router-outlet) {
     padding-top: 8px !important;
     border-top: 1px solid var(--st-border) !important;
   }
+}
+
+/* Accesibilidad (T-05): foco visible en todo lo que se puede usar con el teclado. */
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+[role='link']:focus-visible,
+[role='region'][tabindex]:focus-visible,
+[tabindex]:not([tabindex='-1']):focus-visible {
+  outline: 2px solid var(--st-primary);
+  outline-offset: 2px;
 }
