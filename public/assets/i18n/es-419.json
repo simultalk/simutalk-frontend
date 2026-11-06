@@ -49,6 +49,10 @@
     "theme": {
       "dark": "Modo oscuro"
     },
+        "a11y": {
+      "skipToContent": "Saltar al contenido",
+      "board": "Tablero de postulantes por etapa"
+    },
     "errors": {
       "closedPosting": "Una vacante cerrada ya no se puede modificar.",
       "alreadyClosed": "La vacante ya está cerrada.",
@@ -520,6 +524,96 @@
     "subtitle": "Promedio de las evaluaciones de la vacante",
     "series": "Puntaje medio",
     "empty": "Aún no hay evaluaciones calculadas para esta vacante."
+  },"interviews": {
+    "takeInterview": {
+      "label": "Entrevista asincrónica",
+      "titleFallback": "Tu entrevista",
+      "progress": "Pregunta {{current}} de {{total}}",
+      "progressLabel": "Avance de la entrevista",
+      "loading": "Cargando tu entrevista...",
+      "unavailableTitle": "No pudimos abrir la entrevista",
+      "retry": "Reintentar",
+      "introTitle": "Antes de empezar",
+      "introOneAtATime": "Responderás una pregunta a la vez; cada una tiene su propio tiempo.",
+      "introDictation": "Puedes dictar tu respuesta con el micrófono o escribirla.",
+      "introNoChanges": "Una vez enviada, una respuesta ya no se puede cambiar.",
+      "introResume": "Si sales, al volver sigues desde la primera pregunta que te falte.",
+      "introDeadline": "Tienes hasta el {{date}} para empezar.",
+      "start": "Empezar",
+      "starting": "Empezando...",
+      "timeLeft": "Tiempo restante {{time}}",
+      "timeUp": "Se acabó el tiempo de esta pregunta. Envía lo que alcanzaste a responder.",
+      "answerLabel": "Tu respuesta",
+      "listening": "Escuchando… habla con claridad y luego revisa el texto.",
+      "answerRequired": "Responde la pregunta antes de enviar.",
+      "dictate": "Dictar respuesta",
+      "stopDictation": "Detener dictado",
+      "send": "Enviar",
+      "sending": "Enviando...",
+      "answeredTitle": "Respondiste todas las preguntas",
+      "answeredSaved": "Tus {{count}} respuestas ya quedaron guardadas.",
+      "answeredWarning": "Cuando la envíes, la empresa podrá evaluarla y ya no podrás cambiar tus respuestas.",
+      "finish": "Terminar y enviar entrevista",
+      "finishing": "Enviando...",
+      "completedTitle": "Entrevista enviada",
+      "completedSummary": "Respondiste {{answered}} preguntas en {{duration}}.",
+      "completedText": "La empresa ya puede revisar tus respuestas. Te avisaremos por correo cómo sigue tu postulación.",
+      "expiredTitle": "La entrevista venció",
+      "expiredText": "El plazo para empezarla era hasta el {{date}}.",
+      "errors": {
+        "noApplication": "La dirección no indica a qué postulación pertenece la entrevista.",
+        "network": "No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+        "forbidden": "Esta entrevista pertenece a otro postulante.",
+        "notInvited": "Todavía no tienes una invitación a entrevista para esta postulación.",
+        "loadFailed": "No se pudo cargar la entrevista. Inténtalo de nuevo en unos minutos.",
+        "sendNetwork": "No se pudo enviar: revisa tu conexión. Tu respuesta sigue escrita, vuelve a intentarlo.",
+        "sendFailed": "No se pudo enviar tu respuesta. Tu texto sigue escrito, vuelve a intentarlo.",
+        "finishFailed": "No se pudo enviar la entrevista. Inténtalo de nuevo."
+      }
+    },
+    "dictation": {
+      "notAllowed": "Permite el uso del micrófono para este sitio (ícono a la izquierda de la dirección) y vuelve a pulsar Dictar.",
+      "noMicrophone": "No encontramos un micrófono conectado. Puedes escribir tu respuesta.",
+      "noSpeech": "No te escuchamos. Pulsa Dictar respuesta y habla cerca del micrófono.",
+      "network": "El dictado necesita internet y solo funciona en Google Chrome o Microsoft Edge. Puedes escribir tu respuesta.",
+      "generic": "No se pudo usar el dictado. Puedes escribir tu respuesta."
+    },
+    "inviteDialog": {
+      "title": "Invitar a entrevista",
+      "explanation": "El postulante podrá rendir la entrevista asincrónica cuando le acomode, hasta la fecha límite. Le llegará un correo con la invitación.",
+      "deadlineLabel": "Fecha límite",
+      "deadlineHint": "Último día para iniciar la entrevista",
+      "deadlineRequired": "Elige una fecha límite",
+      "deadlineMin": "La fecha debe ser a partir de mañana",
+      "send": "Enviar invitación",
+      "sending": "Enviando...",
+      "errors": {
+        "network": "No se pudo conectar con el servidor. Inténtalo de nuevo.",
+        "invalidDate": "La fecha límite no es válida: elige una fecha a partir de mañana.",
+        "sessionExpired": "Tu sesión expiró. Vuelve a iniciar sesión.",
+        "forbidden": "Solo el reclutador dueño de la vacante puede invitar a este postulante.",
+        "notFound": "No existe esa postulación.",
+        "generic": "No se pudo enviar la invitación. Inténtalo de nuevo."
   }
-}
+  }
+    }
+  },
+  "assessment": {
+    "integrity": {
+      "title": "Integrity signals",
+      "disclaimer": "These signals are hints for you to review with your own judgment. They are not an automatic decision by the system and do not disqualify the candidate: a person always makes the final decision.",
+      "empty": "No integrity signals were detected in this assessment.",
+      "detail": "Detail",
+      "type": {
+        "AI": { "label": "Possible AI-generated content", "help": "An answer shows traits of text produced by an AI tool. Consider asking the candidate to explain it in their own words." },
+        "CV": { "label": "Inconsistency with CV", "help": "What the candidate answered does not match what their CV states. Review both before drawing conclusions." },
+        "OTHER": { "label": "Other integrity signal", "help": "The system flagged behavior that is worth reviewing manually." }
+      },
+      "severity": {
+        "LOW": { "label": "Low severity", "help": "Mild hint; it may have a normal explanation." },
+        "MEDIUM": { "label": "Medium severity", "help": "Moderate hint; review it before deciding." },
+        "HIGH": { "label": "High severity", "help": "Strong hint; review it carefully, but it is still not a definitive conclusion." }
+      }
+    }
+  }
 }

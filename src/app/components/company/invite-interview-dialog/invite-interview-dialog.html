@@ -1,14 +1,11 @@
-<h2 mat-dialog-title>Invitar a entrevista</h2>
+<h2 mat-dialog-title>{{ 'interviews.inviteDialog.title' | translate }}</h2>
 
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-dialog-content>
-    <p class="explicacion">
-      El postulante podrá rendir la entrevista asincrónica cuando le acomode, hasta la fecha límite.
-      Le llegará un correo con la invitación.
-    </p>
+    <p class="explicacion">{{ 'interviews.inviteDialog.explanation' | translate }}</p>
 
     <mat-form-field appearance="outline" class="campo">
-      <mat-label>Fecha límite</mat-label>
+      <mat-label>{{ 'interviews.inviteDialog.deadlineLabel' | translate }}</mat-label>
       <input
         matInput
         readonly
@@ -19,24 +16,24 @@
       />
       <mat-datepicker-toggle matIconSuffix [for]="picker" />
       <mat-datepicker #picker />
-      <mat-hint>Último día para iniciar la entrevista</mat-hint>
+      <mat-hint>{{ 'interviews.inviteDialog.deadlineHint' | translate }}</mat-hint>
       @if (form.controls.expiresAt.hasError('required')) {
-        <mat-error>Elige una fecha límite</mat-error>
+        <mat-error>{{ 'interviews.inviteDialog.deadlineRequired' | translate }}</mat-error>
       }
       @if (form.controls.expiresAt.hasError('matDatepickerMin')) {
-        <mat-error>La fecha debe ser a partir de mañana</mat-error>
+        <mat-error>{{ 'interviews.inviteDialog.deadlineMin' | translate }}</mat-error>
       }
     </mat-form-field>
 
     @if (errorMessage()) {
-      <p class="error" role="alert">{{ errorMessage() }}</p>
+      <p class="error" role="alert">{{ errorMessage() | translate }}</p>
     }
   </mat-dialog-content>
 
   <mat-dialog-actions align="end">
-    <button mat-button type="button" mat-dialog-close [disabled]="loading()">Cancelar</button>
+    <button mat-button type="button" mat-dialog-close [disabled]="loading()">{{ 'common.cancel' | translate }}</button>
     <button mat-flat-button type="submit" [disabled]="loading()">
-      {{ loading() ? 'Enviando...' : 'Enviar invitación' }}
+      {{ (loading() ? 'interviews.inviteDialog.sending' : 'interviews.inviteDialog.send') | translate }}
     </button>
   </mat-dialog-actions>
 </form>

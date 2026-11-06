@@ -49,6 +49,10 @@
     "theme": {
       "dark": "Dark mode"
     },
+        "a11y": {
+      "skipToContent": "Skip to content",
+      "board": "Candidate board by stage"
+    },
     "errors": {
       "closedPosting": "A closed job posting can no longer be modified.",
       "alreadyClosed": "The job posting is already closed.",
@@ -515,11 +519,104 @@
       "HIRED": "Hired"
     }
   },
-  "criteria": {
-    "title": "Average score per criterion",
-    "subtitle": "Average of the assessments for this job posting",
-    "series": "Average score",
-    "empty": "No assessments have been calculated for this job posting yet."
+      "criteria": {
+      "title": "Average score per criterion",
+      "subtitle": "Average of the assessments for this job posting",
+      "series": "Average score",
+      "empty": "No assessments have been calculated for this job posting yet."
+    }
+  },
+  "interviews": {
+  "interviews": {
+    "takeInterview": {
+      "label": "Asynchronous interview",
+      "titleFallback": "Your interview",
+      "progress": "Question {{current}} of {{total}}",
+      "progressLabel": "Interview progress",
+      "loading": "Loading your interview...",
+      "unavailableTitle": "We couldn't open the interview",
+      "retry": "Try again",
+      "introTitle": "Before you start",
+      "introOneAtATime": "You will answer one question at a time; each one has its own time limit.",
+      "introDictation": "You can dictate your answer with the microphone or type it.",
+      "introNoChanges": "Once sent, an answer can no longer be changed.",
+      "introResume": "If you leave, you will continue from the first question you have not answered.",
+      "introDeadline": "You have until {{date}} to start.",
+      "start": "Start",
+      "starting": "Starting...",
+      "timeLeft": "Time left {{time}}",
+      "timeUp": "Time is up for this question. Send what you managed to answer.",
+      "answerLabel": "Your answer",
+      "listening": "Listening… speak clearly and then review the text.",
+      "answerRequired": "Answer the question before sending.",
+      "dictate": "Dictate answer",
+      "stopDictation": "Stop dictation",
+      "send": "Send",
+      "sending": "Sending...",
+      "answeredTitle": "You answered every question",
+      "answeredSaved": "Your {{count}} answers have been saved.",
+      "answeredWarning": "Once you submit it, the company can assess it and you will no longer be able to change your answers.",
+      "finish": "Finish and submit interview",
+      "finishing": "Submitting...",
+      "completedTitle": "Interview submitted",
+      "completedSummary": "You answered {{answered}} questions in {{duration}}.",
+      "completedText": "The company can now review your answers. We will email you about the next steps of your application.",
+      "expiredTitle": "The interview has expired",
+      "expiredText": "The deadline to start it was {{date}}.",
+      "errors": {
+        "noApplication": "The address does not say which application this interview belongs to.",
+        "network": "Could not connect to the server. Check your connection and try again.",
+        "forbidden": "This interview belongs to another candidate.",
+        "notInvited": "You don't have an interview invitation for this application yet.",
+        "loadFailed": "The interview could not be loaded. Try again in a few minutes.",
+        "sendNetwork": "Could not send: check your connection. Your answer is still written, try again.",
+        "sendFailed": "Your answer could not be sent. Your text is still written, try again.",
+        "finishFailed": "The interview could not be submitted. Try again."
+      }
+    },
+    "dictation": {
+      "notAllowed": "Allow microphone access for this site (icon to the left of the address) and press Dictate again.",
+      "noMicrophone": "No microphone was found. You can type your answer.",
+      "noSpeech": "We couldn't hear you. Press Dictate answer and speak close to the microphone.",
+      "network": "Dictation needs internet and only works in Google Chrome or Microsoft Edge. You can type your answer.",
+      "generic": "Dictation could not be used. You can type your answer."
+    },
+    "inviteDialog": {
+      "title": "Invite to interview",
+      "explanation": "The candidate can take the asynchronous interview whenever it suits them, until the deadline. They will receive an invitation email.",
+      "deadlineLabel": "Deadline",
+      "deadlineHint": "Last day to start the interview",
+      "deadlineRequired": "Choose a deadline",
+      "deadlineMin": "The date must be tomorrow or later",
+      "send": "Send invitation",
+      "sending": "Sending...",
+      "errors": {
+        "network": "Could not connect to the server. Try again.",
+        "invalidDate": "The deadline is not valid: choose a date from tomorrow on.",
+        "sessionExpired": "Your session has expired. Sign in again.",
+        "forbidden": "Only the recruiter who owns the job posting can invite this candidate.",
+        "notFound": "That application does not exist.",
+        "generic": "The invitation could not be sent. Try again."
+      }
+   }
+    }
+  },
+  "assessment": {
+    "integrity": {
+      "title": "Integrity signals",
+      "disclaimer": "These signals are hints for you to review with your own judgment. They are not an automatic decision by the system and do not disqualify the candidate: a person always makes the final decision.",
+      "empty": "No integrity signals were detected in this assessment.",
+      "detail": "Detail",
+      "type": {
+        "AI": { "label": "Possible AI-generated content", "help": "An answer shows traits of text produced by an AI tool. Consider asking the candidate to explain it in their own words." },
+        "CV": { "label": "Inconsistency with CV", "help": "What the candidate answered does not match what their CV states. Review both before drawing conclusions." },
+        "OTHER": { "label": "Other integrity signal", "help": "The system flagged behavior that is worth reviewing manually." }
+      },
+      "severity": {
+        "LOW": { "label": "Low severity", "help": "Mild hint; it may have a normal explanation." },
+        "MEDIUM": { "label": "Medium severity", "help": "Moderate hint; review it before deciding." },
+        "HIGH": { "label": "High severity", "help": "Strong hint; review it carefully, but it is still not a definitive conclusion." }
+      }
+    }
   }
-}
 }

@@ -1,0 +1,43 @@
+@if (flags() !== null && flags() !== undefined) {
+  <section class="integrity" aria-labelledby="integrity-title">
+    <h2 id="integrity-title">{{ 'assessment.integrity.title' | translate }}</h2>
+
+    <p class="integrity__disclaimer" role="note">
+      <mat-icon aria-hidden="true">info</mat-icon>
+      {{ 'assessment.integrity.disclaimer' | translate }}
+    </p>
+
+    @if (items().length === 0) {
+      <p class="integrity__empty">{{ 'assessment.integrity.empty' | translate }}</p>
+    } @else {
+      <ul class="integrity__list">
+        @for (f of items(); track $index) {
+          <li class="integrity__item" [attr.data-severity]="f.severity">
+            <mat-chip-set [attr.aria-label]="'assessment.integrity.title' | translate">
+              <mat-chip class="chip-type">
+                <mat-icon matChipAvatar aria-hidden="true">{{ icon(f.kind) }}</mat-icon>
+                {{ 'assessment.integrity.type.' + f.kind + '.label' | translate }}
+              </mat-chip>
+              <mat-chip class="chip-severity">
+                <mat-icon matChipAvatar aria-hidden="true">{{ severityIcon(f.severity) }}</mat-icon>
+                {{ 'assessment.integrity.severity.' + f.severity + '.label' | translate }}
+              </mat-chip>
+            </mat-chip-set>
+
+            <p class="integrity__what">
+              {{ 'assessment.integrity.type.' + f.kind + '.help' | translate }}
+            </p>
+            <p class="integrity__level">
+              {{ 'assessment.integrity.severity.' + f.severity + '.help' | translate }}
+            </p>
+            @if (f.detail) {
+              <p class="integrity__detail">
+                <strong>{{ 'assessment.integrity.detail' | translate }}:</strong> {{ f.detail }}
+              </p>
+            }
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}
