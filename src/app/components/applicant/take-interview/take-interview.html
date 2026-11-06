@@ -34,133 +34,152 @@
     }
 
     @case ('intro') {
-      <mat-card appearance="outlined" class="tarjeta">
-        <mat-card-content>
-          <h2>{{ 'interviews.takeInterview.introTitle' | translate }}</h2>
-          <ul class="datos">
-            <li>{{ 'interviews.takeInterview.introOneAtATime' | translate }}</li>
-            <li>{{ 'interviews.takeInterview.introDictation' | translate }}</li>
-            <li>{{ 'interviews.takeInterview.introNoChanges' | translate }}</li>
-            <li>{{ 'interviews.takeInterview.introResume' | translate }}</li>
-            @if (session(); as s) {
-              <li>{{ 'interviews.takeInterview.introDeadline' | translate: { date: (s.expiresAt | date: 'dd/MM/yyyy') } }}</li>
-            }
-          </ul>
-          @if (errorMessage()) {
-            <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
-          }
-        </mat-card-content>
-        <mat-card-actions align="end">
-          <button mat-flat-button type="button" (click)="start()" [disabled]="sending()">
-            {{ (sending() ? 'interviews.takeInterview.starting' : 'interviews.takeInterview.start') | translate }}
-          </button>
-        </mat-card-actions>
-      </mat-card>
+      <section class="chat" aria-live="polite">
+        <div class="msg msg-ia">
+          <span class="avatar" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">smart_toy</mat-icon></span>
+          <div class="burbuja">
+            <span class="autor">{{ 'interviews.takeInterview.interviewer' | translate }}</span>
+            <p>{{ 'interviews.takeInterview.chatGreeting' | translate }}</p>
+            <ul class="datos">
+              <li>{{ 'interviews.takeInterview.introOneAtATime' | translate }}</li>
+              <li>{{ 'interviews.takeInterview.introDictation' | translate }}</li>
+              <li>{{ 'interviews.takeInterview.introNoChanges' | translate }}</li>
+              <li>{{ 'interviews.takeInterview.introResume' | translate }}</li>
+              @if (session(); as s) {
+                <li>{{ 'interviews.takeInterview.introDeadline' | translate: { date: (s.expiresAt | date: 'dd/MM/yyyy') } }}</li>
+              }
+            </ul>
+          </div>
+        </div>
+      </section>
+      @if (errorMessage()) {
+        <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
+      }
+      <div class="acciones fin">
+        <button mat-flat-button type="button" (click)="start()" [disabled]="sending()">
+          {{ (sending() ? 'interviews.takeInterview.starting' : 'interviews.takeInterview.start') | translate }}
+        </button>
+      </div>
     }
 
     @case ('question') {
-      @if (current(); as question) {
-        <mat-card appearance="outlined" class="tarjeta">
-          <mat-card-content>
-            <div class="cabecera-pregunta">
-              <div>
-                @if (followUp()) {
-                  <span class="chip-repregunta">
-                    <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">smart_toy</mat-icon>
-                    {{ 'interviews.takeInterview.followUpLabel' | translate }}
-                  </span>
-                  <p class="ayuda-repregunta">{{ 'interviews.takeInterview.followUpHint' | translate }}</p>
-                }
-                <h2 class="enunciado">{{ statement() }}</h2>
-              </div>
-              <div
-                class="temporizador"
-                [class.alerta]="warning()"
-                role="timer"
-                [attr.aria-label]="'interviews.takeInterview.timeLeft' | translate: { time: timeLabel() }"
-              >
-                <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">timer</mat-icon>
-                <span>{{ timeLabel() }}</span>
-              </div>
-            </div>
-
-            @if (timeUp()) {
-              <p class="aviso" role="alert">{{ 'interviews.takeInterview.timeUp' | translate }}</p>
-            }
-
-            <mat-form-field appearance="outline" class="respuesta">
-              <mat-label>{{ 'interviews.takeInterview.answerLabel' | translate }}</mat-label>
-              <textarea matInput [formControl]="answer" rows="8"></textarea>
-              @if (dictation.listening()) {
-                <mat-hint>{{ 'interviews.takeInterview.listening' | translate }}</mat-hint>
-              }
-            </mat-form-field>
-
-            @if (triedToSubmit() && !answer.value.trim()) {
-              <p class="aviso" role="alert">{{ 'interviews.takeInterview.answerRequired' | translate }}</p>
-            }
-            @if (errorMessage()) {
-              <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
-            }
-            @if (dictation.error()) {
-              <p class="aviso" role="alert">{{ dictation.error() | translate }}</p>
-            }
-          </mat-card-content>
-
-          <mat-card-actions class="acciones">
-            @if (reader.supported) {
-              <button mat-stroked-button type="button" (click)="toggleReading()">
-                <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ reader.speaking() ? 'volume_off' : 'volume_up' }}</mat-icon>
-                {{ (reader.speaking() ? 'interviews.takeInterview.stopListening' : 'interviews.takeInterview.listen') | translate }}
-              </button>
-            }
-            @if (dictation.supported()) {
-              <button mat-stroked-button type="button" (click)="toggleDictation()" [disabled]="timeUp() || sending()">
-                <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ dictation.listening() ? 'stop' : 'mic' }}</mat-icon>
-                {{ (dictation.listening() ? 'interviews.takeInterview.stopDictation' : 'interviews.takeInterview.dictate') | translate }}
-              </button>
-            }
-            <span class="espacio"></span>
-            <button mat-flat-button type="button" (click)="submit()" [disabled]="sending()">
-              {{ (sending() ? 'interviews.takeInterview.sending' : 'interviews.takeInterview.send') | translate }}
+      <ng-container *ngTemplateOutlet="conversacion" />
+      @if (!preparingFollowUp()) {
+      <div class="compositor">
+        <div class="compositor-barra">
+          <div
+            class="temporizador"
+            [class.alerta]="warning()"
+            role="timer"
+            [attr.aria-label]="'interviews.takeInterview.timeLeft' | translate: { time: timeLabel() }"
+          >
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">timer</mat-icon>
+            <span>{{ timeLabel() }}</span>
+          </div>
+          @if (dictation.listening()) {
+            <span class="escuchando" role="status">
+              <span class="punto" aria-hidden="true"></span>{{ 'interviews.takeInterview.listening' | translate }}
+            </span>
+          }
+          <span class="espacio"></span>
+          @if (reader.supported) {
+            <button
+              mat-icon-button
+              type="button"
+              (click)="toggleReading()"
+              [attr.aria-label]="(reader.speaking() ? 'interviews.takeInterview.stopListening' : 'interviews.takeInterview.listen') | translate"
+              [matTooltip]="(reader.speaking() ? 'interviews.takeInterview.stopListening' : 'interviews.takeInterview.listen') | translate"
+            >
+              <mat-icon fontSet="material-symbols-outlined">{{ reader.speaking() ? 'volume_off' : 'volume_up' }}</mat-icon>
             </button>
-          </mat-card-actions>
-        </mat-card>
+          }
+        </div>
+
+        @if (timeUp()) {
+          <p class="aviso" role="alert">{{ 'interviews.takeInterview.timeUp' | translate }}</p>
+        }
+        @if (triedToSubmit() && !answer.value.trim()) {
+          <p class="aviso" role="alert">{{ 'interviews.takeInterview.answerRequired' | translate }}</p>
+        }
+        @if (errorMessage()) {
+          <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
+        }
+        @if (dictation.error()) {
+          <p class="aviso" role="alert">{{ dictation.error() | translate }}</p>
+        }
+
+        <div class="compositor-fila">
+          <textarea
+            class="campo"
+            [formControl]="answer"
+            rows="3"
+            (keydown.control.enter)="submit()"
+            [attr.aria-label]="'interviews.takeInterview.answerLabel' | translate"
+            [placeholder]="'interviews.takeInterview.composerLabel' | translate"
+          ></textarea>
+          @if (dictation.supported()) {
+            <button
+              mat-icon-button
+              type="button"
+              class="boton-mic"
+              [class.activo]="dictation.listening()"
+              (click)="toggleDictation()"
+              [disabled]="timeUp() || sending()"
+              [attr.aria-label]="(dictation.listening() ? 'interviews.takeInterview.stopDictation' : 'interviews.takeInterview.dictate') | translate"
+              [matTooltip]="(dictation.listening() ? 'interviews.takeInterview.stopDictation' : 'interviews.takeInterview.dictate') | translate"
+            >
+              <mat-icon fontSet="material-symbols-outlined">{{ dictation.listening() ? 'stop' : 'mic' }}</mat-icon>
+            </button>
+          }
+          <button
+            mat-flat-button
+            type="button"
+            class="boton-enviar"
+            (click)="submit()"
+            [disabled]="sending()"
+          >
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">send</mat-icon>
+            {{ (sending() ? 'interviews.takeInterview.sending' : 'interviews.takeInterview.send') | translate }}
+          </button>
+        </div>
+      </div>
       }
     }
 
     @case ('answered') {
-      <mat-card appearance="outlined" class="tarjeta">
-        <mat-card-content>
-          <h2>{{ 'interviews.takeInterview.answeredTitle' | translate }}</h2>
-          <p>{{ 'interviews.takeInterview.answeredSaved' | translate: { count: answeredCount() } }}</p>
-          <p>{{ 'interviews.takeInterview.answeredWarning' | translate }}</p>
-          @if (errorMessage()) {
-            <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
-          }
-        </mat-card-content>
-        <mat-card-actions align="end">
-          <button mat-flat-button type="button" (click)="finish()" [disabled]="sending()">
-            {{ (sending() ? 'interviews.takeInterview.finishing' : 'interviews.takeInterview.finish') | translate }}
-          </button>
-        </mat-card-actions>
-      </mat-card>
+      <ng-container *ngTemplateOutlet="conversacion" />
+      <p class="nota">{{ 'interviews.takeInterview.answeredSaved' | translate: { count: answeredCount() } }}
+        {{ 'interviews.takeInterview.answeredWarning' | translate }}</p>
+      @if (errorMessage()) {
+        <p class="aviso" role="alert">{{ errorMessage() | translate }}</p>
+      }
+      <div class="acciones fin">
+        <button mat-flat-button type="button" (click)="finish()" [disabled]="sending()">
+          {{ (sending() ? 'interviews.takeInterview.finishing' : 'interviews.takeInterview.finish') | translate }}
+        </button>
+      </div>
     }
 
     @case ('completed') {
-      <mat-card appearance="outlined" class="tarjeta">
-        <mat-card-content>
-          <h2>{{ 'interviews.takeInterview.completedTitle' | translate }}</h2>
-          @if (session(); as s) {
-            @if (s.totalDurationSeconds > 0) {
-              <p class="resumen">
-                {{ 'interviews.takeInterview.completedSummary' | translate: { answered: s.answeredQuestions, duration: totalDuration() } }}
-              </p>
+      @if (messages().length) {
+        <ng-container *ngTemplateOutlet="conversacion" />
+      }
+      <section class="chat">
+        <div class="msg msg-ia">
+          <span class="avatar" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">check_circle</mat-icon></span>
+          <div class="burbuja">
+            <span class="autor">{{ 'interviews.takeInterview.interviewer' | translate }}</span>
+            <p>{{ 'interviews.takeInterview.completedChat' | translate }}</p>
+            @if (session(); as s) {
+              @if (s.totalDurationSeconds > 0) {
+                <p class="resumen">
+                  {{ 'interviews.takeInterview.completedSummary' | translate: { answered: s.answeredQuestions, duration: totalDuration() } }}
+                </p>
+              }
             }
-          }
-          <p>{{ 'interviews.takeInterview.completedText' | translate }}</p>
-        </mat-card-content>
-      </mat-card>
+          </div>
+        </div>
+      </section>
     }
 
     @case ('expired') {
@@ -175,3 +194,38 @@
     }
   }
 </div>
+
+<ng-template #conversacion>
+  <section class="chat" aria-live="polite" [attr.aria-label]="'interviews.takeInterview.label' | translate">
+    @for (m of messages(); track $index) {
+      @if (m.from === 'ai') {
+        <div class="msg msg-ia" [class.msg-repregunta]="m.followUp">
+          <span class="avatar" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">smart_toy</mat-icon></span>
+          <div class="burbuja">
+            <span class="autor">
+              {{ 'interviews.takeInterview.interviewer' | translate }}
+              @if (m.followUp) {
+                <span class="chip-repregunta">{{ 'interviews.takeInterview.followUpLabel' | translate }}</span>
+              }
+            </span>
+            <p>{{ messageText(m) }}</p>
+          </div>
+        </div>
+      } @else {
+        <div class="msg msg-yo">
+          <div class="burbuja">
+            <span class="autor">{{ 'interviews.takeInterview.you' | translate }}</span>
+            <p>{{ m.text }}</p>
+          </div>
+        </div>
+      }
+    }
+    @if (sending() || preparingFollowUp()) {
+      <div class="msg msg-ia escribiendo" role="status">
+        <span class="avatar" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">smart_toy</mat-icon></span>
+        <div class="burbuja"><span class="puntos" aria-hidden="true"><i></i><i></i><i></i></span></div>
+      </div>
+    }
+    <div class="chat-fin"></div>
+  </section>
+</ng-template>

@@ -1,5 +1,5 @@
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InterviewSession } from '../../../models/interview-session';
 import { Answer, FollowUpQuestion, Question } from '../../../models/question';
@@ -19,6 +20,14 @@ import { SpeechDictationService } from '../../../services/speech-dictation';
 import { SpeechReaderService } from '../../../services/speech-reader';
 
 type Step = 'loading' | 'unavailable' | 'intro' | 'question' | 'answered' | 'completed' | 'expired';
+
+/** Un mensaje de la conversación. Los de la IA con `key` son textos de la interfaz (se traducen). */
+export interface ChatMessage {
+  from: 'ai' | 'user';
+  text?: string;
+  key?: string;
+  followUp?: boolean;
+}
 
 /** Segundos restantes desde los que el temporizador se muestra en rojo. */
 export const WARNING_SECONDS = 30;
@@ -48,6 +57,8 @@ export const WARNING_SECONDS = 30;
     MatIconModule,
     MatInputModule,
     MatProgressBarModule,
+    MatTooltipModule,
+    NgTemplateOutlet,
     TranslatePipe,
   ],
   templateUrl: './take-interview.html',
@@ -85,6 +96,9 @@ export class TakeInterview {
   followUp = signal<FollowUpQuestion | null>(null);
   /** Mientras la IA prepara la repregunta. */
   preparingFollowUp = signal(false);
+  /** Conversación con el entrevistador: preguntas, repreguntas y respuestas en orden. */
+  messages = signal<ChatMessage[]>([]);
+
   /** Enunciado en pantalla: la repregunta, si hay una, o la pregunta del guion. */
   statement = computed(() => this.followUp()?.statement ?? this.current()?.statement ?? '');
 
@@ -183,6 +197,7 @@ export class TakeInterview {
       .subscribe({
         next: (saved) => {
           this.sending.set(false);
+          this.say({ from: 'user', text: transcript });
           if (followUp) {
             // Respondió la repregunta: sigue con la próxima pregunta del guion
             this.followUp.set(null);
@@ -281,6 +296,7 @@ export class TakeInterview {
         this.sending.set(false);
         this.questions.set([...questions].sort((a, b) => a.position - b.position));
         this.answerIds.set(regularAnswerIds(answers));
+        this.messages.set(rebuildConversation(this.questions(), answers));
         // Si salió con una repregunta generada pero sin responder, se la vuelve a mostrar
         const pending = pendingFollowUp(answers);
         if (pending) {
@@ -299,10 +315,17 @@ export class TakeInterview {
   private showNextUnanswered(): void {
     this.stopTimer();
     const next = this.questions().findIndex((question) => !(question.id in this.answerIds()));
+    const answeredSomething = this.messages().some((m) => m.from === 'user');
     if (next === -1) {
+      this.say({ from: 'ai', key: 'interviews.takeInterview.chatEnd' });
+      this.speakPending();
       this.step.set('answered');
       return;
     }
+    if (answeredSomething) {
+      this.say({ from: 'ai', key: 'interviews.takeInterview.chatNext' });
+    }
+    this.say({ from: 'ai', text: this.questions()[next].statement });
     this.step.set('question');
     this.index.set(next);
     this.startQuestion(this.questions()[next].maxDurationSeconds);
@@ -311,8 +334,8 @@ export class TakeInterview {
   /** US-09: pide la repregunta a la IA. Si falla, la entrevista sigue sin ella. */
   private requestFollowUp(sessionId: number, answerId: number): void {
     this.stopTimer();
+    // Se queda en la conversación: el entrevistador aparece "escribiendo" mientras llega la repregunta.
     this.preparingFollowUp.set(true);
-    this.step.set('loading');
     this.sessions.generateFollowUp(sessionId, answerId).subscribe({
       next: (followUp) => {
         this.preparingFollowUp.set(false);
@@ -329,6 +352,8 @@ export class TakeInterview {
     this.stopTimer();
     const index = this.questions().findIndex((q) => q.id === followUp.questionId);
     this.followUp.set(followUp);
+    this.say({ from: 'ai', key: 'interviews.takeInterview.chatFollowUpLead' });
+    this.say({ from: 'ai', text: followUp.statement, followUp: true });
     this.step.set('question');
     if (index >= 0) this.index.set(index);
     this.startQuestion(this.questions()[index]?.maxDurationSeconds ?? 120);
@@ -347,7 +372,29 @@ export class TakeInterview {
         this.dictation.stop();
       }
     }, 1000);
-    this.reader.speak(this.statement());
+    this.speakPending();
+  }
+
+  /** Agrega un mensaje a la conversación y baja hasta él. */
+  private say(message: ChatMessage): void {
+    this.messages.update((list) => [...list, message]);
+    setTimeout(() => document.querySelector('.chat-fin')?.scrollIntoView({ behavior: 'smooth', block: 'end' }));
+  }
+
+  /** Lee en voz alta los últimos mensajes del entrevistador (desde la última respuesta del postulante). */
+  private speakPending(): void {
+    const list = this.messages();
+    const pending: string[] = [];
+    for (let i = list.length - 1; i >= 0 && list[i].from === 'ai'; i--) {
+      const m = list[i];
+      pending.unshift(m.key ? this.translate.instant(m.key) : (m.text ?? ''));
+    }
+    this.reader.speak(pending.join(' '));
+  }
+
+  /** Texto de un mensaje para la pantalla. */
+  messageText(message: ChatMessage): string {
+    return message.key ? this.translate.instant(message.key) : (message.text ?? '');
   }
 
   private loadJobTitle(jobPostingId: number): void {
@@ -384,6 +431,33 @@ export function isPastDue(expiresAt: string, today = new Date()): boolean {
   const lastDay = new Date(year, month - 1, day);
   const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   return startOfToday > lastDay;
+}
+
+/**
+ * Rehace la conversación al volver a la entrevista: saludo y, por cada pregunta respondida, la pregunta,
+ * la respuesta y, si hubo, la repregunta con su respuesta. Lo pendiente lo agrega el flujo normal.
+ */
+export function rebuildConversation(questions: Question[], answers: Answer[]): ChatMessage[] {
+  const messages: ChatMessage[] = [{ from: 'ai', key: 'interviews.takeInterview.chatGreeting' }];
+  const regular = new Map(answers.filter((a) => !a.followUp).map((a) => [a.questionId, a]));
+  const followUps = new Map(answers.filter((a) => a.followUp && a.parentAnswerId).map((a) => [a.parentAnswerId!, a]));
+  let first = true;
+  for (const question of questions) {
+    const answer = regular.get(question.id);
+    if (!answer) continue;
+    if (!first) messages.push({ from: 'ai', key: 'interviews.takeInterview.chatNext' });
+    first = false;
+    messages.push({ from: 'ai', text: question.statement }, { from: 'user', text: answer.transcript });
+    const followUpAnswer = followUps.get(answer.id);
+    if (answer.followUpQuestion && followUpAnswer) {
+      messages.push(
+        { from: 'ai', key: 'interviews.takeInterview.chatFollowUpLead' },
+        { from: 'ai', text: answer.followUpQuestion, followUp: true },
+        { from: 'user', text: followUpAnswer.transcript },
+      );
+    }
+  }
+  return messages;
 }
 
 /** US-09: repregunta ya generada cuya respuesta todavía no se envió. */
