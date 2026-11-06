@@ -8,6 +8,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Observable, forkJoin, map, of } from 'rxjs';
 import { AssessmentService } from '../../../services/assessment.service';
+import { IntegritySignalsComponent } from '../../components/integrity-signals/integrity-signals';
 import {
   Assessment,
   Evidence,
@@ -88,6 +89,7 @@ export function buildSegments(transcript: string, evidences: Evidence[]): TextSe
     MatButtonModule,
     MatChipsModule,
     MatProgressSpinnerModule,
+    IntegritySignalsComponent,
   ],
   templateUrl: './assessment-detail-page.html',
   styleUrl: './assessment-detail-page.css',
