@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InterviewSession } from '../../../models/interview-session';
 import { Answer, Question } from '../../../models/question';
 import { InterviewSessionService } from '../../../services/interview-session';
@@ -30,7 +31,10 @@ export const WARNING_SECONDS = 30;
  * 3. GET /job-postings/{jobPostingId}/questions y GET /interview-sessions/{sessionId}/answers
  * 4. Enviar: POST /interview-sessions/{sessionId}/answers. Se guarda el id de cada respuesta para la
  *    repregunta (US-09). Si el postulante sale y vuelve, sigue en la primera pregunta sin responder.
- * 5. Terminar (US-10): POST /interview-sessions/{sessionId}/completion cuando ya respondió todo.
+ * 5. Terminar (US-10): POST /interview-sessions/{sessionId}/completion cuando ya respondió todo;
+ *    la pantalla final muestra la duración total y la postulación pasa sola a ASSESSED.
+ * Textos: claves interviews.takeInterview.* (docs/I18N.md). Los mensajes de error del backend llegan
+ * ya traducidos por errorMessageInterceptor.
  */
 @Component({
   selector: 'app-take-interview',
@@ -43,6 +47,7 @@ export const WARNING_SECONDS = 30;
     MatIconModule,
     MatInputModule,
     MatProgressBarModule,
+    TranslatePipe,
   ],
   templateUrl: './take-interview.html',
   styleUrl: './take-interview.css',
@@ -51,6 +56,7 @@ export class TakeInterview {
   private readonly sessions = inject(InterviewSessionService);
   private readonly recruitment = inject(RecruitmentService);
   readonly dictation = inject(SpeechDictationService);
+  private readonly translate = inject(TranslateService);
 
   readonly applicationId = Number(inject(ActivatedRoute).snapshot.paramMap.get('applicationId'));
 
@@ -63,9 +69,9 @@ export class TakeInterview {
   index = signal(0);
   remainingSeconds = signal(0);
   sending = signal(false);
-  /** Motivo cuando la entrevista no se puede abrir. */
+  /** Clave de traducción del motivo cuando la entrevista no se puede abrir. */
   unavailableMessage = signal('');
-  /** Error al empezar o al enviar una respuesta; la pantalla sigue usable. */
+  /** Clave de traducción, o mensaje del backend ya traducido, del error al empezar, enviar o terminar. */
   errorMessage = signal('');
   /** El aviso de respuesta vacía solo aparece después de intentar enviar. */
   triedToSubmit = signal(false);
@@ -83,6 +89,8 @@ export class TakeInterview {
   timeUp = computed(() => this.step() === 'question' && this.remainingSeconds() === 0);
   warning = computed(() => this.remainingSeconds() <= WARNING_SECONDS);
   timeLabel = computed(() => formatSeconds(this.remainingSeconds()));
+  /** Duración total de la entrevista enviada, por ejemplo "12 min 05 s". */
+  totalDuration = computed(() => formatDuration(this.session()?.totalDurationSeconds ?? 0));
 
   private timer: ReturnType<typeof setInterval> | null = null;
   private questionStartedAt = 0;
@@ -97,7 +105,7 @@ export class TakeInterview {
 
   load(): void {
     if (!this.applicationId) {
-      this.showUnavailable('La dirección no indica a qué postulación pertenece la entrevista.');
+      this.showUnavailable('interviews.takeInterview.errors.noApplication');
       return;
     }
     this.step.set('loading');
@@ -125,8 +133,9 @@ export class TakeInterview {
       },
       error: (error: HttpErrorResponse) => {
         this.sending.set(false);
-        if (error.status === 422 && String(error.error?.message ?? '').includes('expired')) {
-          this.step.set('expired');
+        if (error.status === 422) {
+          // Por ejemplo, venció la fecha límite: se recarga la sesión para mostrar su estado real.
+          this.load();
           return;
         }
         this.errorMessage.set(sendErrorMessage(error));
@@ -166,9 +175,10 @@ export class TakeInterview {
         },
         error: (error: HttpErrorResponse) => {
           this.sending.set(false);
-          if (error.status === 422 && String(error.error?.message ?? '').includes('already been answered')) {
-            // Ya estaba guardada (por ejemplo, desde otra pestaña): se recarga el avance real.
-            this.loadScript(session);
+          if (error.status === 422) {
+            // La pregunta ya estaba respondida (por ejemplo, desde otra pestaña) o la sesión cambió de
+            // estado: se recarga el avance real. El mensaje llega traducido, así que no se compara su texto.
+            this.load();
             return;
           }
           this.errorMessage.set(sendErrorMessage(error));
@@ -192,8 +202,8 @@ export class TakeInterview {
       },
       error: (error: HttpErrorResponse) => {
         this.sending.set(false);
-        // El backend explica qué falta (por ejemplo, preguntas sin responder)
-        this.errorMessage.set(error.error?.message || 'No se pudo enviar la entrevista. Inténtalo de nuevo.');
+        // El backend explica qué falta (por ejemplo, preguntas sin responder), ya traducido.
+        this.errorMessage.set(error.error?.message || 'interviews.takeInterview.errors.finishFailed');
       },
     });
   }
@@ -206,7 +216,7 @@ export class TakeInterview {
     this.dictation.start((text) => {
       const previous = this.answer.value.trim();
       this.answer.setValue(previous ? `${previous} ${text}` : text);
-    });
+    }, this.translate.getCurrentLang());
   }
 
   private showSessionStatus(session: InterviewSession): void {
@@ -315,25 +325,29 @@ export function regularAnswerIds(answers: Answer[]): Record<number, number> {
   return ids;
 }
 
+/** 725 -> "12 min 05 s" */
+export function formatDuration(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  return `${minutes} min ${String(seconds % 60).padStart(2, '0')} s`;
+}
+
+/** Clave de traducción del motivo por el que no se pudo abrir la entrevista. */
 export function loadErrorMessage(error: HttpErrorResponse): string {
   switch (error.status) {
     case 0:
-      return 'No se pudo conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.';
+      return 'interviews.takeInterview.errors.network';
     case 403:
-      return 'Esta entrevista pertenece a otro postulante.';
+      return 'interviews.takeInterview.errors.forbidden';
     case 404:
-      return 'Todavía no tienes una invitación a entrevista para esta postulación.';
+      return 'interviews.takeInterview.errors.notInvited';
     default:
-      return 'No se pudo cargar la entrevista. Inténtalo de nuevo en unos minutos.';
+      return 'interviews.takeInterview.errors.loadFailed';
   }
 }
 
+/** Clave de traducción del error al empezar o al enviar una respuesta. */
 export function sendErrorMessage(error: HttpErrorResponse): string {
-  if (error.status === 0) {
-    return 'No se pudo enviar: revisa tu conexión. Tu respuesta sigue escrita, vuelve a intentarlo.';
-  }
-  if (error.status === 422) {
-    return 'La entrevista ya no acepta respuestas. Recarga la página para ver su estado.';
-  }
-  return 'No se pudo enviar tu respuesta. Tu texto sigue escrito, vuelve a intentarlo.';
+  return error.status === 0
+    ? 'interviews.takeInterview.errors.sendNetwork'
+    : 'interviews.takeInterview.errors.sendFailed';
 }

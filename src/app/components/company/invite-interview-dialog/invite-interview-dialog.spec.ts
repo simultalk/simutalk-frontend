@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { of, throwError } from 'rxjs';
+import { provideTranslateService } from '@ngx-translate/core';
 import { InterviewSessionService } from '../../../services/interview-session';
 import { InviteInterviewDialog, inviteErrorMessage, toIsoDate } from './invite-interview-dialog';
 
@@ -21,6 +22,7 @@ describe('InviteInterviewDialog', () => {
     TestBed.configureTestingModule({
       imports: [InviteInterviewDialog],
       providers: [
+        provideTranslateService(),
         { provide: InterviewSessionService, useValue: { invite } },
         { provide: MatDialogRef, useValue: { close, disableClose: false } },
         { provide: MAT_DIALOG_DATA, useValue: { applicationId: 5 } },
@@ -58,13 +60,14 @@ describe('InviteInterviewDialog', () => {
   });
 
   it('si el backend rechaza, muestra el motivo y no se cierra', () => {
-    invite.mockReturnValue(throwError(() => httpError(422, 'The application already has an interview session')));
+    // El interceptor ya tradujo el mensaje del backend.
+    invite.mockReturnValue(throwError(() => httpError(422, 'Esta postulación ya tiene una entrevista.')));
 
     dialog.submit();
 
     expect(close).not.toHaveBeenCalled();
     expect(dialog.loading()).toBe(false);
-    expect(dialog.errorMessage()).toBe('Este postulante ya fue invitado a la entrevista.');
+    expect(dialog.errorMessage()).toBe('Esta postulación ya tiene una entrevista.');
   });
 });
 
@@ -76,14 +79,13 @@ describe('toIsoDate', () => {
 
 describe('inviteErrorMessage', () => {
   it.each([
-    [0, '', 'No se pudo conectar con el servidor. Inténtalo de nuevo.'],
-    [400, '', 'La fecha límite no es válida: elige una fecha a partir de mañana.'],
-    [403, '', 'Solo el reclutador dueño de la vacante puede invitar a este postulante.'],
-    [404, '', 'No existe la postulación 5.'],
-    [422, 'The job posting has no interview questions yet', 'La vacante aún no tiene preguntas en su guion. Agrégalas antes de invitar.'],
-    [422, 'An interview can only be created for a RECEIVED application (current: REJECTED)', 'Solo se puede invitar a postulaciones que están en la etapa Recibida.'],
-    [422, 'Otro motivo', 'Otro motivo'],
+    [0, '', 'interviews.inviteDialog.errors.network'],
+    [400, '', 'interviews.inviteDialog.errors.invalidDate'],
+    [403, '', 'interviews.inviteDialog.errors.forbidden'],
+    [404, '', 'interviews.inviteDialog.errors.notFound'],
+    [422, 'La vacante todavía no tiene preguntas.', 'La vacante todavía no tiene preguntas.'],
+    [422, '', 'interviews.inviteDialog.errors.generic'],
   ])('status %i con "%s"', (status, message, expected) => {
-    expect(inviteErrorMessage(httpError(status, message), 5)).toBe(expected);
+    expect(inviteErrorMessage(httpError(status, message))).toBe(expected);
   });
 });

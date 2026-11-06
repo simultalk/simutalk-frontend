@@ -53,6 +53,14 @@ describe('InterviewSessionService', () => {
     request.flush({ id: 102, questionId: 2 });
   });
 
+  it('termina la entrevista con POST /completion (US-10)', () => {
+    service.complete(900).subscribe();
+
+    const request = http.expectOne(`${environment.apiUrl}/interview-sessions/900/completion`);
+    expect(request.request.method).toBe('POST');
+    request.flush({ id: 900, status: 'COMPLETED' });
+  });
+
   it('lee las respuestas registradas', () => {
     service.getAnswers(900).subscribe();
 
