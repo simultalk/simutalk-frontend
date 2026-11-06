@@ -25,4 +25,10 @@ export class Layout {
     .slice(0, 2)
     .map(part => part[0].toUpperCase())
     .join('');
+
+  /** "Saltar al contenido": lleva el foco del teclado al contenido principal, sin pasar por el menú. */
+  saltarAlContenido(event: Event): void {
+    event.preventDefault();
+    document.getElementById('contenido')?.focus();
+  }
 }

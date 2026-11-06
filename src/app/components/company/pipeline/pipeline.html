@@ -25,7 +25,7 @@
 } @else if (errorMessage()) {
   <p class="error" role="alert">{{ errorMessage() }}</p>
 } @else {
-  <div class="tablero">
+  <div class="tablero" role="region" tabindex="0" [attr.aria-label]="'shared.a11y.board' | translate">
     @for (stage of visibleStages(); track stage) {
       <section class="columna" [attr.aria-label]="'recruitment.applicationStatus.' + (stage | lowercase) | translate">
         <h2 class="columna-titulo">

@@ -49,6 +49,10 @@
     "theme": {
       "dark": "Dark mode"
     },
+        "a11y": {
+      "skipToContent": "Skip to content",
+      "board": "Candidate board by stage"
+    },
     "errors": {
       "closedPosting": "A closed job posting can no longer be modified.",
       "alreadyClosed": "The job posting is already closed.",
@@ -564,6 +568,22 @@
         "notFound": "That application does not exist.",
         "generic": "The invitation could not be sent. Try again."
       }
+  "assessment": {
+  "integrity": {
+    "title": "Integrity signals",
+    "disclaimer": "These signals are hints for you to review with your own judgment. They are not an automatic decision by the system and do not disqualify the candidate: a person always makes the final decision.",
+    "empty": "No integrity signals were detected in this assessment.",
+    "detail": "Detail",
+    "type": {
+      "AI": { "label": "Possible AI-generated content", "help": "An answer shows traits of text produced by an AI tool. Consider asking the candidate to explain it in their own words." },
+      "CV": { "label": "Inconsistency with CV", "help": "What the candidate answered does not match what their CV states. Review both before drawing conclusions." },
+      "OTHER": { "label": "Other integrity signal", "help": "The system flagged behavior that is worth reviewing manually." }
+    },
+    "severity": {
+      "LOW": { "label": "Low severity", "help": "Mild hint; it may have a normal explanation." },
+      "MEDIUM": { "label": "Medium severity", "help": "Moderate hint; review it before deciding." },
+      "HIGH": { "label": "High severity", "help": "Strong hint; review it carefully, but it is still not a definitive conclusion." }
     }
   }
+}
 }

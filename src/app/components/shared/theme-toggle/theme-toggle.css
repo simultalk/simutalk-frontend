@@ -40,7 +40,8 @@
   width: 16px;
   height: 16px;
   font-size: 16px;
-  color: var(--st-accent);
+  /* Naranja más oscuro que --st-accent para llegar a 4.5:1 sobre blanco (accesibilidad) */
+  color: #b45309;
 }
 
 .oscuro .perilla mat-icon {

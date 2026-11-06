@@ -3,7 +3,7 @@
   type="button"
   class="selector"
   [matMenuTriggerFor]="menuIdiomas"
-  [attr.aria-label]="'shared.language.label' | translate"
+  [attr.aria-label]="('shared.language.label' | translate) + ': ' + ('shared.language.' + language.current() | translate)"
 >
   <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">translate</mat-icon>
   {{ 'shared.language.' + language.current() | translate }}
