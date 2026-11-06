@@ -16,7 +16,9 @@
 
   @switch (step()) {
     @case ('loading') {
-      <p class="estado" role="status">{{ 'interviews.takeInterview.loading' | translate }}</p>
+      <p class="estado" role="status">
+        {{ (preparingFollowUp() ? 'interviews.takeInterview.followUpPreparing' : 'interviews.takeInterview.loading') | translate }}
+      </p>
     }
 
     @case ('unavailable') {
@@ -61,7 +63,16 @@
         <mat-card appearance="outlined" class="tarjeta">
           <mat-card-content>
             <div class="cabecera-pregunta">
-              <h2 class="enunciado">{{ question.statement }}</h2>
+              <div>
+                @if (followUp()) {
+                  <span class="chip-repregunta">
+                    <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">smart_toy</mat-icon>
+                    {{ 'interviews.takeInterview.followUpLabel' | translate }}
+                  </span>
+                  <p class="ayuda-repregunta">{{ 'interviews.takeInterview.followUpHint' | translate }}</p>
+                }
+                <h2 class="enunciado">{{ statement() }}</h2>
+              </div>
               <div
                 class="temporizador"
                 [class.alerta]="warning()"
@@ -97,6 +108,12 @@
           </mat-card-content>
 
           <mat-card-actions class="acciones">
+            @if (reader.supported) {
+              <button mat-stroked-button type="button" (click)="toggleReading()">
+                <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ reader.speaking() ? 'volume_off' : 'volume_up' }}</mat-icon>
+                {{ (reader.speaking() ? 'interviews.takeInterview.stopListening' : 'interviews.takeInterview.listen') | translate }}
+              </button>
+            }
             @if (dictation.supported()) {
               <button mat-stroked-button type="button" (click)="toggleDictation()" [disabled]="timeUp() || sending()">
                 <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ dictation.listening() ? 'stop' : 'mic' }}</mat-icon>

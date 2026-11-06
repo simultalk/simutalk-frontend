@@ -592,7 +592,12 @@
         "sendNetwork": "No se pudo enviar: revisa tu conexión. Tu respuesta sigue escrita, vuelve a intentarlo.",
         "sendFailed": "No se pudo enviar tu respuesta. Tu texto sigue escrito, vuelve a intentarlo.",
         "finishFailed": "No se pudo enviar la entrevista. Inténtalo de nuevo."
-      }
+      },
+      "followUpLabel": "Repregunta",
+      "followUpHint": "La IA te hace una pregunta más sobre lo que respondiste.",
+      "followUpPreparing": "Preparando una repregunta sobre tu respuesta...",
+      "listen": "Escuchar pregunta",
+      "stopListening": "Detener lectura"
     },
     "dictation": {
       "notAllowed": "Permite el uso del micrófono para este sitio (ícono a la izquierda de la dirección) y vuelve a pulsar Dictar.",

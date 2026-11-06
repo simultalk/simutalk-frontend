@@ -12,10 +12,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InterviewSession } from '../../../models/interview-session';
-import { Answer, Question } from '../../../models/question';
+import { Answer, FollowUpQuestion, Question } from '../../../models/question';
 import { InterviewSessionService } from '../../../services/interview-session';
 import { RecruitmentService } from '../../../services/recruitment.service';
 import { SpeechDictationService } from '../../../services/speech-dictation';
+import { SpeechReaderService } from '../../../services/speech-reader';
 
 type Step = 'loading' | 'unavailable' | 'intro' | 'question' | 'answered' | 'completed' | 'expired';
 
@@ -56,6 +57,7 @@ export class TakeInterview {
   private readonly sessions = inject(InterviewSessionService);
   private readonly recruitment = inject(RecruitmentService);
   readonly dictation = inject(SpeechDictationService);
+  readonly reader = inject(SpeechReaderService);
   private readonly translate = inject(TranslateService);
 
   readonly applicationId = Number(inject(ActivatedRoute).snapshot.paramMap.get('applicationId'));
@@ -79,6 +81,13 @@ export class TakeInterview {
   /** Sin validador: un campo vacío no se pinta de rojo; submit() revisa que haya respuesta. */
   answer = new FormControl('', { nonNullable: true });
 
+  /** US-09: repregunta de la IA que se está respondiendo; null cuando es una pregunta del guion. */
+  followUp = signal<FollowUpQuestion | null>(null);
+  /** Mientras la IA prepara la repregunta. */
+  preparingFollowUp = signal(false);
+  /** Enunciado en pantalla: la repregunta, si hay una, o la pregunta del guion. */
+  statement = computed(() => this.followUp()?.statement ?? this.current()?.statement ?? '');
+
   current = computed<Question | undefined>(() => this.questions()[this.index()]);
   number = computed(() => this.index() + 1);
   answeredCount = computed(() => Object.keys(this.answerIds()).length);
@@ -99,6 +108,7 @@ export class TakeInterview {
     inject(DestroyRef).onDestroy(() => {
       this.stopTimer();
       this.dictation.stop();
+      this.reader.stop();
     });
     this.load();
   }
@@ -156,22 +166,35 @@ export class TakeInterview {
       return;
     }
     this.dictation.stop();
+    this.reader.stop();
     this.sending.set(true);
     this.errorMessage.set('');
     const elapsed = Math.round((Date.now() - this.questionStartedAt) / 1000);
+    const followUp = this.followUp();
 
     this.sessions
       .recordAnswer(session.id, {
-        questionId: question.id,
+        questionId: followUp?.questionId ?? question.id,
         transcript,
         durationSeconds: Math.max(1, elapsed),
-        followUp: false,
+        followUp: followUp !== null,
+        parentAnswerId: followUp?.parentAnswerId ?? null,
       })
       .subscribe({
         next: (saved) => {
           this.sending.set(false);
+          if (followUp) {
+            // Respondió la repregunta: sigue con la próxima pregunta del guion
+            this.followUp.set(null);
+            this.showNextUnanswered();
+            return;
+          }
           this.answerIds.update((ids) => ({ ...ids, [saved.questionId]: saved.id }));
-          this.showNextUnanswered();
+          if (question.allowsFollowUp) {
+            this.requestFollowUp(session.id, saved.id);
+          } else {
+            this.showNextUnanswered();
+          }
         },
         error: (error: HttpErrorResponse) => {
           this.sending.set(false);
@@ -208,11 +231,22 @@ export class TakeInterview {
     });
   }
 
+  /** Lee en voz alta el enunciado actual, o detiene la lectura. */
+  toggleReading(): void {
+    if (this.reader.speaking()) {
+      this.reader.stop();
+    } else {
+      this.reader.speak(this.statement());
+    }
+  }
+
   toggleDictation(): void {
     if (this.dictation.listening()) {
       this.dictation.stop();
       return;
     }
+    // El micrófono no debe captar la voz que lee la pregunta
+    this.reader.stop();
     this.dictation.start((text) => {
       const previous = this.answer.value.trim();
       this.answer.setValue(previous ? `${previous} ${text}` : text);
@@ -247,7 +281,13 @@ export class TakeInterview {
         this.sending.set(false);
         this.questions.set([...questions].sort((a, b) => a.position - b.position));
         this.answerIds.set(regularAnswerIds(answers));
-        this.showNextUnanswered();
+        // Si salió con una repregunta generada pero sin responder, se la vuelve a mostrar
+        const pending = pendingFollowUp(answers);
+        if (pending) {
+          this.showFollowUp(pending);
+        } else {
+          this.showNextUnanswered();
+        }
       },
       error: (error: HttpErrorResponse) => {
         this.sending.set(false);
@@ -265,17 +305,49 @@ export class TakeInterview {
     }
     this.step.set('question');
     this.index.set(next);
+    this.startQuestion(this.questions()[next].maxDurationSeconds);
+  }
+
+  /** US-09: pide la repregunta a la IA. Si falla, la entrevista sigue sin ella. */
+  private requestFollowUp(sessionId: number, answerId: number): void {
+    this.stopTimer();
+    this.preparingFollowUp.set(true);
+    this.step.set('loading');
+    this.sessions.generateFollowUp(sessionId, answerId).subscribe({
+      next: (followUp) => {
+        this.preparingFollowUp.set(false);
+        this.showFollowUp(followUp);
+      },
+      error: () => {
+        this.preparingFollowUp.set(false);
+        this.showNextUnanswered();
+      },
+    });
+  }
+
+  private showFollowUp(followUp: FollowUpQuestion): void {
+    this.stopTimer();
+    const index = this.questions().findIndex((q) => q.id === followUp.questionId);
+    this.followUp.set(followUp);
+    this.step.set('question');
+    if (index >= 0) this.index.set(index);
+    this.startQuestion(this.questions()[index]?.maxDurationSeconds ?? 120);
+  }
+
+  /** Limpia la respuesta, arranca el temporizador y lee la pregunta en voz alta. */
+  private startQuestion(seconds: number): void {
     this.answer.reset('');
     this.triedToSubmit.set(false);
-    this.remainingSeconds.set(this.questions()[next].maxDurationSeconds);
+    this.remainingSeconds.set(seconds);
     this.questionStartedAt = Date.now();
     this.timer = setInterval(() => {
-      this.remainingSeconds.update((seconds) => Math.max(0, seconds - 1));
+      this.remainingSeconds.update((s) => Math.max(0, s - 1));
       if (this.remainingSeconds() === 0) {
         this.stopTimer();
         this.dictation.stop();
       }
     }, 1000);
+    this.reader.speak(this.statement());
   }
 
   private loadJobTitle(jobPostingId: number): void {
@@ -312,6 +384,14 @@ export function isPastDue(expiresAt: string, today = new Date()): boolean {
   const lastDay = new Date(year, month - 1, day);
   const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
   return startOfToday > lastDay;
+}
+
+/** US-09: repregunta ya generada cuya respuesta todavía no se envió. */
+export function pendingFollowUp(answers: Answer[]): FollowUpQuestion | null {
+  const parent = answers.find(
+    (a) => !a.followUp && a.followUpQuestion && !answers.some((b) => b.followUp && b.parentAnswerId === a.id),
+  );
+  return parent ? { parentAnswerId: parent.id, questionId: parent.questionId, statement: parent.followUpQuestion! } : null;
 }
 
 /** questionId -> answerId de las respuestas normales (las repreguntas no cuentan como respondida). */
