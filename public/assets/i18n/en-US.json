@@ -49,7 +49,7 @@
     "theme": {
       "dark": "Dark mode"
     },
-        "a11y": {
+    "a11y": {
       "skipToContent": "Skip to content",
       "board": "Candidate board by stage"
     },
@@ -637,7 +637,31 @@
       "trips": "trips avoided",
       "km": "km avoided",
       "carbonEmpty": "There are no completed interviews for this job posting yet.",
-      "sdg": "Contributes to SDG 11.6: reducing the environmental impact of cities, especially air quality."
+      "sdg": "Contributes to SDG 11.6: reducing the environmental impact of cities, especially air quality.",
+      "selectPosting": "Job posting",
+      "selectHint": "Choose a job posting to see its reports.",
+      "error": "The reports could not be loaded.",
+      "retry": "Retry"
+    },
+    "funnel": {
+      "title": "Selection funnel",
+      "subtitle": "Applicants at each stage of the process",
+      "series": "Applicants",
+      "empty": "This job posting has no applications yet.",
+      "stage": {
+        "RECEIVED": "Received",
+        "INTERVIEWING": "Interviewing",
+        "ASSESSED": "Assessed",
+        "SHORTLISTED": "Shortlisted",
+        "REJECTED": "Rejected",
+        "HIRED": "Hired"
+      }
+    },
+    "criteria": {
+      "title": "Average score per criterion",
+      "subtitle": "Average of the assessments for this job posting",
+      "series": "Average score",
+      "empty": "No assessments have been calculated for this job posting yet."
     }
   },
   "assessment": {
@@ -647,14 +671,32 @@
       "empty": "No integrity signals were detected in this assessment.",
       "detail": "Detail",
       "type": {
-        "AI": { "label": "Possible AI-generated content", "help": "An answer shows traits of text produced by an AI tool. Consider asking the candidate to explain it in their own words." },
-        "CV": { "label": "Inconsistency with CV", "help": "What the candidate answered does not match what their CV states. Review both before drawing conclusions." },
-        "OTHER": { "label": "Other integrity signal", "help": "The system flagged behavior that is worth reviewing manually." }
+        "AI": {
+          "label": "Possible AI-generated content",
+          "help": "An answer shows traits of text produced by an AI tool. Consider asking the candidate to explain it in their own words."
+        },
+        "CV": {
+          "label": "Inconsistency with CV",
+          "help": "What the candidate answered does not match what their CV states. Review both before drawing conclusions."
+        },
+        "OTHER": {
+          "label": "Other integrity signal",
+          "help": "The system flagged behavior that is worth reviewing manually."
+        }
       },
       "severity": {
-        "LOW": { "label": "Low severity", "help": "Mild hint; it may have a normal explanation." },
-        "MEDIUM": { "label": "Medium severity", "help": "Moderate hint; review it before deciding." },
-        "HIGH": { "label": "High severity", "help": "Strong hint; review it carefully, but it is still not a definitive conclusion." }
+        "LOW": {
+          "label": "Low severity",
+          "help": "Mild hint; it may have a normal explanation."
+        },
+        "MEDIUM": {
+          "label": "Medium severity",
+          "help": "Moderate hint; review it before deciding."
+        },
+        "HIGH": {
+          "label": "High severity",
+          "help": "Strong hint; review it carefully, but it is still not a definitive conclusion."
+        }
       }
     }
   }

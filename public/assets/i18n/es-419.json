@@ -49,7 +49,7 @@
     "theme": {
       "dark": "Modo oscuro"
     },
-        "a11y": {
+    "a11y": {
       "skipToContent": "Saltar al contenido",
       "board": "Tablero de postulantes por etapa"
     },
@@ -637,7 +637,31 @@
       "trips": "traslados evitados",
       "km": "km evitados",
       "carbonEmpty": "Aún no hay entrevistas completadas en esta vacante.",
-      "sdg": "Aporta al ODS 11.6: reducir el impacto ambiental de las ciudades, en especial la calidad del aire."
+      "sdg": "Aporta al ODS 11.6: reducir el impacto ambiental de las ciudades, en especial la calidad del aire.",
+      "selectPosting": "Vacante",
+      "selectHint": "Elige una vacante para ver sus reportes.",
+      "error": "No se pudieron cargar los reportes.",
+      "retry": "Reintentar"
+    },
+    "funnel": {
+      "title": "Embudo de selección",
+      "subtitle": "Postulantes en cada etapa del proceso",
+      "series": "Postulantes",
+      "empty": "Esta vacante aún no tiene postulaciones.",
+      "stage": {
+        "RECEIVED": "Recibidos",
+        "INTERVIEWING": "En entrevista",
+        "ASSESSED": "Evaluados",
+        "SHORTLISTED": "Preseleccionados",
+        "REJECTED": "Rechazados",
+        "HIRED": "Contratados"
+      }
+    },
+    "criteria": {
+      "title": "Puntaje medio por criterio",
+      "subtitle": "Promedio de las evaluaciones de la vacante",
+      "series": "Puntaje medio",
+      "empty": "Aún no hay evaluaciones calculadas para esta vacante."
     }
   },
   "assessment": {
@@ -647,14 +671,32 @@
       "empty": "No se detectaron señales de integridad en esta evaluación.",
       "detail": "Detalle",
       "type": {
-        "AI": { "label": "Posible contenido generado por IA", "help": "Alguna respuesta tiene características de texto generado por una herramienta de IA. Conviene pedir al postulante que explique la respuesta con sus palabras." },
-        "CV": { "label": "Inconsistencia con el CV", "help": "Lo que el postulante respondió no coincide con lo que declara en su CV. Revisa ambos antes de sacar conclusiones." },
-        "OTHER": { "label": "Otra señal de integridad", "help": "El sistema marcó un comportamiento que vale la pena revisar manualmente." }
+        "AI": {
+          "label": "Posible contenido generado por IA",
+          "help": "Alguna respuesta tiene características de texto generado por una herramienta de IA. Conviene pedir al postulante que explique la respuesta con sus palabras."
+        },
+        "CV": {
+          "label": "Inconsistencia con el CV",
+          "help": "Lo que el postulante respondió no coincide con lo que declara en su CV. Revisa ambos antes de sacar conclusiones."
+        },
+        "OTHER": {
+          "label": "Otra señal de integridad",
+          "help": "El sistema marcó un comportamiento que vale la pena revisar manualmente."
+        }
       },
       "severity": {
-        "LOW": { "label": "Severidad baja", "help": "Indicio leve; puede tener una explicación normal." },
-        "MEDIUM": { "label": "Severidad media", "help": "Indicio moderado; se recomienda revisarlo antes de decidir." },
-        "HIGH": { "label": "Severidad alta", "help": "Indicio fuerte; revísalo con atención, pero sigue sin ser una conclusión definitiva." }
+        "LOW": {
+          "label": "Severidad baja",
+          "help": "Indicio leve; puede tener una explicación normal."
+        },
+        "MEDIUM": {
+          "label": "Severidad media",
+          "help": "Indicio moderado; se recomienda revisarlo antes de decidir."
+        },
+        "HIGH": {
+          "label": "Severidad alta",
+          "help": "Indicio fuerte; revísalo con atención, pero sigue sin ser una conclusión definitiva."
+        }
       }
     }
   }

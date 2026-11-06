@@ -101,7 +101,9 @@ export const routes: Routes = [
         path: 'analytics/reports',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
-          import('./components/company/reports/reports').then((m) => m.Reports),
+          import('./analytics/pages/reports-page/reports-page').then(
+            (m) => m.ReportsPage,
+          ),
       },
       // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
       {
