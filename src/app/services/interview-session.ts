@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CreateInterviewSessionRequest, InterviewSession } from '../models/interview-session';
-import { Answer, Question, RecordAnswerRequest } from '../models/question';
+import { Answer, FollowUpQuestion, Question, RecordAnswerRequest } from '../models/question';
 
 @Injectable({ providedIn: 'root' })
 export class InterviewSessionService {
@@ -43,6 +43,14 @@ export class InterviewSessionService {
   /** US-10: el postulante termina y envía su entrevista. Pide que todas las preguntas estén respondidas. */
   complete(sessionId: number): Observable<InterviewSession> {
     return this.http.post<InterviewSession>(`${this.baseUrl}/interview-sessions/${sessionId}/completion`, {});
+  }
+
+  /** US-09: pide a la IA una repregunta sobre una respuesta. Si ya existe, el backend devuelve la misma. */
+  generateFollowUp(sessionId: number, answerId: number): Observable<FollowUpQuestion> {
+    return this.http.post<FollowUpQuestion>(
+      `${this.baseUrl}/interview-sessions/${sessionId}/answers/${answerId}/follow-up`,
+      {},
+    );
   }
 
   /** Respuestas ya registradas: permiten retomar la entrevista donde quedó. */

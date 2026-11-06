@@ -592,7 +592,20 @@
         "sendNetwork": "No se pudo enviar: revisa tu conexión. Tu respuesta sigue escrita, vuelve a intentarlo.",
         "sendFailed": "No se pudo enviar tu respuesta. Tu texto sigue escrito, vuelve a intentarlo.",
         "finishFailed": "No se pudo enviar la entrevista. Inténtalo de nuevo."
-      }
+      },
+      "followUpLabel": "Repregunta",
+      "followUpHint": "La IA te hace una pregunta más sobre lo que respondiste.",
+      "followUpPreparing": "Preparando una repregunta sobre tu respuesta...",
+      "listen": "Escuchar pregunta",
+      "stopListening": "Detener lectura",
+      "interviewer": "Entrevistador SimuTalk",
+      "you": "Tú",
+      "chatGreeting": "¡Hola! Soy tu entrevistador. Te haré unas preguntas, una por una. Responde con calma: puedes hablar con el micrófono o escribir.",
+      "chatNext": "Gracias. Pasemos a la siguiente pregunta.",
+      "chatFollowUpLead": "Gracias. Quiero profundizar un poco más en lo que dijiste.",
+      "chatEnd": "Eso es todo. Gracias por tu tiempo. Cuando quieras, envía la entrevista para que la empresa la revise.",
+      "composerLabel": "Escribe tu respuesta o usa el micrófono",
+      "completedChat": "¡Listo! Tu entrevista fue enviada. La empresa revisará tus respuestas y te avisará cómo sigue tu postulación."
     },
     "dictation": {
       "notAllowed": "Permite el uso del micrófono para este sitio (ícono a la izquierda de la dirección) y vuelve a pulsar Dictar.",

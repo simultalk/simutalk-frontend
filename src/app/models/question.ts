@@ -34,4 +34,13 @@ export interface Answer {
   durationSeconds: number;
   answeredAt: string;
   followUp: boolean;
+  /** US-09: repregunta que la IA generó para esta respuesta (solo en respuestas normales). */
+  followUpQuestion?: string | null;
+}
+
+/** US-09: respuesta de POST /interview-sessions/{sessionId}/answers/{answerId}/follow-up. */
+export interface FollowUpQuestion {
+  parentAnswerId: number;
+  questionId: number;
+  statement: string;
 }
