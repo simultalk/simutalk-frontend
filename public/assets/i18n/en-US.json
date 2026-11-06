@@ -492,5 +492,34 @@
       "scoreOutOf": "{{score}} / 100",
       "back": "Back to My applications"
     }
+  },
+  "analytics": {
+  "reports": {
+    "title": "Job posting reports",
+    "selectPosting": "Job posting",
+    "selectHint": "Choose a job posting to see its reports.",
+    "error": "The reports could not be loaded.",
+    "retry": "Retry"
+  },
+  "funnel": {
+    "title": "Selection funnel",
+    "subtitle": "Applicants at each stage of the process",
+    "series": "Applicants",
+    "empty": "This job posting has no applications yet.",
+    "stage": {
+      "RECEIVED": "Received",
+      "INTERVIEWING": "Interviewing",
+      "ASSESSED": "Assessed",
+      "SHORTLISTED": "Shortlisted",
+      "REJECTED": "Rejected",
+      "HIRED": "Hired"
+    }
+  },
+  "criteria": {
+    "title": "Average score per criterion",
+    "subtitle": "Average of the assessments for this job posting",
+    "series": "Average score",
+    "empty": "No assessments have been calculated for this job posting yet."
   }
+}
 }

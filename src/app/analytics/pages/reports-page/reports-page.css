@@ -1,0 +1,15 @@
+.reports { display: flex; flex-direction: column; gap: 16px; padding: 16px; }
+.reports__title { margin: 0; }
+.reports__selector { max-width: 420px; }
+.reports__grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+.reports__card mat-card-content { padding-top: 16px; }
+.chart-box { position: relative; width: 100%; }
+.reports__empty, .reports__hint { margin: 0; opacity: 0.8; }
+.reports__error { display: flex; align-items: center; gap: 12px; margin: 0; }
+.reports__retry { cursor: pointer; }
+
+/* Visualmente oculto, pero disponible para lectores de pantalla */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}

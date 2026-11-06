@@ -492,5 +492,34 @@
       "scoreOutOf": "{{score}} / 100",
       "back": "Volver a Mis postulaciones"
     }
+  },
+  "analytics": {
+  "reports": {
+    "title": "Reportes de vacante",
+    "selectPosting": "Vacante",
+    "selectHint": "Elige una vacante para ver sus reportes.",
+    "error": "No se pudieron cargar los reportes.",
+    "retry": "Reintentar"
+  },
+  "funnel": {
+    "title": "Embudo de selección",
+    "subtitle": "Postulantes en cada etapa del proceso",
+    "series": "Postulantes",
+    "empty": "Esta vacante aún no tiene postulaciones.",
+    "stage": {
+      "RECEIVED": "Recibidos",
+      "INTERVIEWING": "En entrevista",
+      "ASSESSED": "Evaluados",
+      "SHORTLISTED": "Preseleccionados",
+      "REJECTED": "Rechazados",
+      "HIRED": "Contratados"
+    }
+  },
+  "criteria": {
+    "title": "Puntaje medio por criterio",
+    "subtitle": "Promedio de las evaluaciones de la vacante",
+    "series": "Puntaje medio",
+    "empty": "Aún no hay evaluaciones calculadas para esta vacante."
   }
+}
 }

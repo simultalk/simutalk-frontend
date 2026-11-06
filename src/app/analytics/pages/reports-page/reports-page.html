@@ -1,0 +1,105 @@
+<section class="reports">
+  <h1 class="reports__title">{{ 'analytics.reports.title' | translate }}</h1>
+
+  <!-- Espacio reservado: tarjetas de resumen de empresa (GET /reports/companies/{id}/summary) -->
+
+  <mat-form-field class="reports__selector" appearance="outline">
+    <mat-label>{{ 'analytics.reports.selectPosting' | translate }}</mat-label>
+    <mat-select [value]="jobPostingId()" (selectionChange)="onSelectPosting($event.value)">
+      @for (posting of postings(); track posting.id) {
+        <mat-option [value]="posting.id">{{ posting.title }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (loading()) {
+    <mat-progress-bar mode="indeterminate" />
+  }
+
+  @if (error()) {
+    <p class="reports__error" role="alert">
+      {{ 'analytics.reports.error' | translate }}
+      <button type="button" class="reports__retry" (click)="load()">
+        {{ 'analytics.reports.retry' | translate }}
+      </button>
+    </p>
+  }
+
+  @if (jobPostingId() === null) {
+    <p class="reports__hint">{{ 'analytics.reports.selectHint' | translate }}</p>
+  } @else if (!loading() && !error()) {
+    <div class="reports__grid">
+      <!-- US-19 · Embudo de selección -->
+      <mat-card class="reports__card">
+        <mat-card-header>
+          <mat-card-title>{{ 'analytics.funnel.title' | translate }}</mat-card-title>
+          <mat-card-subtitle>{{ 'analytics.funnel.subtitle' | translate }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @if (funnelHasData()) {
+            <div class="chart-box" style="height: 320px">
+              <canvas
+                baseChart
+                type="bar"
+                role="img"
+                [attr.aria-label]="'analytics.funnel.title' | translate"
+                [data]="funnelChart()"
+                [options]="funnelOptions()"
+              ></canvas>
+            </div>
+            <table class="sr-only">
+              <caption>{{ 'analytics.funnel.title' | translate }}</caption>
+              <tbody>
+                @for (s of funnel(); track s.stage) {
+                  <tr>
+                    <th scope="row">{{ 'analytics.funnel.stage.' + s.stage | translate }}</th>
+                    <td>{{ s.count }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <p class="reports__empty">{{ 'analytics.funnel.empty' | translate }}</p>
+          }
+        </mat-card-content>
+      </mat-card>
+
+      <!-- US-20 · Puntaje medio por criterio -->
+      <mat-card class="reports__card">
+        <mat-card-header>
+          <mat-card-title>{{ 'analytics.criteria.title' | translate }}</mat-card-title>
+          <mat-card-subtitle>{{ 'analytics.criteria.subtitle' | translate }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @if (criteria().length > 0) {
+            <div class="chart-box" [style.height.px]="criteriaHeight()">
+              <canvas
+                baseChart
+                type="bar"
+                role="img"
+                [attr.aria-label]="'analytics.criteria.title' | translate"
+                [data]="criteriaChart()"
+                [options]="criteriaOptions()"
+              ></canvas>
+            </div>
+            <table class="sr-only">
+              <caption>{{ 'analytics.criteria.title' | translate }}</caption>
+              <tbody>
+                @for (c of criteria(); track c.criterionId) {
+                  <tr>
+                    <th scope="row">{{ c.criterionName }}</th>
+                    <td>{{ c.averageScore }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          } @else {
+            <p class="reports__empty">{{ 'analytics.criteria.empty' | translate }}</p>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!-- Espacio reservado: reporte de huella de carbono (US-21, Alexis) -->
+  }
+</section>
