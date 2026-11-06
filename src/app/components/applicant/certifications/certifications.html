@@ -1,0 +1,129 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'profiles.certifications.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'profiles.certifications.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'profiles.certifications.subtitle' | translate }}</p>
+</header>
+
+@if (loading()) {
+  <p role="status">{{ 'profiles.certifications.loading' | translate }}</p>
+} @else if (loadError()) {
+  <p class="error" role="alert">{{ loadError() }}</p>
+} @else {
+  <div class="st-card">
+    @if (certifications().length === 0) {
+      <p>{{ 'profiles.certifications.empty' | translate }}</p>
+    } @else {
+      <table class="tabla st-tabla-responsive">
+        <thead>
+          <tr>
+            <th>{{ 'profiles.certifications.colCertification' | translate }}</th>
+            <th>{{ 'profiles.certifications.colCode' | translate }}</th>
+            <th>{{ 'profiles.certifications.colIssuedAt' | translate }}</th>
+            <th>{{ 'profiles.certifications.colExpiresAt' | translate }}</th>
+            <th>{{ 'profiles.certifications.colStatus' | translate }}</th>
+            <th>{{ 'profiles.certifications.colActions' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (c of certifications(); track c.id) {
+            <tr>
+              <td class="completo">
+                <strong>{{ c.title }}</strong>
+                <span class="detalle">{{ c.issuer }}</span>
+              </td>
+              <td [attr.data-label]="'profiles.certifications.colCode' | translate">
+                {{ c.credentialCode || ('profiles.certifications.noCode' | translate) }}
+              </td>
+              <td [attr.data-label]="'profiles.certifications.colIssuedAt' | translate">
+                {{ c.issuedAt | date: 'dd/MM/yyyy' }}
+              </td>
+              <td [attr.data-label]="'profiles.certifications.colExpiresAt' | translate">
+                {{ c.expiresAt ? (c.expiresAt | date: 'dd/MM/yyyy') : ('profiles.certifications.noExpiry' | translate) }}
+              </td>
+              <td [attr.data-label]="'profiles.certifications.colStatus' | translate">
+                <span [class]="'estado ' + c.verificationStatus">
+                  {{ 'profiles.certifications.status.' + c.verificationStatus | translate }}
+                </span>
+                @if (c.expired) {
+                  <span class="estado EXPIRED">{{ 'profiles.certifications.status.EXPIRED' | translate }}</span>
+                }
+              </td>
+              <td class="acciones">
+                <button mat-button class="eliminar" type="button" (click)="remove(c)">
+                  {{ 'common.remove' | translate }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+
+  <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
+    <h2 class="subtitulo">{{ 'profiles.certifications.formAdd' | translate }}</h2>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'profiles.certifications.name' | translate }}</mat-label>
+      <input matInput formControlName="title" maxlength="150" />
+      @if (form.controls.title.hasError('required')) {
+        <mat-error>{{ 'profiles.certifications.nameRequired' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'profiles.certifications.issuer' | translate }}</mat-label>
+      <input matInput formControlName="issuer" maxlength="100" />
+      @if (form.controls.issuer.hasError('required')) {
+        <mat-error>{{ 'profiles.certifications.issuerRequired' | translate }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'profiles.certifications.code' | translate }}</mat-label>
+      <input matInput formControlName="credentialCode" maxlength="100" />
+      <mat-hint>{{ 'profiles.certifications.codeHint' | translate }}</mat-hint>
+    </mat-form-field>
+
+    @if (withoutCode()) {
+      <p class="aviso-codigo" role="note">{{ 'profiles.certifications.noCodeWarning' | translate }}</p>
+    }
+
+    <div class="fila">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profiles.certifications.issuedAt' | translate }}</mat-label>
+        <input matInput formControlName="issuedAt" [matDatepicker]="issuedPicker" [max]="today" (click)="issuedPicker.open()" />
+        <mat-datepicker-toggle matIconSuffix [for]="issuedPicker" />
+        <mat-datepicker #issuedPicker />
+        @if (form.controls.issuedAt.hasError('required')) {
+          <mat-error>{{ 'profiles.certifications.issuedAtRequired' | translate }}</mat-error>
+        }
+        @if (form.controls.issuedAt.hasError('matDatepickerMax')) {
+          <mat-error>{{ 'profiles.certifications.issuedAtFuture' | translate }}</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'profiles.certifications.expiresAt' | translate }}</mat-label>
+        <input matInput formControlName="expiresAt" [matDatepicker]="expiresPicker" (click)="expiresPicker.open()" />
+        <mat-datepicker-toggle matIconSuffix [for]="expiresPicker" />
+        <mat-datepicker #expiresPicker />
+        <mat-hint>{{ 'profiles.certifications.expiresAtHint' | translate }}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    @if (form.hasError('expiresBeforeIssued')) {
+      <p class="error" role="alert">{{ 'profiles.certifications.expiresBeforeIssued' | translate }}</p>
+    }
+
+    @if (errorMessage()) {
+      <p class="error" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <div class="botones">
+      <button mat-flat-button type="submit" [disabled]="saving()">
+        {{ (saving() ? 'common.saving' : 'profiles.certifications.add') | translate }}
+      </button>
+    </div>
+  </form>
+}

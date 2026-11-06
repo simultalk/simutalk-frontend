@@ -200,6 +200,50 @@
       "error": "The registration could not be completed. Try again."
     }
   },
+  "profiles": {
+    "certifications": {
+      "breadcrumb": "Home / My profile / Certifications",
+      "title": "Certifications",
+      "subtitle": "Add your certifications so companies can take them into account when assessing you.",
+      "loading": "Loading certifications...",
+      "loadError": "Your certifications could not be loaded. Try again.",
+      "empty": "You have not added any certifications yet.",
+      "colCertification": "Certification",
+      "colCode": "Code",
+      "colIssuedAt": "Issued",
+      "colExpiresAt": "Expires",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "noCode": "No code",
+      "noExpiry": "Does not expire",
+      "status": {
+        "VERIFIED": "Verified",
+        "UNVERIFIED": "Not verified",
+        "REJECTED": "Rejected",
+        "EXPIRED": "Expired"
+      },
+      "formAdd": "Add certification",
+      "name": "Certification name",
+      "nameRequired": "Enter the certification name",
+      "issuer": "Issuing organization",
+      "issuerRequired": "Enter the organization that issued it",
+      "code": "Credential code (optional)",
+      "codeHint": "It is the code shown on your certificate",
+      "noCodeWarning": "Without a credential code, this certification can never be verified with the issuer.",
+      "issuedAt": "Issue date",
+      "issuedAtRequired": "Choose the issue date",
+      "issuedAtFuture": "The issue date cannot be in the future",
+      "expiresAt": "Expiration date (optional)",
+      "expiresAtHint": "Leave it empty if it does not expire",
+      "expiresBeforeIssued": "The expiration date must be after the issue date.",
+      "add": "Add certification",
+      "added": "Certification added",
+      "saveError": "The certification could not be saved. Try again.",
+      "confirmRemove": "Delete the certification \"{{title}}\"?",
+      "removed": "Certification deleted",
+      "removeError": "The certification could not be deleted."
+    }
+  },
   "recruitment": {
     "status": {
       "DRAFT": "Draft",

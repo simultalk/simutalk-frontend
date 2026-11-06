@@ -200,6 +200,50 @@
       "error": "No se pudo completar el registro. Inténtalo de nuevo."
     }
   },
+  "profiles": {
+    "certifications": {
+      "breadcrumb": "Inicio / Mi perfil / Certificaciones",
+      "title": "Certificaciones",
+      "subtitle": "Registra tus certificaciones para que las empresas las tengan en cuenta al evaluarte.",
+      "loading": "Cargando certificaciones...",
+      "loadError": "No se pudieron cargar tus certificaciones. Inténtalo de nuevo.",
+      "empty": "Todavía no registras certificaciones.",
+      "colCertification": "Certificación",
+      "colCode": "Código",
+      "colIssuedAt": "Emisión",
+      "colExpiresAt": "Vencimiento",
+      "colStatus": "Estado",
+      "colActions": "Acciones",
+      "noCode": "Sin código",
+      "noExpiry": "No vence",
+      "status": {
+        "VERIFIED": "Verificada",
+        "UNVERIFIED": "Sin verificar",
+        "REJECTED": "Rechazada",
+        "EXPIRED": "Vencida"
+      },
+      "formAdd": "Agregar certificación",
+      "name": "Nombre de la certificación",
+      "nameRequired": "Escribe el nombre de la certificación",
+      "issuer": "Entidad emisora",
+      "issuerRequired": "Escribe la entidad que la emitió",
+      "code": "Código de credencial (opcional)",
+      "codeHint": "Es el código que aparece en tu certificado",
+      "noCodeWarning": "Sin código de credencial, esta certificación nunca se podrá verificar con el emisor.",
+      "issuedAt": "Fecha de emisión",
+      "issuedAtRequired": "Elige la fecha de emisión",
+      "issuedAtFuture": "La fecha de emisión no puede ser futura",
+      "expiresAt": "Fecha de vencimiento (opcional)",
+      "expiresAtHint": "Déjala vacía si no vence",
+      "expiresBeforeIssued": "La fecha de vencimiento debe ser posterior a la de emisión.",
+      "add": "Agregar certificación",
+      "added": "Certificación agregada",
+      "saveError": "No se pudo guardar la certificación. Inténtalo de nuevo.",
+      "confirmRemove": "¿Eliminar la certificación \"{{title}}\"?",
+      "removed": "Certificación eliminada",
+      "removeError": "No se pudo eliminar la certificación."
+    }
+  },
   "recruitment": {
     "status": {
       "DRAFT": "Borrador",

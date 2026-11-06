@@ -1,0 +1,35 @@
+.tabla { width: 100%; border-collapse: collapse; }
+.tabla th, .tabla td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--st-border); vertical-align: middle; }
+.tabla th { font-size: 13px; color: var(--st-text-secondary); font-weight: 600; }
+.detalle { display: block; font-size: 13px; color: var(--st-text-secondary); }
+.acciones { white-space: nowrap; }
+.eliminar { color: var(--st-danger); }
+
+.estado {
+  display: inline-block;
+  margin: 2px 4px 2px 0;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.VERIFIED { background: var(--st-primary-soft); color: var(--st-primary-dark); }
+.UNVERIFIED { background: var(--st-neutral-soft); color: var(--st-text-secondary); }
+.REJECTED { background: var(--st-danger-soft); color: var(--st-danger); }
+.EXPIRED { background: var(--st-warning-soft); color: var(--st-warning); }
+
+.formulario { display: flex; flex-direction: column; gap: 8px; max-width: 640px; margin-top: 16px; }
+.subtitulo { font-size: 18px; margin: 0 0 8px; }
+.fila { display: flex; gap: 12px; flex-wrap: wrap; }
+.fila mat-form-field { flex: 1; min-width: 180px; }
+.botones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
+.error { color: var(--st-danger); margin: 0; }
+.aviso-codigo {
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: var(--st-radius);
+  background: var(--st-warning-soft);
+  color: var(--st-text);
+  font-size: 14px;
+}
