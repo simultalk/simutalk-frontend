@@ -97,7 +97,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./components/company/pipeline/pipeline').then((m) => m.Pipeline),
       },
-      pending('analytics/reports', 'Reportes', [ROLE_RECRUITER]),
+      {
+        path: 'analytics/reports',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/reports/reports').then((m) => m.Reports),
+      },
       // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
       {
         path: 'interviews/invitation-test',
