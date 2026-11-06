@@ -49,6 +49,10 @@
     "theme": {
       "dark": "Modo oscuro"
     },
+        "a11y": {
+      "skipToContent": "Saltar al contenido",
+      "board": "Tablero de postulantes por etapa"
+    },
     "errors": {
       "closedPosting": "Una vacante cerrada ya no se puede modificar.",
       "alreadyClosed": "La vacante ya está cerrada.",

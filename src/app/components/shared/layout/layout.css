@@ -169,3 +169,25 @@
     text-align: center;
   }
 }
+
+/* Accesibilidad (T-05): enlace para saltar el menú con el teclado. Solo se ve al recibir el foco. */
+.saltar {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--st-primary);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.saltar:focus {
+  top: 12px;
+}
+
+.contenido:focus {
+  outline: none;
+}
