@@ -1,0 +1,340 @@
+.st-stagger {
+  display: grid;
+  gap: 20px;
+}
+
+/* Tarjeta de presentación: avatar, nombre y avance del perfil */
+.presentacion {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06);
+}
+
+.identidad h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.identidad .st-kicker {
+  margin-bottom: 6px;
+}
+
+.datos-rapidos {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.datos-rapidos li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.datos-rapidos mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  color: var(--st-accent);
+}
+
+/* Anillo con el porcentaje del perfil completo */
+.avance {
+  position: relative;
+  width: 112px;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+
+.avance svg {
+  width: 88px;
+  height: 88px;
+  transform: rotate(-90deg);
+}
+
+.avance circle {
+  fill: none;
+  stroke-width: 3;
+}
+
+.avance .pista {
+  stroke: rgba(255, 255, 255, 0.16);
+}
+
+.avance .valor {
+  stroke: var(--st-accent);
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.9s var(--st-ease);
+}
+
+.avance strong {
+  position: absolute;
+  top: 30px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.avance span {
+  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* Formulario a la izquierda, certificaciones a la derecha */
+.columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0 0 8px;
+}
+
+fieldset + fieldset {
+  padding-top: 16px;
+  border-top: 1px solid var(--st-border);
+}
+
+legend {
+  padding: 0;
+  margin-bottom: 14px;
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  column-gap: 16px;
+}
+
+.campos .completo {
+  grid-column: 1 / -1;
+}
+
+/* Los campos con ayuda crecen para que el texto no se monte sobre el siguiente */
+.campos mat-form-field[subscriptSizing='dynamic'] {
+  margin-bottom: 16px;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--st-border);
+}
+
+.actualizado {
+  margin-right: auto;
+  font-size: 12px;
+  color: var(--st-text-secondary);
+}
+
+.error {
+  color: var(--st-danger);
+  margin: 0 0 8px;
+}
+
+/* Resumen de certificaciones */
+.certificaciones {
+  position: sticky;
+  top: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.certificaciones .st-section-title {
+  margin: 0;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+}
+
+.lista li {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--st-border);
+}
+
+.lista li:first-child {
+  padding-top: 0;
+}
+
+.lista strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lista span:not(.st-tag) {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--st-text-secondary);
+}
+
+.vacio {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 20px 12px;
+  text-align: center;
+  border: 1px dashed var(--st-border);
+  border-radius: var(--st-radius);
+  color: var(--st-text-secondary);
+}
+
+.vacio mat-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+  color: var(--st-accent);
+}
+
+.vacio p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Esqueleto mientras carga */
+.esqueleto {
+  display: grid;
+  gap: 20px;
+}
+
+.esqueleto-hero,
+.esqueleto-fila > div {
+  border-radius: var(--st-radius);
+  background: linear-gradient(
+    90deg,
+    var(--st-neutral-soft) 0%,
+    var(--st-surface) 50%,
+    var(--st-neutral-soft) 100%
+  );
+  background-size: 200% 100%;
+  animation: brillo 1.4s linear infinite;
+}
+
+.esqueleto-hero {
+  height: 148px;
+}
+
+.esqueleto-fila {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.esqueleto-fila > div {
+  height: 92px;
+}
+
+@keyframes brillo {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 1080px) {
+  .columnas {
+    grid-template-columns: 1fr;
+  }
+
+  .certificaciones {
+    position: static;
+  }
+}
+
+@media (max-width: 720px) {
+  .presentacion {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 24px;
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 22px;
+  }
+
+  .identidad h2 {
+    font-size: 22px;
+  }
+
+  .avance {
+    grid-column: 1 / -1;
+    width: auto;
+    grid-template-columns: auto auto;
+    justify-content: start;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .avance svg {
+    width: 56px;
+    height: 56px;
+  }
+
+  .avance strong {
+    top: 17px;
+    left: 0;
+    width: 56px;
+    font-size: 14px;
+  }
+
+  .campos {
+    grid-template-columns: 1fr;
+  }
+
+
+  .acciones {
+    flex-wrap: wrap;
+  }
+
+  .actualizado {
+    width: 100%;
+  }
+}

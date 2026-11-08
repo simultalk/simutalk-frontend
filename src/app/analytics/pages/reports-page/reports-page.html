@@ -5,16 +5,49 @@
     <p class="st-page-subtitle">{{ 'analytics.reports.subtitle' | translate }}</p>
   </header>
 
-  <!-- Espacio reservado: tarjetas de resumen de empresa (GET /reports/companies/{id}/summary) -->
-
-  <mat-form-field class="reports__selector" appearance="outline">
-    <mat-label>{{ 'analytics.reports.selectPosting' | translate }}</mat-label>
-    <mat-select [value]="jobPostingId()" (selectionChange)="onSelectPosting($event.value)">
-      @for (posting of postings(); track posting.id) {
-        <mat-option [value]="posting.id">{{ posting.title }}</mat-option>
+  <!-- Indicadores de la empresa (GET /reports/companies/{id}/summary) -->
+  <section class="st-stats kpis" [attr.aria-label]="'analytics.summary.label' | translate">
+    <div class="st-stat kpi">
+      <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">work</mat-icon>
+      <span class="st-stat-value" [stCountUp]="summary()?.activeJobPostings ?? 0"></span>
+      <span class="st-stat-label">{{ 'analytics.summary.active' | translate }}</span>
+    </div>
+    <div class="st-stat st-stat--accent kpi">
+      <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">how_to_reg</mat-icon>
+      <span class="st-stat-value" [stCountUp]="summary()?.assessedCandidates ?? 0"></span>
+      <span class="st-stat-label">{{ 'analytics.summary.assessed' | translate }}</span>
+    </div>
+    <div class="st-stat kpi">
+      <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">avg_pace</mat-icon>
+      @if (summary()?.averageDaysToShortlist != null) {
+        <span class="st-stat-value"><span [stCountUp]="summary()!.averageDaysToShortlist" [decimals]="1"></span><small> {{ 'analytics.summary.days' | translate }}</small></span>
+      } @else {
+        <span class="st-stat-value">—</span>
       }
-    </mat-select>
-  </mat-form-field>
+      <span class="st-stat-label">{{ 'analytics.summary.toShortlist' | translate }}</span>
+    </div>
+    <div class="st-stat kpi">
+      <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">link</mat-icon>
+      <span class="st-stat-value" [stCountUp]="summary()?.anchoredEvidences ?? 0"></span>
+      <span class="st-stat-label">{{ 'analytics.summary.evidences' | translate }}</span>
+    </div>
+  </section>
+
+  <!-- Selector de vacante -->
+  <section class="st-card selector">
+    <div class="selector-texto">
+      <p class="st-kicker">{{ 'analytics.reports.postingKicker' | translate }}</p>
+      <h2>{{ selectedTitle() || ('analytics.reports.selectHint' | translate) }}</h2>
+    </div>
+    <mat-form-field class="reports__selector" appearance="outline" subscriptSizing="dynamic">
+      <mat-label>{{ 'analytics.reports.selectPosting' | translate }}</mat-label>
+      <mat-select [value]="jobPostingId()" (selectionChange)="onSelectPosting($event.value)">
+        @for (posting of postings(); track posting.id) {
+          <mat-option [value]="posting.id">{{ posting.title }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </section>
 
   @if (loading()) {
     <mat-progress-bar mode="indeterminate" />
@@ -23,111 +56,164 @@
   @if (error()) {
     <p class="reports__error" role="alert">
       {{ 'analytics.reports.error' | translate }}
-      <button type="button" class="reports__retry" (click)="load()">
-        {{ 'analytics.reports.retry' | translate }}
-      </button>
+      <button mat-button type="button" (click)="load()">{{ 'analytics.reports.retry' | translate }}</button>
     </p>
   }
 
   @if (jobPostingId() === null) {
-    <p class="reports__hint">{{ 'analytics.reports.selectHint' | translate }}</p>
+    <p class="reports__hint">
+      {{ (postings().length ? 'analytics.reports.selectHint' : 'analytics.reports.noJobPostings') | translate }}
+    </p>
   } @else if (!loading() && !error()) {
-    <div class="reports__grid">
-      <!-- US-19 · Embudo de selección -->
-      <mat-card class="reports__card">
-        <mat-card-header>
-          <mat-card-title>{{ 'analytics.funnel.title' | translate }}</mat-card-title>
-          <mat-card-subtitle>{{ 'analytics.funnel.subtitle' | translate }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-          @if (funnelHasData()) {
-            <div class="chart-box" style="height: 320px">
-              <canvas
-                baseChart
-                type="bar"
-                role="img"
-                [attr.aria-label]="'analytics.funnel.title' | translate"
-                [data]="funnelChart()"
-                [options]="funnelOptions()"
-              ></canvas>
+    <div class="st-stagger cuerpo">
+      <!-- US-19 · Embudo + distribución -->
+      <section class="st-card embudo" aria-labelledby="titulo-embudo">
+        <header class="tarjeta-cabecera">
+          <div>
+            <h2 id="titulo-embudo" class="st-section-title">{{ 'analytics.funnel.title' | translate }}</h2>
+            <p class="tarjeta-sub">{{ 'analytics.funnel.subtitle' | translate }}</p>
+          </div>
+          <span class="st-tag">{{ 'analytics.funnel.total' | translate: { count: total() } }}</span>
+        </header>
+
+        @if (funnelHasData()) {
+          <div class="embudo-cuerpo">
+            <ol class="embudo-lista">
+              @for (r of funnelRows(); track r.stage; let i = $index) {
+                <li class="etapa" [style.animation-delay.ms]="i * 90">
+                  <span class="etapa-barra" [style.width.%]="r.width" [style.background]="r.color" [class.etapa-barra--clara]="r.stage === 'RECEIVED'">
+                    <strong [stCountUp]="r.count"></strong>
+                  </span>
+                  <span class="etapa-texto">
+                    <span>{{ 'analytics.funnel.stage.' + r.stage | translate }}</span>
+                    <small>{{ r.share | number: '1.0-0' }} %</small>
+                  </span>
+                </li>
+              }
+            </ol>
+
+            <div class="dona">
+              <div class="dona-caja">
+                <canvas baseChart type="doughnut" role="img" [attr.aria-label]="'analytics.funnel.distribution' | translate" [data]="doughnutData()" [options]="doughnutOptions()"></canvas>
+                <span class="dona-centro">
+                  <strong [stCountUp]="total()"></strong>
+                  <small>{{ 'analytics.funnel.series' | translate }}</small>
+                </span>
+              </div>
+              <div class="rechazados">
+                <span class="punto" [style.background]="stageColor('REJECTED')"></span>
+                <span>{{ 'analytics.funnel.stage.REJECTED' | translate }}</span>
+                <strong>{{ rejected() }}</strong>
+              </div>
             </div>
-            <table class="sr-only">
-              <caption>{{ 'analytics.funnel.title' | translate }}</caption>
-              <tbody>
-                @for (s of funnel(); track s.stage) {
-                  <tr>
-                    <th scope="row">{{ 'analytics.funnel.stage.' + s.stage | translate }}</th>
-                    <td>{{ s.count }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          } @else {
-            <p class="reports__empty">{{ 'analytics.funnel.empty' | translate }}</p>
-          }
-        </mat-card-content>
-      </mat-card>
+          </div>
+
+          <table class="sr-only">
+            <caption>{{ 'analytics.funnel.title' | translate }}</caption>
+            <tbody>
+              @for (s of funnel(); track s.stage) {
+                <tr>
+                  <th scope="row">{{ 'analytics.funnel.stage.' + s.stage | translate }}</th>
+                  <td>{{ s.count }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="reports__empty">{{ 'analytics.funnel.empty' | translate }}</p>
+        }
+      </section>
 
       <!-- US-20 · Puntaje medio por criterio -->
-      <mat-card class="reports__card">
-        <mat-card-header>
-          <mat-card-title>{{ 'analytics.criteria.title' | translate }}</mat-card-title>
-          <mat-card-subtitle>{{ 'analytics.criteria.subtitle' | translate }}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
+      <section class="st-card criterios" aria-labelledby="titulo-criterios">
+        <header class="tarjeta-cabecera">
+          <div>
+            <h2 id="titulo-criterios" class="st-section-title">{{ 'analytics.criteria.title' | translate }}</h2>
+            <p class="tarjeta-sub">{{ 'analytics.criteria.subtitle' | translate }}</p>
+          </div>
           @if (criteria().length > 0) {
-            <div class="chart-box" [style.height.px]="criteriaHeight()">
-              <canvas
-                baseChart
-                type="bar"
-                role="img"
-                [attr.aria-label]="'analytics.criteria.title' | translate"
-                [data]="criteriaChart()"
-                [options]="criteriaOptions()"
-              ></canvas>
-            </div>
-            <table class="sr-only">
-              <caption>{{ 'analytics.criteria.title' | translate }}</caption>
-              <tbody>
-                @for (c of criteria(); track c.criterionId) {
-                  <tr>
-                    <th scope="row">{{ c.criterionName }}</th>
-                    <td>{{ c.averageScore }}</td>
-                  </tr>
-                }
-              </tbody>
-            </table>
-          } @else {
-            <p class="reports__empty">{{ 'analytics.criteria.empty' | translate }}</p>
+            <span class="promedio">
+              <span class="promedio-valor"><strong>{{ criteriaAverage() | number: '1.1-1' }}</strong><small>/10</small></span>
+              <span class="promedio-etiqueta">{{ 'analytics.criteria.overall' | translate }}</span>
+            </span>
           }
-        </mat-card-content>
-      </mat-card>
-    </div>
+        </header>
 
-    <!-- US-21 · Huella de carbono evitada -->
-    @if (carbon(); as c) {
-      <section class="st-card huella" aria-labelledby="titulo-huella">
-        <h2 id="titulo-huella" class="huella__titulo">{{ 'analytics.reports.carbonTitle' | translate }}</h2>
-        <p class="huella__explicacion">{{ 'analytics.reports.carbonExplanation' | translate }}</p>
-        <div class="huella__resumen">
-          <div class="huella__dato huella__dato--destacado">
-            <span class="huella__valor">{{ c.totalKgCo2eAvoided | number: '1.0-2' }}</span>
-            <span class="huella__etiqueta">{{ 'analytics.reports.kgCo2e' | translate }}</span>
+        @if (criteria().length > 0) {
+          <div class="criterios-cuerpo" [class.criterios-cuerpo--sin-radar]="criteria().length < 3">
+            @if (criteria().length >= 3) {
+              <div class="radar-caja">
+                <canvas baseChart type="radar" role="img" [attr.aria-label]="'analytics.criteria.title' | translate" [data]="radarData()" [options]="radarOptions()"></canvas>
+              </div>
+            }
+            <ol class="lista-criterios">
+              @for (c of sortedCriteria(); track c.criterionId; let first = $first; let last = $last; let i = $index) {
+                <li [style.animation-delay.ms]="i * 70">
+                  <span class="criterio-cabecera">
+                    <span class="criterio-nombre">{{ c.criterionName }}</span>
+                    @if (first && sortedCriteria().length > 1) {
+                      <span class="st-tag">{{ 'analytics.criteria.best' | translate }}</span>
+                    }
+                    @if (last && sortedCriteria().length > 1) {
+                      <span class="st-tag st-tag--warning">{{ 'analytics.criteria.toImprove' | translate }}</span>
+                    }
+                    <strong class="criterio-valor">{{ c.averageScore | number: '1.1-1' }}</strong>
+                  </span>
+                  <span class="barra"><span [attr.data-nivel]="level(c.averageScore)" [style.width.%]="percent(c.averageScore)"></span></span>
+                </li>
+              }
+            </ol>
           </div>
-          <div class="huella__dato">
-            <span class="huella__valor">{{ c.tripsAvoided | number: '1.0-0' }}</span>
-            <span class="huella__etiqueta">{{ 'analytics.reports.trips' | translate }}</span>
-          </div>
-          <div class="huella__dato">
-            <span class="huella__valor">{{ c.totalKmAvoided | number: '1.0-1' }}</span>
-            <span class="huella__etiqueta">{{ 'analytics.reports.km' | translate }}</span>
-          </div>
-        </div>
-        @if (c.tripsAvoided === 0) {
-          <p class="huella__ayuda">{{ 'analytics.reports.carbonEmpty' | translate }}</p>
+          <table class="sr-only">
+            <caption>{{ 'analytics.criteria.title' | translate }}</caption>
+            <tbody>
+              @for (c of criteria(); track c.criterionId) {
+                <tr>
+                  <th scope="row">{{ c.criterionName }}</th>
+                  <td>{{ c.averageScore }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <p class="reports__empty">{{ 'analytics.criteria.empty' | translate }}</p>
         }
-        <p class="huella__ods">{{ 'analytics.reports.sdg' | translate }}</p>
       </section>
-    }
+
+      <!-- US-21 · Huella de carbono evitada -->
+      @if (carbon(); as c) {
+        <section class="st-hero huella" aria-labelledby="titulo-huella">
+          <div class="huella-intro">
+            <span class="hoja" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">eco</mat-icon></span>
+            <div>
+              <p class="st-kicker">{{ 'analytics.reports.carbonKicker' | translate }}</p>
+              <h2 id="titulo-huella">{{ 'analytics.reports.carbonTitle' | translate }}</h2>
+              <p class="huella-texto">{{ 'analytics.reports.carbonExplanation' | translate }}</p>
+            </div>
+          </div>
+          <div class="huella-datos">
+            <div class="huella-dato huella-dato--grande">
+              <strong [stCountUp]="c.totalKgCo2eAvoided" [decimals]="2"></strong>
+              <span>{{ 'analytics.reports.kgCo2e' | translate }}</span>
+            </div>
+            <div class="huella-dato">
+              <strong [stCountUp]="c.tripsAvoided"></strong>
+              <span>{{ 'analytics.reports.trips' | translate }}</span>
+            </div>
+            <div class="huella-dato">
+              <strong [stCountUp]="c.totalKmAvoided" [decimals]="1"></strong>
+              <span>{{ 'analytics.reports.km' | translate }}</span>
+            </div>
+          </div>
+          @if (c.tripsAvoided === 0) {
+            <p class="huella-texto">{{ 'analytics.reports.carbonEmpty' | translate }}</p>
+          }
+          <p class="ods">
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">public</mat-icon>
+            {{ 'analytics.reports.sdg' | translate }}
+          </p>
+        </section>
+      }
+    </div>
   }
 </section>

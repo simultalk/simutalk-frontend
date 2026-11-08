@@ -21,7 +21,8 @@
     "layout": {
       "goHome": "SimuTalk, ir al inicio",
       "mainMenu": "Menú principal",
-      "logout": "Cerrar sesión"
+      "logout": "Cerrar sesión",
+      "menuTitle": "Menú"
     },
     "menu": {
       "myJobPostings": "Mis vacantes",
@@ -30,7 +31,9 @@
       "jobPostings": "Vacantes",
       "myApplications": "Mis postulaciones",
       "myProfile": "Mi perfil",
-      "certifications": "Certificaciones"
+      "certifications": "Certificaciones",
+      "calendar": "Calendario",
+      "myCompany": "Mi empresa"
     },
     "roles": {
       "recruiter": "Reclutador",
@@ -90,6 +93,11 @@
       "network": "No se pudo conectar con el servidor. Revisa tu conexión.",
       "forbidden": "No tienes permiso para hacer esto.",
       "server": "Ocurrió un error en el servidor. Intenta de nuevo."
+    },
+    "clock": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
     }
   },
   "iam": {
@@ -112,7 +120,8 @@
       "brandTitle": "Preselección con entrevistas que explican cada puntaje.",
       "brandPoint1": "Criterios ponderados que define tu empresa",
       "brandPoint2": "Entrevistas asincrónicas, a la hora del postulante",
-      "brandPoint3": "Ranking con la evidencia de cada respuesta"
+      "brandPoint3": "Ranking con la evidencia de cada respuesta",
+      "brandKicker": "Plataforma de preselección con IA"
     },
     "register": {
       "backToLogin": "Volver al inicio de sesión",
@@ -201,6 +210,50 @@
     }
   },
   "profiles": {
+    "me": {
+      "breadcrumb": "Inicio / Mi perfil",
+      "title": "Mi perfil",
+      "subtitle": "Mantén tus datos al día: las empresas los usan para conocerte y contactarte durante el proceso.",
+      "loading": "Cargando tu perfil...",
+      "loadError": "No se pudo cargar tu perfil. Inténtalo de nuevo.",
+      "kicker": "Perfil de postulante",
+      "completeness": "Perfil completo",
+      "completenessLabel": "Tu perfil está completo al {{value}} %",
+      "statsLabel": "Resumen del perfil",
+      "statExperience": "Años de experiencia",
+      "statVerified": "Certificaciones verificadas",
+      "statCertifications": "Certificaciones registradas",
+      "statAge": "Años de edad",
+      "sectionPersonal": "Datos personales",
+      "sectionContact": "Contacto",
+      "sectionExperience": "Experiencia",
+      "firstName": "Nombres",
+      "firstNameRequired": "Escribe tus nombres",
+      "lastName": "Apellidos",
+      "lastNameRequired": "Escribe tus apellidos",
+      "birthDate": "Fecha de nacimiento",
+      "birthDateRequired": "Elige tu fecha de nacimiento",
+      "birthDateAdult": "Debes ser mayor de edad",
+      "document": "Documento de identidad",
+      "documentHint": "El documento no se puede cambiar",
+      "phone": "Celular",
+      "phoneRequired": "Escribe tu celular",
+      "phoneInvalid": "Escribe un número válido, por ejemplo +51 987 654 321",
+      "email": "Correo de contacto (opcional)",
+      "emailHint": "Aquí te avisaremos cuando tu postulación avance",
+      "emailInvalid": "Escribe un correo válido",
+      "district": "Distrito",
+      "districtHint": "Lo usamos para calcular la huella de carbono que evitas al entrevistarte en línea",
+      "districtRequired": "Escribe tu distrito",
+      "yearsOfExperience": "Años de experiencia",
+      "yearsInvalid": "Escribe un número entre 0 y 60",
+      "updatedAt": "Última actualización: {{date}}",
+      "saved": "Perfil actualizado",
+      "saveError": "No se pudo guardar tu perfil. Revisa los datos e inténtalo de nuevo.",
+      "certificationsTitle": "Mis certificaciones",
+      "certificationsEmpty": "Aún no registras certificaciones. Agrégalas para destacar ante las empresas.",
+      "manageCertifications": "Gestionar certificaciones"
+    },
     "certifications": {
       "breadcrumb": "Inicio / Mi perfil / Certificaciones",
       "title": "Certificaciones",
@@ -248,6 +301,41 @@
       "verifyNotMatched": "El emisor no reconoce el código",
       "verifyInconclusive": "No se pudo consultar al emisor, inténtalo más tarde",
       "verifyError": "No se pudo verificar la certificación. Inténtalo de nuevo."
+    },
+    "company": {
+      "breadcrumb": "Inicio / Mi empresa",
+      "title": "Mi empresa",
+      "subtitle": "Así ven los postulantes a tu empresa. Mantén sus datos al día y revisa tus indicadores de un vistazo.",
+      "loading": "Cargando tu empresa...",
+      "loadError": "No se pudo cargar tu empresa. Inténtalo de nuevo.",
+      "newPosting": "Nueva vacante",
+      "statsLabel": "Indicadores de la empresa",
+      "statActive": "Vacantes activas",
+      "statAssessed": "Postulantes evaluados",
+      "statDays": "Días promedio a preselección",
+      "statEvidences": "Evidencias ancladas",
+      "sectionIdentity": "Identidad",
+      "sectionBusiness": "Negocio",
+      "sectionContact": "Contacto",
+      "legalName": "Razón social",
+      "legalNameRequired": "Escribe la razón social",
+      "tradeName": "Nombre comercial",
+      "tradeNameRequired": "Escribe el nombre comercial",
+      "rucHint": "El RUC no se puede cambiar",
+      "industry": "Rubro",
+      "industryRequired": "Escribe el rubro de la empresa",
+      "district": "Distrito",
+      "districtRequired": "Escribe el distrito",
+      "email": "Correo de contacto (opcional)",
+      "emailHint": "Lo verán los postulantes en tus vacantes",
+      "emailInvalid": "Escribe un correo válido",
+      "saved": "Datos de la empresa actualizados",
+      "saveError": "No se pudieron guardar los datos. Revísalos e inténtalo de nuevo.",
+      "shortcuts": "Accesos rápidos",
+      "shortcutPostings": "Crea, publica y cierra vacantes",
+      "shortcutRanking": "Compara a tus postulantes evaluados",
+      "shortcutReports": "Embudo, criterios y huella de carbono",
+      "shortcutCalendar": "Cierres y postulaciones del mes"
     }
   },
   "recruitment": {
@@ -654,7 +742,9 @@
       "selectPosting": "Vacante",
       "selectHint": "Elige una vacante para ver sus reportes.",
       "error": "No se pudieron cargar los reportes.",
-      "retry": "Reintentar"
+      "retry": "Reintentar",
+      "postingKicker": "Vacante analizada",
+      "carbonKicker": "Impacto ambiental"
     },
     "funnel": {
       "title": "Embudo de selección",
@@ -668,13 +758,26 @@
         "SHORTLISTED": "Preseleccionados",
         "REJECTED": "Rechazados",
         "HIRED": "Contratados"
-      }
+      },
+      "total": "{{count}} en total",
+      "distribution": "Distribución actual de los postulantes por etapa"
     },
     "criteria": {
       "title": "Puntaje medio por criterio",
       "subtitle": "Promedio de las evaluaciones de la vacante",
       "series": "Puntaje medio",
-      "empty": "Aún no hay evaluaciones calculadas para esta vacante."
+      "empty": "Aún no hay evaluaciones calculadas para esta vacante.",
+      "overall": "promedio general",
+      "best": "Más fuerte",
+      "toImprove": "Por reforzar"
+    },
+    "summary": {
+      "label": "Indicadores de la empresa",
+      "active": "Vacantes activas",
+      "assessed": "Postulantes evaluados",
+      "days": "días",
+      "toShortlist": "Promedio a preselección",
+      "evidences": "Evidencias ancladas"
     }
   },
   "assessment": {
@@ -711,6 +814,148 @@
           "help": "Indicio fuerte; revísalo con atención, pero sigue sin ser una conclusión definitiva."
         }
       }
+    }
+  },
+  "notifications": {
+    "breadcrumb": "Inicio / Notificaciones",
+    "title": "Notificaciones",
+    "kicker": "Centro de avisos",
+    "subtitle": "Todo lo que pasó con tus vacantes, postulaciones y entrevistas, en un solo lugar.",
+    "bellLabel": "Notificaciones, {{count}} sin leer",
+    "markAllRead": "Marcar todo como leído",
+    "markRead": "Marcar como leída",
+    "remove": "Eliminar",
+    "dismiss": "Cerrar aviso",
+    "all": "Todas",
+    "unread": "No leídas",
+    "unreadDot": "Sin leer",
+    "empty": "No tienes notificaciones todavía.",
+    "emptyUnread": "Estás al día: no hay nada sin leer.",
+    "emptyTitle": "Nada por aquí",
+    "emptyBody": "Cuando haya novedades en tus vacantes, postulaciones o entrevistas, aparecerán aquí.",
+    "viewAll": "Ver todas",
+    "refresh": "Actualizar",
+    "clearAll": "Borrar historial",
+    "filtersLabel": "Filtrar notificaciones",
+    "filter": {
+      "ALL": "Todas",
+      "UNREAD": "No leídas",
+      "INTERVIEWS": "Entrevistas",
+      "POSTINGS": "Vacantes",
+      "APPLICATIONS": "Postulaciones"
+    },
+    "groupToday": "Hoy",
+    "groupYesterday": "Ayer",
+    "groupWeek": "Esta semana",
+    "groupOlder": "Anteriores",
+    "summaryKicker": "Sin leer",
+    "summaryText": "de {{total}} notificaciones en tu historial",
+    "settingsTitle": "Ajustes",
+    "pushSetting": "Notificaciones del navegador",
+    "pushSettingHint": "Recibe avisos aunque SimuTalk esté en otra pestaña.",
+    "pushInvite": "Activa los avisos del navegador para enterarte aunque estés en otra pestaña.",
+    "pushEnable": "Activar",
+    "pushDenied": "Bloqueaste las notificaciones. Puedes permitirlas desde el candado de la barra de direcciones.",
+    "pushUnsupported": "Tu navegador no admite notificaciones.",
+    "howItWorks": "SimuTalk revisa tus vacantes, postulaciones y entrevistas cada minuto y te avisa de cada cambio.",
+    "messages": {
+      "welcomeTitle": "¡Hola, {{name}}!",
+      "welcomeBody": "Aquí te avisaremos de todo lo importante. Revisa tu calendario para ver lo que viene.",
+      "applicationStatusTitle": "Tu postulación avanzó",
+      "applicationStatusBody": "«{{posting}}» ahora está en: {{status}}.",
+      "interviewInviteTitle": "Te invitaron a una entrevista",
+      "interviewInviteBody": "«{{posting}}»: tienes hasta el {{date}} para rendirla.",
+      "interviewDeadlineTitle": "Tu entrevista vence pronto",
+      "interviewDeadlineBody": "«{{posting}}»: te quedan {{days}} día(s) para rendirla.",
+      "newPostingTitle": "Nueva vacante publicada",
+      "newPostingBody": "«{{posting}}» ya recibe postulaciones.",
+      "postingClosingTitle": "Una vacante cierra pronto",
+      "postingClosingBody": "«{{posting}}» cierra en {{days}} día(s).",
+      "newApplicationTitle": "Nuevos postulantes",
+      "newApplicationBody": "«{{posting}}» recibió {{count}} postulación(es) nueva(s).",
+      "candidateAssessedTitle": "Evaluación lista",
+      "candidateAssessedBody": "{{candidate}} terminó su entrevista para «{{posting}}».",
+      "pushEnabledTitle": "Notificaciones activadas",
+      "pushEnabledBody": "Te avisaremos aquí cuando haya novedades."
+    }
+  },
+  "calendar": {
+    "breadcrumb": "Inicio / Calendario",
+    "title": "Calendario",
+    "kicker": "Mes",
+    "subtitleCandidate": "Las fechas de cierre de las vacantes y los plazos de tus entrevistas, en un solo vistazo.",
+    "subtitleRecruiter": "Cuándo cierran tus vacantes y cuántas postulaciones recibes cada día.",
+    "statsLabel": "Resumen del calendario",
+    "statClosingWeek": "Cierran en 7 días",
+    "statPendingInterviews": "Entrevistas pendientes",
+    "statReceivedMonth": "Postulaciones este mes",
+    "statEventsMonth": "Eventos en el mes",
+    "today": "Hoy",
+    "prev": "Mes anterior",
+    "next": "Mes siguiente",
+    "legend": "Tipos de evento",
+    "loading": "Cargando calendario...",
+    "error": "No se pudo cargar el calendario.",
+    "retry": "Reintentar",
+    "selectedDay": "Día elegido",
+    "noEvents": "No hay nada programado para este día.",
+    "upcoming": "Próximos",
+    "noUpcoming": "No tienes eventos próximos.",
+    "alreadyApplied": "Ya postulaste",
+    "isToday": "Hoy",
+    "tomorrow": "Mañana",
+    "inDays": "En {{days}} días",
+    "kind": {
+      "POSTING_CLOSING": "Cierre de vacante",
+      "INTERVIEW_DEADLINE": "Vence tu entrevista",
+      "INTERVIEW_DONE": "Entrevista enviada",
+      "APPLIED": "Postulaste",
+      "APPLICATIONS_RECEIVED": "{{count}} postulación(es)"
+    },
+    "legendKind": {
+      "POSTING_CLOSING": "Cierre de vacantes",
+      "INTERVIEW_DEADLINE": "Plazo de entrevista",
+      "INTERVIEW_DONE": "Entrevistas enviadas",
+      "APPLIED": "Mis postulaciones",
+      "APPLICATIONS_RECEIVED": "Postulaciones recibidas"
+    }
+  },
+  "ranking": {
+    "breadcrumb": "Inicio / Ranking",
+    "title": "Ranking explicable",
+    "subtitle": "Quién va primero y por qué: cada puntaje se arma con los criterios y pesos que definiste.",
+    "posting": "Vacante",
+    "anonymized": "Cribado anonimizado",
+    "forcedNotice": "Esta vacante exige cribado anonimizado: los nombres están ocultos.",
+    "loading": "Cargando ranking",
+    "loadError": "No se pudo cargar la información.",
+    "close": "Cerrar",
+    "selectTitle": "Elige una vacante",
+    "selectHint": "Selecciona una vacante para ver a sus postulantes ordenados por puntaje.",
+    "emptyTitle": "Aún no hay evaluaciones",
+    "empty": "Esta vacante todavía no tiene postulantes evaluados. Aparecerán aquí cuando terminen su entrevista.",
+    "statsLabel": "Resumen del ranking",
+    "statAssessed": "Postulantes evaluados",
+    "statBest": "Mejor puntaje",
+    "statAverage": "Puntaje promedio",
+    "statEvidence": "Con evidencia sólida",
+    "podium": "Podio",
+    "viewAssessment": "Ver la evaluación de {{name}}",
+    "radarTitle": "Comparación del top 3",
+    "radarSubtitle": "Puntaje de cada uno en cada criterio (0 a 10)",
+    "criteriaTitle": "Criterios de la vacante",
+    "criteriaLegend": "Criterios y sus pesos",
+    "fullRanking": "Ranking completo",
+    "contributionLabel": "Aporte de cada criterio al puntaje final",
+    "breakdown": "Ver desglose por criterio",
+    "weight": "Peso {{value}} %",
+    "evidences": "{{count}} evidencia(s)",
+    "badge": {
+      "TOP_RANKED": "Mejor ranking",
+      "STRONG_EVIDENCE": "Evidencia sólida",
+      "VERIFIED_CERTIFICATIONS": "Certificaciones verificadas",
+      "MISSING_MANDATORY_CERTIFICATION": "Falta certificación obligatoria",
+      "INTEGRITY_ALERT": "Alerta de integridad"
     }
   }
 }

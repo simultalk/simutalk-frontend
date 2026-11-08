@@ -1,4 +1,4 @@
-import { Routes, Route } from '@angular/router';
+import { Routes } from '@angular/router';
 import { inject } from '@angular/core';
 import { Layout } from './components/shared/layout/layout';
 import { Login } from './components/auth/login/login';
@@ -8,15 +8,9 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { AuthService } from './services/auth.service';
 import { Forbidden } from './components/shared/forbidden/forbidden';
-import { UnderConstruction } from './components/shared/under-construction/under-construction';
 import { InvitationTest } from './components/company/invitation-test/invitation-test';
 import { TakeInterview } from './components/applicant/take-interview/take-interview';
 import { ROLE_CANDIDATE, ROLE_RECRUITER } from './models/menu';
-
-/** Sección del menú que todavía no tiene pantalla: muestra "En construcción". */
-function pending(path: string, title: string, roles: string[]): Route {
-  return { path, component: UnderConstruction, data: { title, roles } };
-}
 
 export const routes: Routes = [
   // Páginas públicas (sin menú)
@@ -98,6 +92,12 @@ export const routes: Routes = [
           import('./components/company/pipeline/pipeline').then((m) => m.Pipeline),
       },
       {
+        path: 'profiles/company',
+        data: { roles: [ROLE_RECRUITER] },
+        loadComponent: () =>
+          import('./components/company/company-profile/company-profile').then((m) => m.CompanyProfilePage),
+      },
+      {
         path: 'analytics/reports',
         data: { roles: [ROLE_RECRUITER] },
         loadComponent: () =>
@@ -145,7 +145,12 @@ export const routes: Routes = [
             (m) => m.ApplicationFeedback,
           ),
       },
-      pending('profiles/me', 'Mi perfil', [ROLE_CANDIDATE]),
+      {
+        path: 'profiles/me',
+        data: { roles: [ROLE_CANDIDATE] },
+        loadComponent: () =>
+          import('./components/applicant/my-profile/my-profile').then((m) => m.MyProfile),
+      },
       {
         path: 'profiles/certifications',
         data: { roles: [ROLE_CANDIDATE] },
@@ -157,6 +162,19 @@ export const routes: Routes = [
         path: 'interviews/take-interview/:applicationId',
         component: TakeInterview,
         data: { roles: [ROLE_CANDIDATE] },
+      },
+
+      // Ambos roles: calendario y notificaciones
+      {
+        path: 'calendar',
+        data: { roles: [ROLE_RECRUITER, ROLE_CANDIDATE] },
+        loadComponent: () => import('./components/shared/calendar/calendar').then((m) => m.CalendarPage),
+      },
+      {
+        path: 'notifications',
+        data: { roles: [ROLE_RECRUITER, ROLE_CANDIDATE] },
+        loadComponent: () =>
+          import('./components/shared/notifications/notifications').then((m) => m.NotificationsPage),
       },
 
       // 403
