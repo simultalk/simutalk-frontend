@@ -9,6 +9,7 @@
   <span class="espacio"></span>
 
   <div class="usuario">
+    <app-notification-bell />
     <app-theme-toggle />
     <app-language-switcher />
     <span class="usuario-texto">
@@ -24,15 +25,23 @@
 
 <div class="cuerpo">
   <nav class="menu" [attr.aria-label]="'shared.layout.mainMenu' | translate">
+    <p class="menu-titulo" aria-hidden="true">{{ 'shared.layout.menuTitle' | translate }}</p>
     @for (item of menu; track item.route) {
       <a class="opcion" [routerLink]="item.route" routerLinkActive="activa" ariaCurrentWhenActive="page">
         <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ item.icon }}</mat-icon>
         <span>{{ item.label | translate }}</span>
       </a>
     }
+
+    <!-- Reloj con la hora actual, abajo del menú -->
+    <div class="menu-pie">
+      <app-clock />
+    </div>
   </nav>
 
   <main id="contenido" class="contenido" tabindex="-1">
     <router-outlet />
   </main>
 </div>
+
+<app-notification-toasts />

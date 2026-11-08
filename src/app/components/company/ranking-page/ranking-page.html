@@ -1,97 +1,192 @@
-<section class="ranking">
-  <h1>Ranking explicable</h1>
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'ranking.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'ranking.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'ranking.subtitle' | translate }}</p>
+</header>
 
-  <mat-form-field appearance="outline" class="posting-select">
-    <mat-label>Vacante</mat-label>
-    <mat-select
-      [value]="selectedId()"
-      (selectionChange)="onPostingChange($event.value)"
-      [disabled]="loadingPostings()"
-    >
+<!-- Barra de controles -->
+<section class="st-card controles">
+  <mat-form-field appearance="outline" class="selector" subscriptSizing="dynamic">
+    <mat-label>{{ 'ranking.posting' | translate }}</mat-label>
+    <mat-icon matPrefix fontSet="material-symbols-outlined">work</mat-icon>
+    <mat-select [value]="selectedId()" (selectionChange)="onPostingChange($event.value)" [disabled]="loadingPostings()">
       @for (p of jobPostings(); track p.id) {
         <mat-option [value]="p.id">{{ p.title }}</mat-option>
       }
     </mat-select>
   </mat-form-field>
-  
-  <div class="anonymize-bar">
+
+  <div class="anonimo">
     <mat-slide-toggle
       [checked]="isAnonymous()"
       [disabled]="forced() || selectedId() === null"
       (change)="onAnonymizedChange($event.checked)"
     >
-      Cribado anonimizado
+      {{ 'ranking.anonymized' | translate }}
     </mat-slide-toggle>
-
     @if (forced()) {
-      <p class="anonymize-notice" role="status">
-        Esta vacante exige cribado anonimizado: los nombres están ocultos y no se puede desactivar.
+      <p class="aviso" role="status">
+        <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">lock</mat-icon>
+        {{ 'ranking.forcedNotice' | translate }}
       </p>
     }
   </div>
+</section>
 
-  @if (loadingRanking()) {
-    <mat-progress-spinner mode="indeterminate" diameter="40" aria-label="Cargando ranking" />
-  } @else if (selectedId() === null) {
-    <p>Selecciona una vacante para ver su ranking.</p>
-  } @else if (ranking().length === 0) {
-    <p>Esta vacante aún no tiene candidatos evaluados.</p>
-  } @else {
-    <table mat-table [dataSource]="ranking()" class="ranking-table st-tabla-responsive">
+@if (loadingRanking()) {
+  <mat-progress-bar mode="indeterminate" [attr.aria-label]="'ranking.loading' | translate" />
+} @else if (selectedId() === null) {
+  <div class="st-card st-empty">
+    <span class="st-empty-icon" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">leaderboard</mat-icon></span>
+    <h2>{{ 'ranking.selectTitle' | translate }}</h2>
+    <p>{{ 'ranking.selectHint' | translate }}</p>
+  </div>
+} @else if (ranking().length === 0) {
+  <div class="st-card st-empty">
+    <span class="st-empty-icon" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">hourglass_empty</mat-icon></span>
+    <h2>{{ 'ranking.emptyTitle' | translate }}</h2>
+    <p>{{ 'ranking.empty' | translate }}</p>
+  </div>
+} @else {
+  <div class="st-stagger contenido">
+    <!-- Indicadores -->
+    <section class="st-stats" [attr.aria-label]="'ranking.statsLabel' | translate">
+      <div class="st-stat">
+        <span class="st-stat-value" [stCountUp]="ranking().length"></span>
+        <span class="st-stat-label">{{ 'ranking.statAssessed' | translate }}</span>
+      </div>
+      <div class="st-stat st-stat--accent">
+        <span class="st-stat-value"><span [stCountUp]="best()" [decimals]="1"></span><small>/10</small></span>
+        <span class="st-stat-label">{{ 'ranking.statBest' | translate }}</span>
+      </div>
+      <div class="st-stat">
+        <span class="st-stat-value"><span [stCountUp]="average()" [decimals]="1"></span><small>/10</small></span>
+        <span class="st-stat-label">{{ 'ranking.statAverage' | translate }}</span>
+      </div>
+      <div class="st-stat">
+        <span class="st-stat-value" [stCountUp]="strongEvidence()"></span>
+        <span class="st-stat-label">{{ 'ranking.statEvidence' | translate }}</span>
+      </div>
+    </section>
 
-      <ng-container matColumnDef="position">
-        <th mat-header-cell *matHeaderCellDef>Posición</th>
-        <td mat-cell *matCellDef="let row" data-label="Posición">#{{ row.position }}</td>
-      </ng-container>
+    <!-- Podio + radar -->
+    <div class="destacados">
+      <app-ranking-podium
+        [entries]="podium()"
+        [anonymous]="isAnonymous()"
+        (selected)="goToAssessment($event)"
+      />
 
-      <ng-container matColumnDef="candidate">
-        <th mat-header-cell *matHeaderCellDef>Candidato</th>
-        <td mat-cell *matCellDef="let row" data-label="Candidato">{{ displayName(row) }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="weightedScore">
-        <th mat-header-cell *matHeaderCellDef>Puntaje ponderado</th>
-        <td mat-cell *matCellDef="let row" data-label="Puntaje">{{ row.weightedScore | number: '1.0-1' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="breakdown">
-        <th mat-header-cell *matHeaderCellDef>Desglose por criterio</th>
-        <td mat-cell *matCellDef="let row" class="completo" data-label="Desglose por criterio">
-          <ul class="breakdown">
-            @for (c of row.criteria; track c.criterionId) {
-              <li>
-                <strong>{{ c.criterionName }}</strong>:
-                peso {{ c.appliedWeight }} % ·
-                puntaje {{ c.score | number: '1.0-1' }} ·
-                {{ c.evidenceCount }} evidencia(s)
-              </li>
+      @if (criteria().length > 2) {
+        <section class="st-card radar">
+          <h2 class="st-section-title">{{ 'ranking.radarTitle' | translate }}</h2>
+          <p class="radar-sub">{{ 'ranking.radarSubtitle' | translate }}</p>
+          <div class="radar-caja">
+            <canvas baseChart type="radar" role="img" [attr.aria-label]="'ranking.radarTitle' | translate" [data]="radarData()" [options]="radarOptions()"></canvas>
+          </div>
+        </section>
+      } @else {
+        <section class="st-card radar">
+          <h2 class="st-section-title">{{ 'ranking.criteriaTitle' | translate }}</h2>
+          <ul class="leyenda-vertical">
+            @for (c of criteria(); track c.id) {
+              <li><i [style.background]="c.color"></i>{{ c.name }} <small>{{ c.weight }} %</small></li>
             }
           </ul>
-        </td>
-      </ng-container>
+        </section>
+      }
+    </div>
 
-      <ng-container matColumnDef="badges">
-        <th mat-header-cell *matHeaderCellDef>Insignias</th>
-        <td mat-cell *matCellDef="let row" class="completo" data-label="Insignias">
-          <mat-chip-set aria-label="Insignias del candidato">
-            @for (b of row.badges; track b) {
-              <mat-chip [ngClass]="badge(b).cssClass">{{ badge(b).label }}</mat-chip>
+    <!-- Ranking completo -->
+    <section class="st-card tabla">
+      <header class="tabla-cabecera">
+        <h2 class="st-section-title">{{ 'ranking.fullRanking' | translate }}</h2>
+        <ul class="leyenda" [attr.aria-label]="'ranking.criteriaLegend' | translate">
+          @for (c of criteria(); track c.id) {
+            <li><i [style.background]="c.color"></i>{{ c.name }} <small>{{ c.weight }} %</small></li>
+          }
+        </ul>
+      </header>
+
+      <ol class="filas">
+        @for (row of ranking(); track row.applicationId; let i = $index) {
+          <li class="fila" [class.fila--abierta]="expanded() === row.applicationId" [style.animation-delay.ms]="i * 50">
+            <div
+              class="fila-principal"
+              role="link"
+              tabindex="0"
+              [attr.aria-label]="'ranking.viewAssessment' | translate: { name: displayName(row) }"
+              (click)="goToAssessment(row)"
+              (keydown.enter)="goToAssessment(row)"
+            >
+              <span class="posicion" [attr.data-pos]="row.position">#{{ row.position }}</span>
+
+              <span class="candidato">
+                <span class="mini-avatar" aria-hidden="true">
+                  @if (initials(row)) { {{ initials(row) }} } @else { <mat-icon fontSet="material-symbols-outlined">person</mat-icon> }
+                </span>
+                <span class="candidato-texto">
+                  <strong>{{ displayName(row) }}</strong>
+                  <span class="insignias">
+                    @for (b of row.badges; track b) {
+                      <span [class]="badgeTone(b)">
+                        <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ badgeIcon(b) }}</mat-icon>
+                        {{ 'ranking.badge.' + b | translate }}
+                      </span>
+                    }
+                  </span>
+                </span>
+              </span>
+
+              <!-- Barra apilada: cuánto aporta cada criterio al puntaje final -->
+              <span class="aporte" [attr.aria-label]="'ranking.contributionLabel' | translate">
+                <span class="aporte-barra">
+                  @for (c of row.criteria; track c.criterionId; let ci = $index) {
+                    <span
+                      class="segmento"
+                      [style.width.%]="contribution(c.score, c.appliedWeight)"
+                      [style.background]="color(ci)"
+                      [matTooltip]="c.criterionName + ': ' + (c.score | number: '1.1-1') + ' × ' + c.appliedWeight + ' %'"
+                    ></span>
+                  }
+                </span>
+              </span>
+
+              <span class="nota">
+                <strong>{{ row.weightedScore | number: '1.1-1' }}</strong>
+                <small>/10</small>
+              </span>
+
+              <button
+                mat-icon-button
+                type="button"
+                class="expandir"
+                [attr.aria-expanded]="expanded() === row.applicationId"
+                [attr.aria-label]="'ranking.breakdown' | translate"
+                (click)="toggle(row, $event)"
+              >
+                <mat-icon fontSet="material-symbols-outlined">expand_more</mat-icon>
+              </button>
+            </div>
+
+            @if (expanded() === row.applicationId) {
+              <div class="desglose">
+                @for (c of row.criteria; track c.criterionId; let ci = $index) {
+                  <div class="criterio">
+                    <span class="criterio-nombre"><i [style.background]="color(ci)"></i>{{ c.criterionName }}</span>
+                    <span class="criterio-barra"><span [style.width.%]="percent(c.score)" [style.background]="color(ci)"></span></span>
+                    <span class="criterio-dato">{{ c.score | number: '1.1-1' }}</span>
+                    <span class="criterio-meta">
+                      {{ 'ranking.weight' | translate: { value: c.appliedWeight } }} ·
+                      {{ 'ranking.evidences' | translate: { count: c.evidenceCount } }}
+                    </span>
+                  </div>
+                }
+              </div>
             }
-          </mat-chip-set>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr
-        mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        class="clickable-row"
-        tabindex="0"
-        role="link"
-        [attr.aria-label]="'Ver evaluación de ' + displayName(row)"
-        (click)="goToAssessment(row)"
-        (keydown.enter)="goToAssessment(row)"
-      ></tr>
-    </table>
-  }
-</section>
+          </li>
+        }
+      </ol>
+    </section>
+  </div>
+}

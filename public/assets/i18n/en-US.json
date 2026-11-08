@@ -21,7 +21,8 @@
     "layout": {
       "goHome": "SimuTalk, go to home",
       "mainMenu": "Main menu",
-      "logout": "Sign out"
+      "logout": "Sign out",
+      "menuTitle": "Menu"
     },
     "menu": {
       "myJobPostings": "My job postings",
@@ -30,7 +31,9 @@
       "jobPostings": "Job postings",
       "myApplications": "My applications",
       "myProfile": "My profile",
-      "certifications": "Certifications"
+      "certifications": "Certifications",
+      "calendar": "Calendar",
+      "myCompany": "My company"
     },
     "roles": {
       "recruiter": "Recruiter",
@@ -90,6 +93,11 @@
       "network": "Could not connect to the server. Check your connection.",
       "forbidden": "You do not have permission to do this.",
       "server": "A server error occurred. Try again."
+    },
+    "clock": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
     }
   },
   "iam": {
@@ -112,7 +120,8 @@
       "brandTitle": "Screening with interviews that explain every score.",
       "brandPoint1": "Weighted criteria defined by your company",
       "brandPoint2": "Asynchronous interviews, on the candidate's schedule",
-      "brandPoint3": "Ranking with evidence from every answer"
+      "brandPoint3": "Ranking with evidence from every answer",
+      "brandKicker": "AI-powered pre-screening platform"
     },
     "register": {
       "backToLogin": "Back to sign in",
@@ -201,6 +210,50 @@
     }
   },
   "profiles": {
+    "me": {
+      "breadcrumb": "Home / My profile",
+      "title": "My profile",
+      "subtitle": "Keep your details up to date: companies use them to get to know you and contact you during the process.",
+      "loading": "Loading your profile...",
+      "loadError": "Your profile could not be loaded. Please try again.",
+      "kicker": "Candidate profile",
+      "completeness": "Profile complete",
+      "completenessLabel": "Your profile is {{value}}% complete",
+      "statsLabel": "Profile summary",
+      "statExperience": "Years of experience",
+      "statVerified": "Verified certifications",
+      "statCertifications": "Registered certifications",
+      "statAge": "Years old",
+      "sectionPersonal": "Personal details",
+      "sectionContact": "Contact",
+      "sectionExperience": "Experience",
+      "firstName": "First names",
+      "firstNameRequired": "Enter your first names",
+      "lastName": "Last names",
+      "lastNameRequired": "Enter your last names",
+      "birthDate": "Date of birth",
+      "birthDateRequired": "Choose your date of birth",
+      "birthDateAdult": "You must be of legal age",
+      "document": "ID document",
+      "documentHint": "The document cannot be changed",
+      "phone": "Mobile phone",
+      "phoneRequired": "Enter your mobile phone",
+      "phoneInvalid": "Enter a valid number, for example +51 987 654 321",
+      "email": "Contact e-mail (optional)",
+      "emailHint": "We will let you know here when your application moves forward",
+      "emailInvalid": "Enter a valid e-mail",
+      "district": "District",
+      "districtHint": "We use it to estimate the carbon footprint you avoid by interviewing online",
+      "districtRequired": "Enter your district",
+      "yearsOfExperience": "Years of experience",
+      "yearsInvalid": "Enter a number between 0 and 60",
+      "updatedAt": "Last updated: {{date}}",
+      "saved": "Profile updated",
+      "saveError": "Your profile could not be saved. Check your details and try again.",
+      "certificationsTitle": "My certifications",
+      "certificationsEmpty": "You have not added any certifications yet. Add them to stand out to companies.",
+      "manageCertifications": "Manage certifications"
+    },
     "certifications": {
       "breadcrumb": "Home / My profile / Certifications",
       "title": "Certifications",
@@ -248,6 +301,41 @@
       "verifyNotMatched": "The issuer does not recognize the code",
       "verifyInconclusive": "The issuer could not be reached, try again later",
       "verifyError": "The certification could not be verified. Try again."
+    },
+    "company": {
+      "breadcrumb": "Home / My company",
+      "title": "My company",
+      "subtitle": "This is how candidates see your company. Keep its details up to date and check your indicators at a glance.",
+      "loading": "Loading your company...",
+      "loadError": "Your company could not be loaded. Please try again.",
+      "newPosting": "New job posting",
+      "statsLabel": "Company indicators",
+      "statActive": "Active job postings",
+      "statAssessed": "Assessed candidates",
+      "statDays": "Average days to shortlist",
+      "statEvidences": "Anchored evidence",
+      "sectionIdentity": "Identity",
+      "sectionBusiness": "Business",
+      "sectionContact": "Contact",
+      "legalName": "Legal name",
+      "legalNameRequired": "Enter the legal name",
+      "tradeName": "Trade name",
+      "tradeNameRequired": "Enter the trade name",
+      "rucHint": "The RUC cannot be changed",
+      "industry": "Industry",
+      "industryRequired": "Enter the company's industry",
+      "district": "District",
+      "districtRequired": "Enter the district",
+      "email": "Contact e-mail (optional)",
+      "emailHint": "Candidates will see it on your job postings",
+      "emailInvalid": "Enter a valid e-mail",
+      "saved": "Company details updated",
+      "saveError": "The details could not be saved. Check them and try again.",
+      "shortcuts": "Shortcuts",
+      "shortcutPostings": "Create, publish and close job postings",
+      "shortcutRanking": "Compare your assessed candidates",
+      "shortcutReports": "Funnel, criteria and carbon footprint",
+      "shortcutCalendar": "Closings and applications this month"
     }
   },
   "recruitment": {
@@ -654,7 +742,9 @@
       "selectPosting": "Job posting",
       "selectHint": "Choose a job posting to see its reports.",
       "error": "The reports could not be loaded.",
-      "retry": "Retry"
+      "retry": "Retry",
+      "postingKicker": "Job posting analyzed",
+      "carbonKicker": "Environmental impact"
     },
     "funnel": {
       "title": "Selection funnel",
@@ -668,13 +758,26 @@
         "SHORTLISTED": "Shortlisted",
         "REJECTED": "Rejected",
         "HIRED": "Hired"
-      }
+      },
+      "total": "{{count}} in total",
+      "distribution": "Current distribution of candidates by stage"
     },
     "criteria": {
       "title": "Average score per criterion",
       "subtitle": "Average of the assessments for this job posting",
       "series": "Average score",
-      "empty": "No assessments have been calculated for this job posting yet."
+      "empty": "No assessments have been calculated for this job posting yet.",
+      "overall": "overall average",
+      "best": "Strongest",
+      "toImprove": "Needs work"
+    },
+    "summary": {
+      "label": "Company indicators",
+      "active": "Active job postings",
+      "assessed": "Assessed candidates",
+      "days": "days",
+      "toShortlist": "Average to shortlist",
+      "evidences": "Anchored evidence"
     }
   },
   "assessment": {
@@ -711,6 +814,148 @@
           "help": "Strong hint; review it carefully, but it is still not a definitive conclusion."
         }
       }
+    }
+  },
+  "notifications": {
+    "breadcrumb": "Home / Notifications",
+    "title": "Notifications",
+    "kicker": "Notification center",
+    "subtitle": "Everything that happened with your job postings, applications and interviews, in one place.",
+    "bellLabel": "Notifications, {{count}} unread",
+    "markAllRead": "Mark all as read",
+    "markRead": "Mark as read",
+    "remove": "Delete",
+    "dismiss": "Dismiss",
+    "all": "All",
+    "unread": "Unread",
+    "unreadDot": "Unread",
+    "empty": "You have no notifications yet.",
+    "emptyUnread": "You're all caught up.",
+    "emptyTitle": "Nothing here",
+    "emptyBody": "When there is news about your job postings, applications or interviews, it will show up here.",
+    "viewAll": "View all",
+    "refresh": "Refresh",
+    "clearAll": "Clear history",
+    "filtersLabel": "Filter notifications",
+    "filter": {
+      "ALL": "All",
+      "UNREAD": "Unread",
+      "INTERVIEWS": "Interviews",
+      "POSTINGS": "Job postings",
+      "APPLICATIONS": "Applications"
+    },
+    "groupToday": "Today",
+    "groupYesterday": "Yesterday",
+    "groupWeek": "This week",
+    "groupOlder": "Older",
+    "summaryKicker": "Unread",
+    "summaryText": "out of {{total}} notifications in your history",
+    "settingsTitle": "Settings",
+    "pushSetting": "Browser notifications",
+    "pushSettingHint": "Get alerts even when SimuTalk is in another tab.",
+    "pushInvite": "Turn on browser alerts to find out even when you're in another tab.",
+    "pushEnable": "Turn on",
+    "pushDenied": "You blocked notifications. You can allow them from the padlock in the address bar.",
+    "pushUnsupported": "Your browser does not support notifications.",
+    "howItWorks": "SimuTalk checks your job postings, applications and interviews every minute and lets you know about every change.",
+    "messages": {
+      "welcomeTitle": "Hi, {{name}}!",
+      "welcomeBody": "We'll let you know about everything important here. Check your calendar to see what's coming.",
+      "applicationStatusTitle": "Your application moved forward",
+      "applicationStatusBody": "\"{{posting}}\" is now: {{status}}.",
+      "interviewInviteTitle": "You were invited to an interview",
+      "interviewInviteBody": "\"{{posting}}\": you have until {{date}} to take it.",
+      "interviewDeadlineTitle": "Your interview is due soon",
+      "interviewDeadlineBody": "\"{{posting}}\": {{days}} day(s) left to take it.",
+      "newPostingTitle": "New job posting",
+      "newPostingBody": "\"{{posting}}\" is now accepting applications.",
+      "postingClosingTitle": "A job posting closes soon",
+      "postingClosingBody": "\"{{posting}}\" closes in {{days}} day(s).",
+      "newApplicationTitle": "New candidates",
+      "newApplicationBody": "\"{{posting}}\" received {{count}} new application(s).",
+      "candidateAssessedTitle": "Assessment ready",
+      "candidateAssessedBody": "{{candidate}} finished the interview for \"{{posting}}\".",
+      "pushEnabledTitle": "Notifications on",
+      "pushEnabledBody": "We'll alert you here when there's news."
+    }
+  },
+  "calendar": {
+    "breadcrumb": "Home / Calendar",
+    "title": "Calendar",
+    "kicker": "Month",
+    "subtitleCandidate": "Job posting closing dates and your interview deadlines, at a glance.",
+    "subtitleRecruiter": "When your job postings close and how many applications you get each day.",
+    "statsLabel": "Calendar summary",
+    "statClosingWeek": "Closing in 7 days",
+    "statPendingInterviews": "Pending interviews",
+    "statReceivedMonth": "Applications this month",
+    "statEventsMonth": "Events this month",
+    "today": "Today",
+    "prev": "Previous month",
+    "next": "Next month",
+    "legend": "Event types",
+    "loading": "Loading calendar...",
+    "error": "The calendar could not be loaded.",
+    "retry": "Retry",
+    "selectedDay": "Selected day",
+    "noEvents": "Nothing scheduled for this day.",
+    "upcoming": "Upcoming",
+    "noUpcoming": "You have no upcoming events.",
+    "alreadyApplied": "Already applied",
+    "isToday": "Today",
+    "tomorrow": "Tomorrow",
+    "inDays": "In {{days}} days",
+    "kind": {
+      "POSTING_CLOSING": "Job posting closes",
+      "INTERVIEW_DEADLINE": "Interview due",
+      "INTERVIEW_DONE": "Interview submitted",
+      "APPLIED": "You applied",
+      "APPLICATIONS_RECEIVED": "{{count}} application(s)"
+    },
+    "legendKind": {
+      "POSTING_CLOSING": "Job posting closings",
+      "INTERVIEW_DEADLINE": "Interview deadlines",
+      "INTERVIEW_DONE": "Submitted interviews",
+      "APPLIED": "My applications",
+      "APPLICATIONS_RECEIVED": "Applications received"
+    }
+  },
+  "ranking": {
+    "breadcrumb": "Home / Ranking",
+    "title": "Explainable ranking",
+    "subtitle": "Who comes first and why: each score is built from the criteria and weights you defined.",
+    "posting": "Job posting",
+    "anonymized": "Anonymized screening",
+    "forcedNotice": "This job posting requires anonymized screening: names are hidden.",
+    "loading": "Loading ranking",
+    "loadError": "The information could not be loaded.",
+    "close": "Close",
+    "selectTitle": "Choose a job posting",
+    "selectHint": "Select a job posting to see its candidates sorted by score.",
+    "emptyTitle": "No assessments yet",
+    "empty": "This job posting has no assessed candidates yet. They will appear here once they finish their interview.",
+    "statsLabel": "Ranking summary",
+    "statAssessed": "Assessed candidates",
+    "statBest": "Best score",
+    "statAverage": "Average score",
+    "statEvidence": "With strong evidence",
+    "podium": "Podium",
+    "viewAssessment": "View {{name}}'s assessment",
+    "radarTitle": "Top 3 comparison",
+    "radarSubtitle": "Each candidate's score on each criterion (0 to 10)",
+    "criteriaTitle": "Job posting criteria",
+    "criteriaLegend": "Criteria and their weights",
+    "fullRanking": "Full ranking",
+    "contributionLabel": "Contribution of each criterion to the final score",
+    "breakdown": "Show breakdown by criterion",
+    "weight": "Weight {{value}}%",
+    "evidences": "{{count}} piece(s) of evidence",
+    "badge": {
+      "TOP_RANKED": "Top ranked",
+      "STRONG_EVIDENCE": "Strong evidence",
+      "VERIFIED_CERTIFICATIONS": "Verified certifications",
+      "MISSING_MANDATORY_CERTIFICATION": "Missing required certification",
+      "INTEGRITY_ALERT": "Integrity alert"
     }
   }
 }

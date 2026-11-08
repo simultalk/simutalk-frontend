@@ -1,0 +1,133 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'notifications.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'notifications.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'notifications.subtitle' | translate }}</p>
+</header>
+
+<div class="columnas st-stagger">
+  <section class="principal">
+    <div class="barra">
+      <div class="filtros" role="tablist" [attr.aria-label]="'notifications.filtersLabel' | translate">
+        @for (f of filters; track f) {
+          <button
+            type="button"
+            role="tab"
+            class="filtro"
+            [class.activo]="filter() === f"
+            [attr.aria-selected]="filter() === f"
+            (click)="filter.set(f)"
+          >
+            {{ 'notifications.filter.' + f | translate }}
+            <span class="cuenta">{{ count(f) }}</span>
+          </button>
+        }
+      </div>
+      <div class="acciones">
+        <button mat-stroked-button type="button" (click)="notifications.refresh()">
+          <mat-icon fontSet="material-symbols-outlined">refresh</mat-icon>
+          {{ 'notifications.refresh' | translate }}
+        </button>
+        <button mat-flat-button type="button" (click)="notifications.markAllRead()" [disabled]="notifications.unreadCount() === 0">
+          <mat-icon fontSet="material-symbols-outlined">done_all</mat-icon>
+          {{ 'notifications.markAllRead' | translate }}
+        </button>
+      </div>
+    </div>
+
+    @if (groups().length === 0) {
+      <div class="st-card vacio">
+        <span class="vacio-icono" aria-hidden="true">
+          <mat-icon fontSet="material-symbols-outlined">notifications_paused</mat-icon>
+        </span>
+        <h2>{{ 'notifications.emptyTitle' | translate }}</h2>
+        <p>{{ 'notifications.emptyBody' | translate }}</p>
+      </div>
+    } @else {
+      @for (g of groups(); track g.key) {
+        <section class="grupo">
+          <h2 class="st-kicker">{{ g.key | translate }}</h2>
+          <ul class="st-card lista">
+            @for (n of g.items; track n.id) {
+              <li class="fila" [class.fila--nueva]="!n.read">
+                <button type="button" class="abrir" (click)="notifications.open(n)">
+                  <span class="icono" [attr.data-kind]="n.kind" aria-hidden="true">
+                    <mat-icon fontSet="material-symbols-outlined">{{ notifications.icon(n.kind) }}</mat-icon>
+                  </span>
+                  <span class="texto">
+                    <strong>{{ n.titleKey | translate: n.params }}</strong>
+                    <span>{{ n.bodyKey | translate: n.params }}</span>
+                  </span>
+                  <span class="tiempo">{{ n.createdAt | timeAgo }}</span>
+                </button>
+                <div class="fila-acciones">
+                  @if (!n.read) {
+                    <button
+                      mat-icon-button
+                      type="button"
+                      [matTooltip]="'notifications.markRead' | translate"
+                      [attr.aria-label]="'notifications.markRead' | translate"
+                      (click)="notifications.markRead(n.id)"
+                    >
+                      <mat-icon fontSet="material-symbols-outlined">mark_email_read</mat-icon>
+                    </button>
+                  }
+                  <button
+                    mat-icon-button
+                    type="button"
+                    [matTooltip]="'notifications.remove' | translate"
+                    [attr.aria-label]="'notifications.remove' | translate"
+                    (click)="notifications.remove(n.id)"
+                  >
+                    <mat-icon fontSet="material-symbols-outlined">delete</mat-icon>
+                  </button>
+                </div>
+              </li>
+            }
+          </ul>
+        </section>
+      }
+    }
+  </section>
+
+  <!-- Ajustes -->
+  <aside class="ajustes">
+    <section class="st-hero resumen">
+      <p class="st-kicker">{{ 'notifications.summaryKicker' | translate }}</p>
+      <span class="resumen-numero">{{ notifications.unreadCount() }}</span>
+      <p class="resumen-texto">{{ 'notifications.summaryText' | translate: { total: notifications.items().length } }}</p>
+    </section>
+
+    <section class="st-card">
+      <h2 class="st-section-title">{{ 'notifications.settingsTitle' | translate }}</h2>
+
+      <div class="ajuste">
+        <span>
+          <strong>{{ 'notifications.pushSetting' | translate }}</strong>
+          <small>
+            @switch (notifications.permission()) {
+              @case ('denied') { {{ 'notifications.pushDenied' | translate }} }
+              @case ('unsupported') { {{ 'notifications.pushUnsupported' | translate }} }
+              @default { {{ 'notifications.pushSettingHint' | translate }} }
+            }
+          </small>
+        </span>
+        <mat-slide-toggle
+          [checked]="notifications.pushEnabled()"
+          [disabled]="notifications.permission() === 'denied' || notifications.permission() === 'unsupported'"
+          (change)="togglePush($event.checked)"
+          [attr.aria-label]="'notifications.pushSetting' | translate"
+        />
+      </div>
+
+      <p class="nota">
+        <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">info</mat-icon>
+        {{ 'notifications.howItWorks' | translate }}
+      </p>
+
+      <button mat-button type="button" class="limpiar" (click)="notifications.clearAll()" [disabled]="notifications.items().length === 0">
+        <mat-icon fontSet="material-symbols-outlined">delete_sweep</mat-icon>
+        {{ 'notifications.clearAll' | translate }}
+      </button>
+    </section>
+  </aside>
+</div>

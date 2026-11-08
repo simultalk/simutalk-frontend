@@ -15,10 +15,13 @@ export const MENU_BY_ROLE: Record<string, MenuItem[]> = {
     { label: 'shared.menu.myJobPostings', icon: 'work', route: '/recruitment/my-job-postings' },
     { label: 'shared.menu.ranking', icon: 'leaderboard', route: '/assessment/ranking' },
     { label: 'shared.menu.reports', icon: 'bar_chart', route: '/analytics/reports' },
+    { label: 'shared.menu.calendar', icon: 'calendar_month', route: '/calendar' },
+    { label: 'shared.menu.myCompany', icon: 'apartment', route: '/profiles/company' },
   ],
   [ROLE_CANDIDATE]: [
     { label: 'shared.menu.jobPostings', icon: 'search', route: '/recruitment/job-postings' },
     { label: 'shared.menu.myApplications', icon: 'assignment', route: '/recruitment/my-applications' },
+    { label: 'shared.menu.calendar', icon: 'calendar_month', route: '/calendar' },
     { label: 'shared.menu.myProfile', icon: 'person', route: '/profiles/me' },
     { label: 'shared.menu.certifications', icon: 'verified', route: '/profiles/certifications' },
   ],

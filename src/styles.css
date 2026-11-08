@@ -22,6 +22,22 @@
   /* Verde de la marca para fondos de color: no cambia en modo oscuro */
   --st-brand: #1b6e5e;
   --st-brand-deep: #0f5c4f;
+  --st-brand-night: #0a3a33;
+
+  /* Movimiento: transiciones lentas y suaves, sin rebotes */
+  --st-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --st-dur: 0.33s;
+
+  /* Profundidad: sombras muy suaves, la jerarquía la dan el color y el espacio */
+  --st-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 12px rgba(16, 24, 40, 0.04);
+  --st-shadow-md: 0 14px 34px rgba(15, 92, 79, 0.12);
+  --st-hairline: rgba(26, 34, 48, 0.08);
+
+  /* Banda de marca: verde profundo con brillos (tarjetas destacadas, login) */
+  --st-brand-gradient:
+    radial-gradient(circle at 88% 12%, rgba(255, 149, 0, 0.22), transparent 28%),
+    radial-gradient(circle at 8% 110%, rgba(127, 214, 192, 0.28), transparent 32%),
+    linear-gradient(140deg, var(--st-brand) 0%, var(--st-brand-deep) 55%, var(--st-brand-night) 100%);
 }
 
 /* Modo oscuro: mismas variables con otros valores; todas las pantallas cambian solas */
@@ -40,6 +56,10 @@ html.dark {
   --st-warning: #ffb74d;
   --st-warning-soft: #3a2a12;
   --st-neutral-soft: #252d36;
+
+  --st-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+  --st-shadow-md: 0 14px 34px rgba(0, 0, 0, 0.45);
+  --st-hairline: rgba(255, 255, 255, 0.08);
 }
 
 /* Cambio de modo suave */
@@ -55,28 +75,56 @@ body {
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-/* Encabezado de página: "Inicio / Sección" + título, como en los wireframes. */
+/* Encabezado de página: "Inicio / Sección" + título, como en los wireframes.
+   Estilo editorial: ruta en mayúsculas espaciadas, título grande y una línea de acento. */
 .st-page-header {
-  margin-bottom: 24px;
+  position: relative;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--st-border);
 }
 
-.st-breadcrumb {
-  font-size: 13px;
-  color: var(--st-text-secondary);
-  margin: 0 0 4px;
+.st-page-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 56px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--st-primary), var(--st-accent));
+}
+
+.st-breadcrumb,
+.st-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--st-primary);
+  margin: 0 0 8px;
+}
+
+html.dark .st-breadcrumb,
+html.dark .st-kicker {
+  color: var(--st-primary-dark);
 }
 
 .st-page-title {
-  font-size: 26px;
-  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
   color: var(--st-text);
   margin: 0;
 }
 
 .st-page-subtitle {
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 70ch;
   color: var(--st-text-secondary);
-  margin: 6px 0 0;
+  margin: 8px 0 0;
 }
 
 /* Tarjeta blanca con borde suave. */
@@ -85,6 +133,205 @@ body {
   border: 1px solid var(--st-border);
   border-radius: var(--st-radius);
   padding: 24px;
+  box-shadow: var(--st-shadow-sm);
+}
+
+/* Tarjeta que se puede tocar: se eleva un poco al pasar el mouse */
+.st-card--hover {
+  transition:
+    transform var(--st-dur) var(--st-ease),
+    box-shadow var(--st-dur) var(--st-ease),
+    border-color var(--st-dur) var(--st-ease);
+}
+
+.st-card--hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--st-shadow-md);
+  border-color: color-mix(in srgb, var(--st-primary) 35%, var(--st-border));
+}
+
+/* Título de sección dentro de una página */
+.st-section-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--st-text);
+  margin: 0 0 16px;
+}
+
+/* Banda de marca: verde profundo con brillos y una trama fina (encabezados destacados) */
+.st-hero {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  border-radius: var(--st-radius);
+  padding: 32px;
+  background: var(--st-brand-gradient);
+  isolation: isolate;
+}
+
+.st-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(110deg, transparent 35%, #000 100%);
+}
+
+.st-hero .st-kicker { color: rgba(255, 255, 255, 0.72); }
+
+/* Indicadores: número grande + etiqueta */
+.st-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.st-stat {
+  position: relative;
+  padding: 20px;
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  box-shadow: var(--st-shadow-sm);
+  overflow: hidden;
+}
+
+.st-stat::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--st-primary);
+}
+
+.st-stat--accent::before { background: var(--st-accent); }
+
+.st-stat-value {
+  display: block;
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--st-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.st-stat-label {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--st-text-secondary);
+}
+
+/* Etiquetas cortas en mayúsculas */
+.st-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--st-primary-dark);
+  background: var(--st-primary-soft);
+  border: 1px solid color-mix(in srgb, var(--st-primary) 22%, transparent);
+  white-space: nowrap;
+}
+
+.st-tag--warning { color: var(--st-warning); background: var(--st-warning-soft); border-color: transparent; }
+.st-tag--danger { color: var(--st-danger); background: var(--st-danger-soft); border-color: transparent; }
+.st-tag--neutral { color: var(--st-text-secondary); background: var(--st-neutral-soft); border-color: transparent; }
+
+/* Enlace "ver más" con una línea-flecha que se alarga al pasar el mouse */
+.st-link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--st-primary);
+  text-decoration: none;
+}
+
+.st-link-arrow::after {
+  content: '';
+  width: 22px;
+  height: 1.5px;
+  background: currentColor;
+  transition: width var(--st-dur) var(--st-ease);
+}
+
+.st-link-arrow:hover::after { width: 34px; }
+html.dark .st-link-arrow { color: var(--st-primary-dark); }
+
+/* Los hijos entran uno tras otro */
+.st-stagger > * {
+  animation: st-entrar 0.6s var(--st-ease) both;
+}
+.st-stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.st-stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.st-stagger > *:nth-child(4) { animation-delay: 0.18s; }
+.st-stagger > *:nth-child(5) { animation-delay: 0.24s; }
+.st-stagger > *:nth-child(n + 6) { animation-delay: 0.3s; }
+
+/* Estado vacío: ícono en círculo de marca, título y explicación */
+.st-empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.st-empty-icon {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--st-brand-gradient);
+  box-shadow: 0 0 0 8px var(--st-primary-soft);
+}
+
+.st-empty-icon mat-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 34px;
+}
+
+.st-empty h2 {
+  margin: 12px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.st-empty p {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 14px;
+  color: var(--st-text-secondary);
+}
+
+/* Botones de Material con esquinas de la marca (no tipo píldora) */
+html {
+  --mat-button-filled-container-shape: 10px;
+  --mat-button-outlined-container-shape: 10px;
+  --mat-button-protected-container-shape: 10px;
+  --mat-button-tonal-container-shape: 10px;
+  --mat-button-text-container-shape: 10px;
 }
 
 /* Pantallas de registro: marca a la izquierda y formulario a la derecha. */
@@ -107,7 +354,7 @@ body {
 }
 
 .st-auth-marca {
-  background: linear-gradient(160deg, var(--st-brand) 0%, var(--st-brand-deep) 100%);
+  background: var(--st-brand-gradient);
   color: #fff;
   padding: 40px;
   display: flex;
@@ -194,7 +441,7 @@ body {
 /* Cada pantalla interna entra con una animación corta al navegar */
 main.contenido > :not(router-outlet) {
   display: block;
-  animation: st-entrar 0.25s ease-out;
+  animation: st-entrar 0.45s var(--st-ease);
 }
 
 /* Tablas: resaltan la fila al pasar el mouse y en celular cada fila es una tarjeta */
@@ -203,6 +450,12 @@ main.contenido > :not(router-outlet) {
 
 @media (max-width: 720px) {
   main.contenido { padding: 16px !important; }
+
+  /* Indicadores: dos por fila en celular */
+  .st-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .st-stat { padding: 16px; }
+  .st-stat-value { font-size: 24px; }
+  .st-stat-label { font-size: 11px; letter-spacing: 0.06em; }
   .st-page-title { font-size: 22px; }
   .st-card { padding: 16px; }
 
@@ -269,4 +522,15 @@ button:focus-visible,
 [tabindex]:not([tabindex='-1']):focus-visible {
   outline: 2px solid var(--st-primary);
   outline-offset: 2px;
+}
+
+/* Quien prefiere menos movimiento no ve animaciones */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
 }

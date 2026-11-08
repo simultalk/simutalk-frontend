@@ -1,0 +1,107 @@
+<button
+  mat-icon-button
+  type="button"
+  class="campana"
+  cdkOverlayOrigin
+  #origen="cdkOverlayOrigin"
+  [class.campana--activa]="notifications.unreadCount() > 0"
+  [attr.aria-expanded]="open()"
+  aria-haspopup="dialog"
+  [attr.aria-label]="'notifications.bellLabel' | translate: { count: notifications.unreadCount() }"
+  (click)="toggle()"
+>
+  <mat-icon fontSet="material-symbols-outlined">notifications</mat-icon>
+  @if (notifications.unreadCount() > 0) {
+    <span class="contador" aria-hidden="true">{{ badge() }}</span>
+  }
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origen"
+  [cdkConnectedOverlayOpen]="open()"
+  [cdkConnectedOverlayPositions]="positions"
+  [cdkConnectedOverlayHasBackdrop]="true"
+  cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
+  (backdropClick)="close()"
+  (detach)="close()"
+  (overlayKeydown)="$event.key === 'Escape' && close()"
+>
+  <section class="panel" role="dialog" [attr.aria-label]="'notifications.title' | translate">
+    <header class="panel-cabecera">
+      <div>
+        <p class="st-kicker">{{ 'notifications.kicker' | translate }}</p>
+        <h2>{{ 'notifications.title' | translate }}</h2>
+      </div>
+      <button
+        mat-button
+        type="button"
+        (click)="notifications.markAllRead()"
+        [disabled]="notifications.unreadCount() === 0"
+      >
+        {{ 'notifications.markAllRead' | translate }}
+      </button>
+    </header>
+
+    <div class="filtros" role="tablist">
+      <button type="button" role="tab" [class.activo]="!onlyUnread()" [attr.aria-selected]="!onlyUnread()" (click)="onlyUnread.set(false)">
+        {{ 'notifications.all' | translate }}
+      </button>
+      <button type="button" role="tab" [class.activo]="onlyUnread()" [attr.aria-selected]="onlyUnread()" (click)="onlyUnread.set(true)">
+        {{ 'notifications.unread' | translate }}
+        @if (notifications.unreadCount() > 0) {
+          <span class="mini-contador">{{ notifications.unreadCount() }}</span>
+        }
+      </button>
+    </div>
+
+    @if (visible().length === 0) {
+      <div class="vacio">
+        <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">notifications_off</mat-icon>
+        <p>{{ (onlyUnread() ? 'notifications.emptyUnread' : 'notifications.empty') | translate }}</p>
+      </div>
+    } @else {
+      <ul class="lista">
+        @for (n of visible(); track n.id) {
+          <li>
+            <button type="button" class="item" [class.item--nueva]="!n.read" (click)="select(n)">
+              <span class="icono" [attr.data-kind]="n.kind" aria-hidden="true">
+                <mat-icon fontSet="material-symbols-outlined">{{ notifications.icon(n.kind) }}</mat-icon>
+              </span>
+              <span class="contenido">
+                <strong>{{ n.titleKey | translate: n.params }}</strong>
+                <span class="cuerpo">{{ n.bodyKey | translate: n.params }}</span>
+                <span class="tiempo">{{ n.createdAt | timeAgo }}</span>
+              </span>
+              @if (!n.read) {
+                <span class="punto" [attr.aria-label]="'notifications.unreadDot' | translate"></span>
+              }
+            </button>
+          </li>
+        }
+      </ul>
+    }
+
+    @if (notifications.permission() !== 'unsupported' && !notifications.pushEnabled()) {
+      <div class="push">
+        <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">notifications_active</mat-icon>
+        <p>
+          @if (notifications.permission() === 'denied') {
+            {{ 'notifications.pushDenied' | translate }}
+          } @else {
+            {{ 'notifications.pushInvite' | translate }}
+          }
+        </p>
+        @if (notifications.permission() !== 'denied') {
+          <button mat-flat-button type="button" (click)="notifications.enablePush()">
+            {{ 'notifications.pushEnable' | translate }}
+          </button>
+        }
+      </div>
+    }
+
+    <footer class="panel-pie">
+      <a class="st-link-arrow" routerLink="/notifications" (click)="close()">{{ 'notifications.viewAll' | translate }}</a>
+    </footer>
+  </section>
+</ng-template>

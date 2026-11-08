@@ -1,0 +1,208 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'profiles.me.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'profiles.me.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'profiles.me.subtitle' | translate }}</p>
+</header>
+
+@if (loading()) {
+  <div class="esqueleto" role="status" [attr.aria-label]="'profiles.me.loading' | translate">
+    <div class="esqueleto-hero"></div>
+    <div class="esqueleto-fila">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+} @else if (loadError()) {
+  <p class="error" role="alert">{{ loadError() }}</p>
+} @else if (profile(); as p) {
+  <div class="st-stagger">
+    <!-- Tarjeta de presentación -->
+    <section class="st-hero presentacion" aria-labelledby="perfil-nombre">
+      <span class="avatar" aria-hidden="true">{{ initials() }}</span>
+
+      <div class="identidad">
+        <p class="st-kicker">{{ 'profiles.me.kicker' | translate }}</p>
+        <h2 id="perfil-nombre">{{ fullName() }}</h2>
+        <ul class="datos-rapidos">
+          <li>
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">location_on</mat-icon>
+            {{ p.district }}
+          </li>
+          @if (p.email) {
+            <li>
+              <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">mail</mat-icon>
+              {{ p.email }}
+            </li>
+          }
+          <li>
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">badge</mat-icon>
+            {{ p.documentType }} {{ p.documentNumber }}
+          </li>
+        </ul>
+      </div>
+
+      <div class="avance" [attr.aria-label]="'profiles.me.completenessLabel' | translate: { value: completeness() }">
+        <svg viewBox="0 0 36 36" aria-hidden="true">
+          <circle class="pista" cx="18" cy="18" r="15.9" />
+          <circle class="valor" cx="18" cy="18" r="15.9" [attr.stroke-dasharray]="completeness() + ' 100'" />
+        </svg>
+        <strong>{{ completeness() }}%</strong>
+        <span>{{ 'profiles.me.completeness' | translate }}</span>
+      </div>
+    </section>
+
+    <!-- Indicadores -->
+    <section class="st-stats" [attr.aria-label]="'profiles.me.statsLabel' | translate">
+      <div class="st-stat">
+        <span class="st-stat-value">{{ p.yearsOfExperience }}</span>
+        <span class="st-stat-label">{{ 'profiles.me.statExperience' | translate }}</span>
+      </div>
+      <div class="st-stat st-stat--accent">
+        <span class="st-stat-value">{{ p.verifiedCertificationCount }}</span>
+        <span class="st-stat-label">{{ 'profiles.me.statVerified' | translate }}</span>
+      </div>
+      <div class="st-stat">
+        <span class="st-stat-value">{{ p.certifications.length }}</span>
+        <span class="st-stat-label">{{ 'profiles.me.statCertifications' | translate }}</span>
+      </div>
+      <div class="st-stat">
+        <span class="st-stat-value">{{ age() }}</span>
+        <span class="st-stat-label">{{ 'profiles.me.statAge' | translate }}</span>
+      </div>
+    </section>
+
+    <div class="columnas">
+      <!-- Formulario de edición -->
+      <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
+        <fieldset>
+          <legend class="st-kicker">{{ 'profiles.me.sectionPersonal' | translate }}</legend>
+          <div class="campos">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.me.firstName' | translate }}</mat-label>
+              <input matInput formControlName="firstName" maxlength="80" autocomplete="given-name" />
+              @if (form.controls.firstName.invalid) {
+                <mat-error>{{ 'profiles.me.firstNameRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.me.lastName' | translate }}</mat-label>
+              <input matInput formControlName="lastName" maxlength="80" autocomplete="family-name" />
+              @if (form.controls.lastName.invalid) {
+                <mat-error>{{ 'profiles.me.lastNameRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.me.birthDate' | translate }}</mat-label>
+              <input matInput type="date" formControlName="birthDate" [max]="maxBirthDate" autocomplete="bday" />
+              @if (form.controls.birthDate.hasError('adult')) {
+                <mat-error>{{ 'profiles.me.birthDateAdult' | translate }}</mat-error>
+              } @else if (form.controls.birthDate.invalid) {
+                <mat-error>{{ 'profiles.me.birthDateRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>{{ 'profiles.me.document' | translate }}</mat-label>
+              <input matInput [value]="p.documentType + ' ' + p.documentNumber" disabled />
+              <mat-icon matSuffix fontSet="material-symbols-outlined" aria-hidden="true">lock</mat-icon>
+              <mat-hint>{{ 'profiles.me.documentHint' | translate }}</mat-hint>
+            </mat-form-field>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="st-kicker">{{ 'profiles.me.sectionContact' | translate }}</legend>
+          <div class="campos">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.me.phone' | translate }}</mat-label>
+              <input matInput type="tel" formControlName="phone" maxlength="20" autocomplete="tel" />
+              @if (form.controls.phone.hasError('pattern')) {
+                <mat-error>{{ 'profiles.me.phoneInvalid' | translate }}</mat-error>
+              } @else if (form.controls.phone.invalid) {
+                <mat-error>{{ 'profiles.me.phoneRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>{{ 'profiles.me.email' | translate }}</mat-label>
+              <input matInput type="email" formControlName="email" maxlength="254" autocomplete="email" />
+              <mat-hint>{{ 'profiles.me.emailHint' | translate }}</mat-hint>
+              @if (form.controls.email.invalid) {
+                <mat-error>{{ 'profiles.me.emailInvalid' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="completo" subscriptSizing="dynamic">
+              <mat-label>{{ 'profiles.me.district' | translate }}</mat-label>
+              <input matInput formControlName="district" maxlength="80" autocomplete="address-level2" />
+              <mat-hint>{{ 'profiles.me.districtHint' | translate }}</mat-hint>
+              @if (form.controls.district.invalid) {
+                <mat-error>{{ 'profiles.me.districtRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="st-kicker">{{ 'profiles.me.sectionExperience' | translate }}</legend>
+          <div class="campos">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.me.yearsOfExperience' | translate }}</mat-label>
+              <input matInput type="number" min="0" max="60" formControlName="yearsOfExperience" />
+              @if (form.controls.yearsOfExperience.invalid) {
+                <mat-error>{{ 'profiles.me.yearsInvalid' | translate }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </fieldset>
+
+        @if (saveError()) {
+          <p class="error" role="alert">{{ saveError() }}</p>
+        }
+
+        <div class="acciones">
+          <span class="actualizado">
+            {{ 'profiles.me.updatedAt' | translate: { date: (p.updatedAt | date: 'dd/MM/yyyy HH:mm') } }}
+          </span>
+          <button mat-stroked-button type="button" (click)="discard()" [disabled]="form.pristine || saving()">
+            {{ 'common.discard' | translate }}
+          </button>
+          <button mat-flat-button type="submit" [disabled]="form.pristine || saving()">
+            {{ (saving() ? 'common.saving' : 'common.saveChanges') | translate }}
+          </button>
+        </div>
+      </form>
+
+      <!-- Resumen de certificaciones -->
+      <aside class="st-card certificaciones" [attr.aria-label]="'profiles.me.certificationsTitle' | translate">
+        <h3 class="st-section-title">{{ 'profiles.me.certificationsTitle' | translate }}</h3>
+
+        @if (recentCertifications().length === 0) {
+          <div class="vacio">
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">workspace_premium</mat-icon>
+            <p>{{ 'profiles.me.certificationsEmpty' | translate }}</p>
+          </div>
+        } @else {
+          <ul class="lista">
+            @for (c of recentCertifications(); track c.id) {
+              <li>
+                <div>
+                  <strong>{{ c.title }}</strong>
+                  <span>{{ c.issuer }} · {{ c.issuedAt | date: 'MM/yyyy' }}</span>
+                </div>
+                <span [class]="statusTagClass(c)">{{ statusKey(c) | translate }}</span>
+              </li>
+            }
+          </ul>
+        }
+
+        <a class="st-link-arrow" routerLink="/profiles/certifications">
+          {{ 'profiles.me.manageCertifications' | translate }}
+        </a>
+      </aside>
+    </div>
+  </div>
+}

@@ -5,33 +5,80 @@
   background: var(--st-background);
 }
 
-/* Lado izquierdo: la marca */
+/* Lado izquierdo: la marca, con brillos y una trama fina */
 .marca {
-  background: linear-gradient(160deg, var(--st-brand) 0%, var(--st-brand-deep) 100%);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--st-brand-gradient);
   color: #fff;
-  padding: 48px;
+  padding: 56px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 24px;
+  gap: 28px;
+}
+
+.marca::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(circle at 70% 40%, #000 0%, transparent 75%);
+}
+
+.marca .st-kicker {
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
 }
 
 .logo { display: flex; align-items: center; gap: 10px; font-size: 22px; }
 .logo img { background: #fff; border-radius: 10px; padding: 4px; }
 
-.marca h2 { font-size: 30px; line-height: 1.25; margin: 0; max-width: 460px; }
+.marca h2 {
+  font-size: 36px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+  max-width: 480px;
+}
 
-.marca ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
-.marca li { padding-left: 28px; position: relative; opacity: 0.92; }
+/* Puntos numerados 01 / 02 / 03, separados por líneas finas */
+.marca ol {
+  list-style: none;
+  counter-reset: punto;
+  padding: 0;
+  margin: 0;
+  max-width: 460px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.marca li {
+  counter-increment: punto;
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+  opacity: 0.94;
+  animation: entrar 0.6s var(--st-ease) both;
+}
+
+.marca li:nth-child(2) { animation-delay: 0.08s; }
+.marca li:nth-child(3) { animation-delay: 0.16s; }
+
 .marca li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 6px;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--st-accent);
+  content: counter(punto, decimal-leading-zero);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--st-accent);
+  padding-top: 2px;
 }
 
 /* Lado derecho: el formulario */
@@ -39,15 +86,16 @@
 
 .tarjeta {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   background: var(--st-surface);
   border: 1px solid var(--st-border);
   border-radius: var(--st-radius);
-  padding: 32px;
-  animation: entrar 0.35s ease-out;
+  padding: 36px;
+  box-shadow: var(--st-shadow-md);
+  animation: entrar 0.6s var(--st-ease);
 }
 
-h1 { font-size: 24px; margin: 0; }
+h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
 .sub { color: var(--st-text-secondary); font-size: 14px; margin: 6px 0 20px; }
 
 form { display: flex; flex-direction: column; gap: 4px; }
@@ -69,8 +117,8 @@ form { display: flex; flex-direction: column; gap: 4px; }
 @media (max-width: 800px) {
   .pantalla { grid-template-columns: 1fr; }
   .marca { padding: 24px; gap: 12px; }
-  .marca h2 { font-size: 20px; }
-  .marca ul { display: none; }
+  .marca h2 { font-size: 22px; }
+  .marca ol { display: none; }
   .tarjeta { padding: 24px; }
 }
 

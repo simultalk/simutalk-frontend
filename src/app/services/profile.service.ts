@@ -2,7 +2,15 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Certification, CertificationRequest, CertificationVerification } from '../models/profile.model';
+import {
+  CandidateProfile,
+  Certification,
+  CompanyProfile,
+  CertificationRequest,
+  CertificationVerification,
+  UpdateCandidateProfileRequest,
+  UpdateCompanyProfileRequest,
+} from '../models/profile.model';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +22,26 @@ export class ProfileService {
   // GET /candidate-profiles/me: id del postulante con sesión
   getMyCandidateId(): Observable<number> {
     return this.http.get<{ id: number }>(`${this.apiUrl}/candidate-profiles/me`).pipe(map((p) => p.id));
+  }
+
+  // GET /candidate-profiles/me: perfil completo del postulante con sesión
+  getMyProfile(): Observable<CandidateProfile> {
+    return this.http.get<CandidateProfile>(`${this.apiUrl}/candidate-profiles/me`);
+  }
+
+  // PUT /candidate-profiles/{id}: actualiza los datos del postulante (el documento no cambia)
+  updateMyProfile(candidateId: number, request: UpdateCandidateProfileRequest): Observable<CandidateProfile> {
+    return this.http.put<CandidateProfile>(`${this.apiUrl}/candidate-profiles/${candidateId}`, request);
+  }
+
+  // GET /company-profiles/me: perfil de la empresa del reclutador con sesión
+  getMyCompany(): Observable<CompanyProfile> {
+    return this.http.get<CompanyProfile>(`${this.apiUrl}/company-profiles/me`);
+  }
+
+  // PUT /company-profiles/{id}: actualiza los datos de la empresa (el RUC no cambia)
+  updateMyCompany(companyId: number, request: UpdateCompanyProfileRequest): Observable<CompanyProfile> {
+    return this.http.put<CompanyProfile>(`${this.apiUrl}/company-profiles/${companyId}`, request);
   }
 
   // GET /candidate-profiles/{id}/certifications (US-15)

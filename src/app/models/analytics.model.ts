@@ -7,3 +7,13 @@ export interface CarbonSavingsReport {
   tripsAvoided: number;
   totalKmAvoided: number;
 }
+
+/** GET /reports/companies/{id}/summary: indicadores generales de la empresa. */
+export interface CompanySummaryReport {
+  companyId: number;
+  activeJobPostings: number;
+  assessedCandidates: number;
+  /** null mientras ninguna postulación haya llegado a preseleccionada. */
+  averageDaysToShortlist: number | null;
+  anchoredEvidences: number;
+}
