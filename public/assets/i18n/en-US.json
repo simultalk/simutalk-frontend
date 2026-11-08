@@ -49,7 +49,7 @@
     "theme": {
       "dark": "Dark mode"
     },
-        "a11y": {
+    "a11y": {
       "skipToContent": "Skip to content",
       "board": "Candidate board by stage"
     },
@@ -198,6 +198,56 @@
       "submitting": "Registering...",
       "success": "Company registered. Welcome to SimuTalk!",
       "error": "The registration could not be completed. Try again."
+    }
+  },
+  "profiles": {
+    "certifications": {
+      "breadcrumb": "Home / My profile / Certifications",
+      "title": "Certifications",
+      "subtitle": "Add your certifications so companies can take them into account when assessing you.",
+      "loading": "Loading certifications...",
+      "loadError": "Your certifications could not be loaded. Try again.",
+      "empty": "You have not added any certifications yet.",
+      "colCertification": "Certification",
+      "colCode": "Code",
+      "colIssuedAt": "Issued",
+      "colExpiresAt": "Expires",
+      "colStatus": "Status",
+      "colActions": "Actions",
+      "noCode": "No code",
+      "noExpiry": "Does not expire",
+      "status": {
+        "VERIFIED": "Verified",
+        "UNVERIFIED": "Not verified",
+        "REJECTED": "Rejected",
+        "EXPIRED": "Expired"
+      },
+      "formAdd": "Add certification",
+      "name": "Certification name",
+      "nameRequired": "Enter the certification name",
+      "issuer": "Issuing organization",
+      "issuerRequired": "Enter the organization that issued it",
+      "code": "Credential code (optional)",
+      "codeHint": "It is the code shown on your certificate",
+      "noCodeWarning": "Without a credential code, this certification can never be verified with the issuer.",
+      "issuedAt": "Issue date",
+      "issuedAtRequired": "Choose the issue date",
+      "issuedAtFuture": "The issue date cannot be in the future",
+      "expiresAt": "Expiration date (optional)",
+      "expiresAtHint": "Leave it empty if it does not expire",
+      "expiresBeforeIssued": "The expiration date must be after the issue date.",
+      "add": "Add certification",
+      "added": "Certification added",
+      "saveError": "The certification could not be saved. Try again.",
+      "confirmRemove": "Delete the certification \"{{title}}\"?",
+      "removed": "Certification deleted",
+      "removeError": "The certification could not be deleted.",
+      "verify": "Verify with the issuer",
+      "verifying": "Verifying...",
+      "verifyMatched": "Verified by the issuer",
+      "verifyNotMatched": "The issuer does not recognize the code",
+      "verifyInconclusive": "The issuer could not be reached, try again later",
+      "verifyError": "The certification could not be verified. Try again."
     }
   },
   "recruitment": {
@@ -497,36 +547,6 @@
       "back": "Back to My applications"
     }
   },
-  "analytics": {
-  "reports": {
-    "title": "Job posting reports",
-    "selectPosting": "Job posting",
-    "selectHint": "Choose a job posting to see its reports.",
-    "error": "The reports could not be loaded.",
-    "retry": "Retry"
-  },
-  "funnel": {
-    "title": "Selection funnel",
-    "subtitle": "Applicants at each stage of the process",
-    "series": "Applicants",
-    "empty": "This job posting has no applications yet.",
-    "stage": {
-      "RECEIVED": "Received",
-      "INTERVIEWING": "Interviewing",
-      "ASSESSED": "Assessed",
-      "SHORTLISTED": "Shortlisted",
-      "REJECTED": "Rejected",
-      "HIRED": "Hired"
-    }
-  },
-      "criteria": {
-      "title": "Average score per criterion",
-      "subtitle": "Average of the assessments for this job posting",
-      "series": "Average score",
-      "empty": "No assessments have been calculated for this job posting yet."
-    }
-  },
-  "interviews": {
   "interviews": {
     "takeInterview": {
       "label": "Asynchronous interview",
@@ -611,7 +631,50 @@
         "notFound": "That application does not exist.",
         "generic": "The invitation could not be sent. Try again."
       }
-   }
+    }
+  },
+  "analytics": {
+    "reports": {
+      "breadcrumb": "Home / Reports",
+      "title": "Job posting reports",
+      "subtitle": "Results of your published job postings.",
+      "loading": "Loading job postings...",
+      "loadError": "Your job postings could not be loaded. Try again.",
+      "noJobPostings": "You have no published job postings yet. Reports appear once you publish one.",
+      "jobPosting": "Job posting",
+      "carbonTitle": "Carbon footprint avoided",
+      "carbonExplanation": "These are the trips to in-person interviews that candidates did not have to make because they took the asynchronous interview from wherever they were.",
+      "loadingReport": "Loading report...",
+      "carbonError": "The footprint report could not be loaded. Try again.",
+      "kgCo2e": "kg of CO₂e avoided",
+      "trips": "trips avoided",
+      "km": "km avoided",
+      "carbonEmpty": "There are no completed interviews for this job posting yet.",
+      "sdg": "Contributes to SDG 11.6: reducing the environmental impact of cities, especially air quality.",
+      "selectPosting": "Job posting",
+      "selectHint": "Choose a job posting to see its reports.",
+      "error": "The reports could not be loaded.",
+      "retry": "Retry"
+    },
+    "funnel": {
+      "title": "Selection funnel",
+      "subtitle": "Applicants at each stage of the process",
+      "series": "Applicants",
+      "empty": "This job posting has no applications yet.",
+      "stage": {
+        "RECEIVED": "Received",
+        "INTERVIEWING": "Interviewing",
+        "ASSESSED": "Assessed",
+        "SHORTLISTED": "Shortlisted",
+        "REJECTED": "Rejected",
+        "HIRED": "Hired"
+      }
+    },
+    "criteria": {
+      "title": "Average score per criterion",
+      "subtitle": "Average of the assessments for this job posting",
+      "series": "Average score",
+      "empty": "No assessments have been calculated for this job posting yet."
     }
   },
   "assessment": {
@@ -621,14 +684,32 @@
       "empty": "No integrity signals were detected in this assessment.",
       "detail": "Detail",
       "type": {
-        "AI": { "label": "Possible AI-generated content", "help": "An answer shows traits of text produced by an AI tool. Consider asking the candidate to explain it in their own words." },
-        "CV": { "label": "Inconsistency with CV", "help": "What the candidate answered does not match what their CV states. Review both before drawing conclusions." },
-        "OTHER": { "label": "Other integrity signal", "help": "The system flagged behavior that is worth reviewing manually." }
+        "AI": {
+          "label": "Possible AI-generated content",
+          "help": "An answer shows traits of text produced by an AI tool. Consider asking the candidate to explain it in their own words."
+        },
+        "CV": {
+          "label": "Inconsistency with CV",
+          "help": "What the candidate answered does not match what their CV states. Review both before drawing conclusions."
+        },
+        "OTHER": {
+          "label": "Other integrity signal",
+          "help": "The system flagged behavior that is worth reviewing manually."
+        }
       },
       "severity": {
-        "LOW": { "label": "Low severity", "help": "Mild hint; it may have a normal explanation." },
-        "MEDIUM": { "label": "Medium severity", "help": "Moderate hint; review it before deciding." },
-        "HIGH": { "label": "High severity", "help": "Strong hint; review it carefully, but it is still not a definitive conclusion." }
+        "LOW": {
+          "label": "Low severity",
+          "help": "Mild hint; it may have a normal explanation."
+        },
+        "MEDIUM": {
+          "label": "Medium severity",
+          "help": "Moderate hint; review it before deciding."
+        },
+        "HIGH": {
+          "label": "High severity",
+          "help": "Strong hint; review it carefully, but it is still not a definitive conclusion."
+        }
       }
     }
   }
