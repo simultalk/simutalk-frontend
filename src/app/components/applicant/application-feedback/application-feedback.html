@@ -7,41 +7,73 @@
 @if (loading()) {
   <p role="status">{{ 'recruitment.applicationFeedback.loading' | translate }}</p>
 } @else if (errorMessage()) {
-  <p class="error" role="alert">{{ errorMessage() }}</p>
+  <div class="st-card st-empty">
+    <span class="st-empty-icon" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">hourglass_top</mat-icon></span>
+    <p role="alert">{{ errorMessage() }}</p>
+  </div>
 } @else if (assessment(); as a) {
-  <section class="st-card resumen" [attr.aria-label]="'recruitment.applicationFeedback.overallScore' | translate">
-    <p class="etiqueta">{{ 'recruitment.applicationFeedback.overallScore' | translate }}</p>
-    <p class="puntaje">{{ a.weightedScore | number: '1.0-1' }}</p>
-  </section>
-
-  @if (a.feedbackSummary) {
-    <section class="st-card" [attr.aria-label]="'recruitment.applicationFeedback.summary' | translate">
-      <h2 class="subtitulo">{{ 'recruitment.applicationFeedback.summary' | translate }}</h2>
-      <p>{{ a.feedbackSummary }}</p>
-    </section>
-  }
-
-  <section class="st-card" [attr.aria-label]="'recruitment.applicationFeedback.byCriterion' | translate">
-    <h2 class="subtitulo">{{ 'recruitment.applicationFeedback.byCriterion' | translate }}</h2>
-    @for (c of a.criterionScores; track c.id) {
-      <div class="criterio">
-        <div class="criterio-cabecera">
-          <span>{{ c.criterionName }}</span>
-          <strong>{{ 'recruitment.applicationFeedback.scoreOutOf' | translate: { score: (c.score | number: '1.0-1') } }}</strong>
-        </div>
-        <div
-          class="barra"
-          role="progressbar"
-          [attr.aria-label]="c.criterionName"
-          aria-valuemin="0"
-          aria-valuemax="100"
-          [attr.aria-valuenow]="c.score"
-        >
-          <div class="barra-relleno" [style.width.%]="c.score"></div>
-        </div>
+  <div class="st-stagger contenido">
+    <!-- Puntaje general + resumen -->
+    <section class="st-hero resumen" [attr.aria-label]="'recruitment.applicationFeedback.overallScore' | translate">
+      <div class="anillo">
+        <svg viewBox="0 0 36 36" aria-hidden="true">
+          <circle class="pista" cx="18" cy="18" r="15.9" />
+          <circle class="valor" cx="18" cy="18" r="15.9" [attr.stroke-dasharray]="percent(a.weightedScore) + ' 100'" />
+        </svg>
+        <span class="anillo-texto">
+          <strong [stCountUp]="a.weightedScore" [decimals]="1"></strong>
+          <small>/{{ maxScore }}</small>
+        </span>
       </div>
+      <div class="resumen-texto">
+        <p class="st-kicker">{{ 'recruitment.applicationFeedback.overallScore' | translate }}</p>
+        @if (a.feedbackSummary) {
+          <h2>{{ 'recruitment.applicationFeedback.summary' | translate }}</h2>
+          <p class="resumen-cuerpo">{{ a.feedbackSummary }}</p>
+        } @else {
+          <h2>{{ 'recruitment.applicationFeedback.title' | translate }}</h2>
+        }
+      </div>
+    </section>
+
+    <!-- Puntaje por criterio -->
+    <section class="st-card" [attr.aria-label]="'recruitment.applicationFeedback.byCriterion' | translate">
+      <h2 class="st-section-title">{{ 'recruitment.applicationFeedback.byCriterion' | translate }}</h2>
+      <ol class="criterios">
+        @for (c of sortedCriteria(); track c.id; let first = $first; let last = $last; let i = $index) {
+          <li [style.animation-delay.ms]="i * 70">
+            <div class="criterio-cabecera">
+              <span class="criterio-nombre">{{ c.criterionName }}</span>
+              @if (first && sortedCriteria().length > 1) {
+                <span class="st-tag">{{ 'recruitment.applicationFeedback.strongest' | translate }}</span>
+              }
+              @if (last && sortedCriteria().length > 1) {
+                <span class="st-tag st-tag--warning">{{ 'recruitment.applicationFeedback.toImprove' | translate }}</span>
+              }
+              <strong>{{ 'recruitment.applicationFeedback.scoreOutOf' | translate: { score: (c.score | number: '1.0-1') } }}</strong>
+            </div>
+            <div
+              class="barra"
+              role="progressbar"
+              [attr.aria-label]="c.criterionName"
+              aria-valuemin="0"
+              [attr.aria-valuemax]="maxScore"
+              [attr.aria-valuenow]="c.score"
+            >
+              <div class="barra-relleno" [attr.data-nivel]="level(c.score)" [style.width.%]="percent(c.score)"></div>
+            </div>
+          </li>
+        }
+      </ol>
+    </section>
+
+    <!-- Cómo te comunicaste (GET /interview-sessions/{id}/communication-analysis) -->
+    @if (sessionId(); as id) {
+      <app-communication-analysis [sessionId]="id" audience="candidate" />
     }
-  </section>
+  </div>
 }
 
-<a mat-stroked-button routerLink="/recruitment/my-applications">{{ 'recruitment.applicationFeedback.back' | translate }}</a>
+<a mat-stroked-button class="volver" routerLink="/recruitment/my-applications">
+  {{ 'recruitment.applicationFeedback.back' | translate }}
+</a>

@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { NameDirectoryService } from './name-directory.service';
 
 import {
   JobPosting,
@@ -24,6 +25,8 @@ import { Question } from '../models/question';
 export class RecruitmentService {
   private http = inject(HttpClient);
   private apiUrl = environment.apiUrl;
+  // Completa el nombre de la empresa, que el API de vacantes no incluye
+  private names = inject(NameDirectoryService);
 
   // 0. POST /job-postings (Sprint 3 - US-01)
   createJobPosting(request: CreateJobPostingRequest): Observable<JobPosting> {
@@ -117,12 +120,16 @@ export class RecruitmentService {
   // 1. GET /job-postings?status=PUBLISHED (Sprint 3)
   getPublishedJobPostings(): Observable<JobPosting[]> {
     const params = new HttpParams().set('status', 'PUBLISHED');
-    return this.http.get<JobPosting[]>(`${this.apiUrl}/job-postings`, { params });
+    return this.http
+      .get<JobPosting[]>(`${this.apiUrl}/job-postings`, { params })
+      .pipe(switchMap((list) => this.names.withCompanyNames(list)));
   }
 
   // 2. GET /job-postings/{id} (Sprint 3 - US-06)
   getJobPostingById(id: number): Observable<JobPosting> {
-    return this.http.get<JobPosting>(`${this.apiUrl}/job-postings/${id}`);
+    return this.http
+      .get<JobPosting>(`${this.apiUrl}/job-postings/${id}`)
+      .pipe(switchMap((job) => this.names.withCompanyNames([job]).pipe(map(([named]) => named))));
   }
 
   // 3. POST /job-postings/{id}/applications (Sprint 3 - US-06)

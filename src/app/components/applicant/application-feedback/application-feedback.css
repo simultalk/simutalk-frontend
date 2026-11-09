@@ -1,12 +1,157 @@
-.st-card { margin-bottom: 16px; }
-.resumen { display: flex; align-items: baseline; gap: 16px; }
-.etiqueta { margin: 0; color: var(--st-text-secondary); font-weight: 600; }
-.puntaje { margin: 0; font-size: 40px; font-weight: 700; color: var(--st-primary-dark); }
-.subtitulo { margin: 0 0 12px; font-size: 16px; }
+.contenido {
+  display: grid;
+  gap: 20px;
+  max-width: 980px;
+}
 
-.criterio { margin-bottom: 14px; }
-.criterio-cabecera { display: flex; justify-content: space-between; margin-bottom: 4px; }
-.barra { height: 10px; background: var(--st-border); border-radius: 999px; overflow: hidden; }
-.barra-relleno { height: 100%; background: var(--st-primary); }
+/* Puntaje general dentro de la banda de marca */
+.resumen {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+}
 
-.error { color: var(--st-danger); }
+.anillo {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+
+.anillo svg {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+
+.anillo circle {
+  fill: none;
+  stroke-width: 2.8;
+}
+
+.anillo .pista {
+  stroke: rgba(255, 255, 255, 0.16);
+}
+
+.anillo .valor {
+  stroke: var(--st-accent);
+  stroke-linecap: round;
+  animation: llenar 1.4s var(--st-ease) both;
+}
+
+@keyframes llenar {
+  from {
+    stroke-dasharray: 0 100;
+  }
+}
+
+.anillo-texto {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  line-height: 1;
+}
+
+.anillo-texto strong {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.anillo-texto small {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.resumen-texto .st-kicker {
+  margin: 0 0 6px;
+}
+
+.resumen-texto h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.resumen-cuerpo {
+  margin: 8px 0 0;
+  max-width: 70ch;
+  font-size: 15px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* Barras por criterio */
+.criterios {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 16px;
+}
+
+.criterios li {
+  display: grid;
+  gap: 8px;
+  animation: st-entrar 0.5s var(--st-ease) both;
+}
+
+.criterio-cabecera {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.criterio-nombre {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.criterio-cabecera strong {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.barra {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--st-neutral-soft);
+}
+
+.barra-relleno {
+  height: 100%;
+  border-radius: 999px;
+  animation: crecer 1s var(--st-ease) both;
+  transform-origin: left;
+}
+
+.barra-relleno[data-nivel='alto'] { background: linear-gradient(90deg, var(--st-primary), #2f9b82); }
+.barra-relleno[data-nivel='medio'] { background: linear-gradient(90deg, #ffb340, var(--st-accent)); }
+.barra-relleno[data-nivel='bajo'] { background: linear-gradient(90deg, #f07a6b, var(--st-danger)); }
+
+@keyframes crecer {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+.volver {
+  margin-top: 24px;
+}
+
+@media (max-width: 720px) {
+  .resumen {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .anillo {
+    width: 116px;
+    height: 116px;
+  }
+}

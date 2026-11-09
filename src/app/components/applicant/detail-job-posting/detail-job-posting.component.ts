@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { RecruitmentService } from '../../../services/recruitment.service';
 import { JobPosting } from '../../../models/recruitment.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-detail-job-posting',
-  imports: [DatePipe, MatButtonModule],
+  imports: [DatePipe, MatButtonModule, TranslatePipe],
   templateUrl: './detail-job-posting.component.html',
   styleUrl: './detail-job-posting.component.css',
 })

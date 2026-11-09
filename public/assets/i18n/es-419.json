@@ -631,8 +631,10 @@
       "overallScore": "Puntaje ponderado",
       "summary": "Resumen",
       "byCriterion": "Puntaje por criterio",
-      "scoreOutOf": "{{score}} / 100",
-      "back": "Volver a Mis postulaciones"
+      "scoreOutOf": "{{score}} / 10",
+      "back": "Volver a Mis postulaciones",
+      "strongest": "Tu punto fuerte",
+      "toImprove": "Por reforzar"
     }
   },
   "interviews": {
@@ -957,5 +959,55 @@
       "MISSING_MANDATORY_CERTIFICATION": "Falta certificación obligatoria",
       "INTEGRITY_ALERT": "Alerta de integridad"
     }
+  },
+  "communication": {
+    "kicker": "Análisis de comunicación",
+    "titleCandidate": "Cómo te comunicaste",
+    "titleRecruiter": "Cómo se comunicó",
+    "subtitle": "Reglas fijas, sin IA. No cambia el puntaje.",
+    "wpm": "Palabras por minuto",
+    "words": "Palabras en total",
+    "fillerPer100": "Muletillas cada 100 palabras",
+    "withExample": "Respuestas con un ejemplo concreto",
+    "withResult": "Respuestas con un resultado",
+    "fillerTitle": "Muletillas",
+    "noFiller": "No se detectaron muletillas.",
+    "byAnswer": "Respuesta por respuesta",
+    "answerN": "Respuesta {{n}}",
+    "followUpN": "Repregunta de la respuesta {{n}}",
+    "answerStats": "{{words}} palabras · {{fillers}} muletillas",
+    "length": {
+      "SHORT": "Corta",
+      "ADEQUATE": "Adecuada",
+      "LONG": "Larga"
+    },
+    "exampleQuote": "Ejemplo concreto",
+    "resultQuote": "Resultado",
+    "tipsTitle": "Para tu próxima entrevista",
+    "tipExample": "Apoya cada respuesta con un ejemplo concreto: dónde fue, qué hiciste tú.",
+    "tipResult": "Cierra con un resultado medible: un porcentaje, un tiempo ahorrado, un logro.",
+    "tipFiller": "Haz una pausa en lugar de usar muletillas; se nota más seguridad.",
+    "tipShort": "Algunas respuestas fueron cortas: cuenta el contexto, lo que hiciste y lo que lograste."
+  },
+  "assessmentDetail": {
+    "breadcrumb": "Inicio / Ranking / Evaluación",
+    "title": "Evaluación de la entrevista",
+    "subtitle": "Puntaje por criterio con la evidencia exacta que lo sustenta.",
+    "loading": "Cargando evaluación",
+    "loadError": "No se pudo cargar la evaluación.",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "missingTitle": "Sin evaluación todavía",
+    "missing": "Esta entrevista todavía no tiene una evaluación registrada.",
+    "calculate": "Calcular evaluación",
+    "calculating": "Calculando…",
+    "weightedScore": "Puntaje ponderado",
+    "summary": "Resumen de la evaluación",
+    "byCriterion": "Detalle por criterio",
+    "meta": "Peso {{weight}} % · {{count}} evidencia(s)",
+    "answer": "Respuesta #{{id}}",
+    "followUpAnswer": "Repregunta (respuesta #{{id}})",
+    "noEvidence": "Este criterio no tiene evidencias registradas.",
+    "back": "Volver al ranking"
   }
 }

@@ -7,10 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { RecruitmentService } from '../../../services/recruitment.service';
 import { JobPosting } from '../../../models/recruitment.model';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-job-postings',
-  imports: [DatePipe, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule],
+  imports: [DatePipe, MatButtonModule, MatFormFieldModule, MatInputModule, MatIconModule, TranslatePipe],
   templateUrl: './list-job-postings.component.html',
   styleUrl: './list-job-postings.component.css',
 })
