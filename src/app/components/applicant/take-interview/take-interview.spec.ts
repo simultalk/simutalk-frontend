@@ -87,6 +87,8 @@ describe('TakeInterview (US-08)', () => {
 
   beforeEach(() => {
     vi.useFakeTimers();
+    // jsdom no implementa scrollIntoView; la vista lo usa para bajar el chat al último mensaje
+    Element.prototype.scrollIntoView = vi.fn();
     api = {
       getByApplication: vi.fn().mockReturnValue(of(session('PENDING'))),
       start: vi.fn().mockReturnValue(of(session('IN_PROGRESS'))),
@@ -142,6 +144,7 @@ describe('TakeInterview (US-08)', () => {
       transcript: 'Revisaría la caída por región.',
       durationSeconds: 95,
       followUp: false,
+      parentAnswerId: null,
     });
     expect(page.answerIds()).toEqual({ 2: 102 });
     expect(page.number()).toBe(2);
@@ -177,7 +180,7 @@ describe('TakeInterview (US-08)', () => {
     expect(api.complete).toHaveBeenCalledWith(900);
     expect(page.step()).toBe('completed');
     expect(page.totalDuration()).toBe('12 min 05 s');
-    expect(text()).toContain('interviews.takeInterview.completedTitle');
+    expect(text()).toContain('interviews.takeInterview.completedChat');
     expect(text()).toContain('interviews.takeInterview.completedSummary');
   });
 
@@ -271,7 +274,7 @@ describe('TakeInterview (US-08)', () => {
 
   it('muestra los estados finales sin pedir el guion', () => {
     api.getByApplication.mockReturnValue(of(session('COMPLETED')));
-    expect(create().text()).toContain('interviews.takeInterview.completedTitle');
+    expect(create().text()).toContain('interviews.takeInterview.completedChat');
     TestBed.resetTestingModule();
 
     api.getByApplication.mockReturnValue(of(session('PENDING', '2020-01-01')));
