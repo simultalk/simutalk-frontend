@@ -24,7 +24,7 @@
           <span class="etiqueta">Cribado anonimizado</span>
         }
         <h2 class="titulo">{{ job.title }}</h2>
-        <p class="empresa">{{ job.companyName ?? 'Empresa #' + job.companyId }}</p>
+        <p class="empresa">{{ job.companyName ?? ('recruitment.jobList.companyFallback' | translate: { id: job.companyId }) }}</p>
         <p class="descripcion">{{ job.description }}</p>
         <footer class="pie">
           <span class="cierre">Cierra: {{ job.closingDate | date: 'dd/MM/yyyy' }}</span>

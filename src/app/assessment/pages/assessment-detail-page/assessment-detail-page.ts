@@ -3,12 +3,16 @@ import { DecimalPipe } from '@angular/common';
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Observable, forkJoin, map, of } from 'rxjs';
 import { AssessmentService } from '../../../services/assessment.service';
 import { IntegritySignalsComponent } from '../../components/integrity-signals/integrity-signals';
+import { CommunicationAnalysisCard } from '../../../components/shared/communication-analysis/communication-analysis';
+import { CountUp } from '../../../components/shared/count-up/count-up';
 import {
   Assessment,
   Evidence,
@@ -23,7 +27,7 @@ export interface TextSegment {
 
 interface EvidenceAnswerView {
   answerId: number;
-  label: string;
+  followUp: boolean;
   segments: TextSegment[];
 }
 
@@ -88,8 +92,12 @@ export function buildSegments(transcript: string, evidences: Evidence[]): TextSe
     RouterLink,
     MatButtonModule,
     MatChipsModule,
+    MatIconModule,
     MatProgressSpinnerModule,
     IntegritySignalsComponent,
+    CommunicationAnalysisCard,
+    CountUp,
+    TranslatePipe,
   ],
   templateUrl: './assessment-detail-page.html',
   styleUrl: './assessment-detail-page.css',
@@ -99,7 +107,9 @@ export class AssessmentDetailPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly snackBar = inject(MatSnackBar);
 
-  private sessionId = 0;
+  private readonly translate = inject(TranslateService);
+  /** Id de la sesión de entrevista (lo usa también la tarjeta de comunicación). */
+  sessionId = 0;
 
   readonly state = signal<PageState>('loading');
   readonly calculating = signal(false);
@@ -135,9 +145,7 @@ export class AssessmentDetailPageComponent implements OnInit {
         if (!answer) continue;
         answerViews.push({
           answerId,
-          label: answer.followUp
-            ? `Repregunta (respuesta #${answerId})`
-            : `Respuesta #${answerId}`,
+          followUp: answer.followUp,
           segments: buildSegments(answer.transcript, evs),
         });
       }
@@ -225,7 +233,12 @@ export class AssessmentDetailPageComponent implements OnInit {
 
   private showError(err: unknown): void {
     const message =
-      (err as HttpErrorResponse)?.error?.message ?? 'No se pudo cargar la información.';
-    this.snackBar.open(message, 'Cerrar', { duration: 5000 });
+      (err as HttpErrorResponse)?.error?.message ?? this.translate.instant('assessmentDetail.loadError');
+    this.snackBar.open(message, this.translate.instant('assessmentDetail.close'), { duration: 5000 });
+  }
+
+  /** Porcentaje (0-100) de un puntaje sobre 10. */
+  percent(score: number): number {
+    return Math.max(0, Math.min(100, score * 10));
   }
 }

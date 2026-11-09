@@ -9,7 +9,7 @@
   <article class="st-card detalle">
     <h1 class="st-page-title">{{ job.title }}</h1>
     <p class="meta">
-      {{ job.companyName ?? 'Empresa #' + job.companyId }} · Cierra el
+      {{ job.companyName ?? ('recruitment.jobList.companyFallback' | translate: { id: job.companyId }) }} · Cierra el
       {{ job.closingDate | date: 'dd/MM/yyyy' }}
     </p>
     <p class="descripcion">{{ job.description }}</p>

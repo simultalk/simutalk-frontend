@@ -5,6 +5,7 @@ import { Observable, map, switchMap, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Session, SignInRequest, SignInResponse, UserResponse } from '../models/auth.model';
 import { HOME_BY_ROLE, MENU_BY_ROLE, MenuItem, ROLE_LABELS } from '../models/menu';
+import { NameDirectoryService } from './name-directory.service';
 
 const SESSION_KEY = 'simutalk.session';
 
@@ -12,6 +13,7 @@ const SESSION_KEY = 'simutalk.session';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private names = inject(NameDirectoryService);
   private apiUrl = environment.apiUrl;
 
   signIn(request: SignInRequest): Observable<Session> {
@@ -36,6 +38,7 @@ export class AuthService {
 
   signOut(): void {
     localStorage.removeItem(SESSION_KEY);
+    this.names.clear(); // los nombres en caché son de esta sesión
     this.router.navigate(['/login']);
   }
 

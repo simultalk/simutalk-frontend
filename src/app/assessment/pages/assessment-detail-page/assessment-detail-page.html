@@ -1,69 +1,110 @@
 <section class="detail">
-  <a mat-button routerLink="/assessment/ranking">← Volver al ranking</a>
-  <h1>Evaluación de la entrevista</h1>
+  <header class="st-page-header">
+    <p class="st-breadcrumb">{{ 'assessmentDetail.breadcrumb' | translate }}</p>
+    <h1 class="st-page-title">{{ 'assessmentDetail.title' | translate }}</h1>
+    <p class="st-page-subtitle">{{ 'assessmentDetail.subtitle' | translate }}</p>
+  </header>
 
   @switch (state()) {
     @case ('loading') {
-      <mat-progress-spinner mode="indeterminate" diameter="40" aria-label="Cargando evaluación" />
+      <mat-progress-spinner mode="indeterminate" diameter="40" [attr.aria-label]="'assessmentDetail.loading' | translate" />
     }
 
     @case ('missing') {
-      <p>Esta entrevista todavía no tiene una evaluación registrada.</p>
-      <button mat-flat-button (click)="calculate()" [disabled]="calculating()">
-        {{ calculating() ? 'Calculando…' : 'Calcular evaluación' }}
-      </button>
+      <div class="st-card st-empty">
+        <span class="st-empty-icon" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">calculate</mat-icon></span>
+        <h2>{{ 'assessmentDetail.missingTitle' | translate }}</h2>
+        <p>{{ 'assessmentDetail.missing' | translate }}</p>
+        <button mat-flat-button (click)="calculate()" [disabled]="calculating()">
+          {{ (calculating() ? 'assessmentDetail.calculating' : 'assessmentDetail.calculate') | translate }}
+        </button>
+      </div>
     }
 
     @case ('error') {
-      <p>No se pudo cargar la evaluación.</p>
-      <button mat-stroked-button (click)="load()">Reintentar</button>
+      <div class="st-card st-empty">
+        <span class="st-empty-icon" aria-hidden="true"><mat-icon fontSet="material-symbols-outlined">error</mat-icon></span>
+        <p>{{ 'assessmentDetail.loadError' | translate }}</p>
+        <button mat-stroked-button (click)="load()">{{ 'assessmentDetail.retry' | translate }}</button>
+      </div>
     }
 
     @case ('ready') {
       @if (assessment(); as a) {
-        <div class="summary">
-          <p class="summary__score">
-            Puntaje ponderado: <strong>{{ a.weightedScore | number: '1.0-1' }}</strong>
-          </p>
-          @if (a.feedbackSummary) {
-            <p>{{ a.feedbackSummary }}</p>
-          }
-        </div>
+        <div class="st-stagger contenido">
+          <!-- Puntaje + resumen -->
+          <section class="st-hero resumen">
+            <div class="anillo">
+              <svg viewBox="0 0 36 36" aria-hidden="true">
+                <circle class="pista" cx="18" cy="18" r="15.9" />
+                <circle class="valor" cx="18" cy="18" r="15.9" [attr.stroke-dasharray]="percent(a.weightedScore) + ' 100'" />
+              </svg>
+              <span class="anillo-texto">
+                <strong [stCountUp]="a.weightedScore" [decimals]="1"></strong>
+                <small>/10</small>
+              </span>
+            </div>
+            <div>
+              <p class="st-kicker">{{ 'assessmentDetail.weightedScore' | translate }}</p>
+              <h2>{{ 'assessmentDetail.summary' | translate }}</h2>
+              @if (a.feedbackSummary) {
+                <p class="resumen-cuerpo">{{ a.feedbackSummary }}</p>
+              }
+            </div>
+          </section>
 
-        <h2>Alertas de integridad</h2>
-        <app-integrity-signals [flags]="a.integrityFlags" />
+          <!-- Integridad y comunicación lado a lado -->
+          <div class="columnas">
+            <section class="st-card">
+              <app-integrity-signals [flags]="a.integrityFlags" />
+            </section>
+            <app-communication-analysis [sessionId]="sessionId" audience="recruiter" />
+          </div>
 
-        <h2>Detalle por criterio</h2>
-        @for (view of criterionViews(); track view.id) {
-          <article class="criterion">
-            <header>
-              <h3>{{ view.name }}</h3>
-              <p class="criterion__meta">
-                Peso {{ view.weight }} % ·
-                Puntaje {{ view.score | number: '1.0-1' }} ·
-                {{ view.evidenceCount }} evidencia(s)
-              </p>
-            </header>
+          <!-- Detalle por criterio con la evidencia resaltada -->
+          <section class="criterios">
+            <h2 class="st-section-title">{{ 'assessmentDetail.byCriterion' | translate }}</h2>
+            @for (view of criterionViews(); track view.id) {
+              <article class="st-card criterion">
+                <header class="criterion__cabecera">
+                  <div>
+                    <h3>{{ view.name }}</h3>
+                    <p class="criterion__meta">
+                      {{ 'assessmentDetail.meta' | translate: { weight: view.weight, count: view.evidenceCount } }}
+                    </p>
+                  </div>
+                  <span class="criterion__nota">{{ view.score | number: '1.0-1' }}<small>/10</small></span>
+                </header>
+                <span class="barra"><span [style.width.%]="percent(view.score)"></span></span>
 
-            @for (answer of view.answers; track answer.answerId) {
-              <div class="answer">
-                <h4>{{ answer.label }}</h4>
-                <p class="transcript">
-                  @for (seg of answer.segments; track $index) {
-                    @if (seg.highlighted) {
-                      <mark>{{ seg.text }}</mark>
-                    } @else {
-                      <span>{{ seg.text }}</span>
-                    }
-                  }
-                </p>
-              </div>
-            } @empty {
-              <p class="criterion__empty">Este criterio no tiene evidencias registradas.</p>
+                @for (answer of view.answers; track answer.answerId) {
+                  <div class="answer">
+                    <h4>
+                      {{ (answer.followUp ? 'assessmentDetail.followUpAnswer' : 'assessmentDetail.answer') | translate: { id: answer.answerId } }}
+                    </h4>
+                    <p class="transcript">
+                      @for (seg of answer.segments; track $index) {
+                        @if (seg.highlighted) {
+                          <mark>{{ seg.text }}</mark>
+                        } @else {
+                          <span>{{ seg.text }}</span>
+                        }
+                      }
+                    </p>
+                  </div>
+                } @empty {
+                  <p class="criterion__empty">{{ 'assessmentDetail.noEvidence' | translate }}</p>
+                }
+              </article>
             }
-          </article>
-        }
+          </section>
+        </div>
       }
     }
   }
+
+  <a mat-stroked-button class="volver" routerLink="/assessment/ranking">
+    <mat-icon fontSet="material-symbols-outlined">arrow_back</mat-icon>
+    {{ 'assessmentDetail.back' | translate }}
+  </a>
 </section>

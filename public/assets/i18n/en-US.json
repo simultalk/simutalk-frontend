@@ -631,8 +631,10 @@
       "overallScore": "Weighted score",
       "summary": "Summary",
       "byCriterion": "Score by criterion",
-      "scoreOutOf": "{{score}} / 100",
-      "back": "Back to My applications"
+      "scoreOutOf": "{{score}} / 10",
+      "back": "Back to My applications",
+      "strongest": "Your strong point",
+      "toImprove": "Needs work"
     }
   },
   "interviews": {
@@ -957,5 +959,55 @@
       "MISSING_MANDATORY_CERTIFICATION": "Missing required certification",
       "INTEGRITY_ALERT": "Integrity alert"
     }
+  },
+  "communication": {
+    "kicker": "Communication analysis",
+    "titleCandidate": "How you communicated",
+    "titleRecruiter": "How they communicated",
+    "subtitle": "Fixed rules, no AI. It does not change the score.",
+    "wpm": "Words per minute",
+    "words": "Total words",
+    "fillerPer100": "Filler words per 100 words",
+    "withExample": "Answers with a concrete example",
+    "withResult": "Answers with a result",
+    "fillerTitle": "Filler words",
+    "noFiller": "No filler words were detected.",
+    "byAnswer": "Answer by answer",
+    "answerN": "Answer {{n}}",
+    "followUpN": "Follow-up to answer {{n}}",
+    "answerStats": "{{words}} words · {{fillers}} filler words",
+    "length": {
+      "SHORT": "Short",
+      "ADEQUATE": "Adequate",
+      "LONG": "Long"
+    },
+    "exampleQuote": "Concrete example",
+    "resultQuote": "Result",
+    "tipsTitle": "For your next interview",
+    "tipExample": "Back every answer with a concrete example: where it happened and what you did.",
+    "tipResult": "Close with a measurable result: a percentage, time saved, an achievement.",
+    "tipFiller": "Pause instead of using filler words; it sounds more confident.",
+    "tipShort": "Some answers were short: share the context, what you did and what you achieved."
+  },
+  "assessmentDetail": {
+    "breadcrumb": "Home / Ranking / Assessment",
+    "title": "Interview assessment",
+    "subtitle": "Score per criterion with the exact evidence behind it.",
+    "loading": "Loading assessment",
+    "loadError": "The assessment could not be loaded.",
+    "retry": "Retry",
+    "close": "Close",
+    "missingTitle": "No assessment yet",
+    "missing": "This interview does not have an assessment yet.",
+    "calculate": "Calculate assessment",
+    "calculating": "Calculating…",
+    "weightedScore": "Weighted score",
+    "summary": "Assessment summary",
+    "byCriterion": "Detail by criterion",
+    "meta": "Weight {{weight}}% · {{count}} piece(s) of evidence",
+    "answer": "Answer #{{id}}",
+    "followUpAnswer": "Follow-up (answer #{{id}})",
+    "noEvidence": "This criterion has no recorded evidence.",
+    "back": "Back to ranking"
   }
 }

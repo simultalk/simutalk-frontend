@@ -9,7 +9,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { forkJoin, switchMap } from 'rxjs';
 import { RecruitmentService } from '../../../services/recruitment.service';
+import { NameDirectoryService } from '../../../services/name-directory.service';
 import { Application, ApplicationStatus, JobPosting } from '../../../models/recruitment.model';
 import { InviteInterviewDialog } from '../invite-interview-dialog/invite-interview-dialog';
 
@@ -48,6 +50,7 @@ export class Pipeline implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly recruitment = inject(RecruitmentService);
+  private readonly names = inject(NameDirectoryService);
   private readonly dialog = inject(MatDialog);
   private readonly snackBar = inject(MatSnackBar);
   private readonly translate = inject(TranslateService);
@@ -76,25 +79,33 @@ export class Pipeline implements OnInit {
       this.errorMessage.set(this.translate.instant('recruitment.pipeline.jobNotFound'));
       return;
     }
-    this.recruitment.getJobPostingById(this.jobPostingId).subscribe({
-      next: (job) => this.jobPosting.set(job),
-    });
     this.load();
   }
 
   load(): void {
     this.loading.set(true);
     this.errorMessage.set('');
-    this.recruitment.getApplicationsByJobPosting(this.jobPostingId).subscribe({
-      next: (data) => {
-        this.applications.set(data);
-        this.loading.set(false);
-      },
-      error: (err) => {
-        this.errorMessage.set(err.error?.message || this.translate.instant('recruitment.pipeline.loadError'));
-        this.loading.set(false);
-      },
-    });
+    forkJoin({
+      job: this.recruitment.getJobPostingById(this.jobPostingId),
+      apps: this.recruitment.getApplicationsByJobPosting(this.jobPostingId),
+    })
+      .pipe(
+        // Nombres reales de los postulantes, salvo que la vacante use cribado anonimizado
+        switchMap(({ job, apps }) => {
+          this.jobPosting.set(job);
+          return this.names.withCandidateNames(apps, job.anonymizedScreening);
+        }),
+      )
+      .subscribe({
+        next: (data) => {
+          this.applications.set(data);
+          this.loading.set(false);
+        },
+        error: (err) => {
+          this.errorMessage.set(err.error?.message || this.translate.instant('recruitment.pipeline.loadError'));
+          this.loading.set(false);
+        },
+      });
   }
 
   applicationsIn(status: ApplicationStatus): Application[] {

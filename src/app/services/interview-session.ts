@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CreateInterviewSessionRequest, InterviewSession } from '../models/interview-session';
 import { Answer, FollowUpQuestion, Question, RecordAnswerRequest } from '../models/question';
+import { CommunicationAnalysis } from '../models/communication-analysis.model';
 
 @Injectable({ providedIn: 'root' })
 export class InterviewSessionService {
@@ -56,5 +57,10 @@ export class InterviewSessionService {
   /** Respuestas ya registradas: permiten retomar la entrevista donde quedó. */
   getAnswers(sessionId: number): Observable<Answer[]> {
     return this.http.get<Answer[]>(`${this.baseUrl}/interview-sessions/${sessionId}/answers`);
+  }
+
+  // GET /interview-sessions/{id}/communication-analysis: muletillas, ritmo, ejemplos y resultados (sin IA)
+  getCommunicationAnalysis(sessionId: number): Observable<CommunicationAnalysis> {
+    return this.http.get<CommunicationAnalysis>(`${this.baseUrl}/interview-sessions/${sessionId}/communication-analysis`);
   }
 }

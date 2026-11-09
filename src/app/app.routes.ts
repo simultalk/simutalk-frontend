@@ -8,7 +8,6 @@ import { authGuard } from './guards/auth.guard';
 import { roleGuard } from './guards/role.guard';
 import { AuthService } from './services/auth.service';
 import { Forbidden } from './components/shared/forbidden/forbidden';
-import { InvitationTest } from './components/company/invitation-test/invitation-test';
 import { TakeInterview } from './components/applicant/take-interview/take-interview';
 import { ROLE_CANDIDATE, ROLE_RECRUITER } from './models/menu';
 
@@ -104,12 +103,6 @@ export const routes: Routes = [
           import('./analytics/pages/reports-page/reports-page').then(
             (m) => m.ReportsPage,
           ),
-      },
-      // TEMPORAL (US-07): se elimina cuando el diálogo se abra desde el pipeline (Sprint 4)
-      {
-        path: 'interviews/invitation-test',
-        component: InvitationTest,
-        data: { roles: [ROLE_RECRUITER] },
       },
 
       // Postulante (components/applicant)
