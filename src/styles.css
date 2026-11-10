@@ -252,11 +252,11 @@ html.dark .st-kicker {
 .st-tag--danger { color: var(--st-danger); background: var(--st-danger-soft); border-color: transparent; }
 .st-tag--neutral { color: var(--st-text-secondary); background: var(--st-neutral-soft); border-color: transparent; }
 
-/* Enlace "ver más" con una línea-flecha que se alarga al pasar el mouse */
+/* Enlace "ver más" con un chevron (›) que se desliza a la derecha al pasar el mouse */
 .st-link-arrow {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -267,13 +267,19 @@ html.dark .st-kicker {
 
 .st-link-arrow::after {
   content: '';
-  width: 22px;
-  height: 1.5px;
+  flex-shrink: 0;
+  width: 8px;
+  height: 12px;
   background: currentColor;
-  transition: width var(--st-dur) var(--st-ease);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'%3E%3Cpath d='M1.5 1.5L6 6L1.5 10.5' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'%3E%3Cpath d='M1.5 1.5L6 6L1.5 10.5' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  transition: transform var(--st-dur) var(--st-ease);
 }
 
-.st-link-arrow:hover::after { width: 34px; }
+.st-link-arrow:hover::after,
+.st-link-arrow:focus-visible::after { transform: translateX(5px); }
 html.dark .st-link-arrow { color: var(--st-primary-dark); }
 
 /* Los hijos entran uno tras otro */
