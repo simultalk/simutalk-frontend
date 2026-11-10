@@ -42,7 +42,8 @@ export class ListJobPostingsComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.errorMessage.set(err.error?.message || 'Error al cargar las vacantes publicadas.');
+        // El interceptor ya tradujo el mensaje del backend; si no hay, se usa la clave.
+        this.errorMessage.set(err.error?.message || 'recruitment.jobList.loadError');
         this.loading.set(false);
       },
     });
