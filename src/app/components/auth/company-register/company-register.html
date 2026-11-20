@@ -114,6 +114,8 @@
             <mat-error>{{ 'iam.register.passwordInvalid' | translate }}</mat-error>
           }
         </mat-form-field>
+
+        <app-password-strength class="completo" [password]="passwordValue()" />
       </section>
 
       <div class="st-auth-acciones">

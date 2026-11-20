@@ -1,5 +1,6 @@
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -11,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { PasswordStrength } from '../../shared/password-strength/password-strength';
 import { RegistrationService } from '../../../services/registration.service';
 import { CompanySize } from '../../../models/registration.model';
 
@@ -26,6 +28,7 @@ import { CompanySize } from '../../../models/registration.model';
     MatIconModule,
     ThemeToggle,
     LanguageSwitcher,
+    PasswordStrength,
     MatSnackBarModule,
     TranslatePipe,
   ],
@@ -62,6 +65,9 @@ export class CompanyRegister {
     email: ['', [Validators.required, Validators.email, Validators.maxLength(50)]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(72)]],
   });
+
+  // Texto actual de la contraseña, para el indicador de seguridad
+  passwordValue = toSignal(this.form.controls.password.valueChanges, { initialValue: '' });
 
   submit(): void {
     if (this.form.invalid) {
