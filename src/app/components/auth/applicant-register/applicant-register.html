@@ -109,7 +109,16 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{ 'iam.register.password' | translate }}</mat-label>
-          <input matInput type="password" formControlName="password" autocomplete="new-password" maxlength="72" />
+          <input matInput [type]="hidePassword() ? 'password' : 'text'" formControlName="password" autocomplete="new-password" maxlength="72" />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+            [attr.aria-label]="(hidePassword() ? 'iam.register.showPassword' : 'iam.register.hidePassword') | translate"
+          >
+            <mat-icon fontSet="material-symbols-outlined">{{ hidePassword() ? 'visibility' : 'visibility_off' }}</mat-icon>
+          </button>
           @if (form.controls.password.hasError('required')) {
             <mat-error>{{ 'iam.register.passwordRequired' | translate }}</mat-error>
           } @else if (form.controls.password.invalid) {

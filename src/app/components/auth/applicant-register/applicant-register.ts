@@ -44,6 +44,7 @@ export class ApplicantRegister {
 
   loading = signal(false);
   errorMessage = signal('');
+  hidePassword = signal(true);
   success = signal(false);
   completeExistingAccount = signal(false);
 

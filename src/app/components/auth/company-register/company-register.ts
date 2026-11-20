@@ -41,6 +41,7 @@ export class CompanyRegister {
 
   loading = signal(false);
   errorMessage = signal('');
+  hidePassword = signal(true);
 
   // El texto de cada tamaño sale de iam.companyRegister.size<VALOR>
   sizes: { value: CompanySize }[] = [

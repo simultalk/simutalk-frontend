@@ -135,6 +135,8 @@
       "password": "Contraseña",
       "passwordRequired": "Ingresa una contraseña",
       "passwordInvalid": "Entre 8 y 72 caracteres",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
       "district": "Distrito",
       "districtRequired": "Ingresa el distrito"
     },
