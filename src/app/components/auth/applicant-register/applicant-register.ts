@@ -63,6 +63,15 @@ export class ApplicantRegister {
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(72)]],
   });
 
+  // Fecha de nacimiento más reciente que permite el calendario: hoy menos 18 años (yyyy-mm-dd)
+  maxBirthDate = (() => {
+    const limit = new Date();
+    limit.setFullYear(limit.getFullYear() - 18);
+    const month = String(limit.getMonth() + 1).padStart(2, '0');
+    const day = String(limit.getDate()).padStart(2, '0');
+    return `${limit.getFullYear()}-${month}-${day}`;
+  })();
+
   // Texto actual de la contraseña, para el indicador de seguridad
   passwordValue = toSignal(this.form.controls.password.valueChanges, { initialValue: '' });
 

@@ -60,7 +60,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>{{ 'iam.applicantRegister.birthDate' | translate }}</mat-label>
-          <input matInput type="date" formControlName="birthDate" autocomplete="bday" />
+          <input matInput type="date" formControlName="birthDate" autocomplete="bday" [max]="maxBirthDate" />
           @if (form.controls.birthDate.invalid) {
             <mat-error>{{ 'iam.applicantRegister.birthDateInvalid' | translate }}</mat-error>
           }
