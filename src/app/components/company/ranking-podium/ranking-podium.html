@@ -1,0 +1,33 @@
+<section class="st-hero podio" [attr.aria-label]="'ranking.podium' | translate">
+  <p class="st-kicker">{{ 'ranking.podium' | translate }}</p>
+  <ol class="podio-lista">
+    @for (e of entries(); track e.applicationId) {
+      <li class="puesto" [attr.data-pos]="e.position">
+        <button type="button" class="puesto-boton" (click)="selected.emit(e)" [attr.aria-label]="'ranking.viewAssessment' | translate: { name: displayName(e) }">
+          <span class="medalla" aria-hidden="true">{{ e.position }}</span>
+          <span class="anillo">
+            <svg viewBox="0 0 36 36" aria-hidden="true">
+              <circle class="pista" cx="18" cy="18" r="15.9" />
+              <circle class="valor" cx="18" cy="18" r="15.9" [attr.stroke-dasharray]="percent(e.weightedScore) + ' 100'" />
+            </svg>
+            <span class="avatar">
+              @if (initials(e)) {
+                {{ initials(e) }}
+              } @else {
+                <mat-icon fontSet="material-symbols-outlined">person</mat-icon>
+              }
+            </span>
+          </span>
+          <strong class="nombre">{{ displayName(e) }}</strong>
+          <span class="puntaje">{{ e.weightedScore | number: '1.1-1' }}<small>/10</small></span>
+          <span class="insignias-mini">
+            @for (b of e.badges; track b) {
+              <mat-icon fontSet="material-symbols-outlined" [matTooltip]="'ranking.badge.' + b | translate" [attr.data-badge]="b">{{ badgeIcon(b) }}</mat-icon>
+            }
+          </span>
+          <span class="pedestal" aria-hidden="true"></span>
+        </button>
+      </li>
+    }
+  </ol>
+</section>

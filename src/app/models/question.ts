@@ -1,0 +1,46 @@
+export type QuestionOrigin = 'AI_SUGGESTED' | 'MANUAL';
+
+/** Respuesta de GET /job-postings/{jobPostingId}/questions (una por elemento, ordenadas por position). */
+export interface Question {
+  id: number;
+  jobPostingId: number;
+  criterionId: number;
+  statement: string;
+  maxDurationSeconds: number;
+  position: number;
+  origin: QuestionOrigin;
+  allowsFollowUp: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Cuerpo de POST /interview-sessions/{sessionId}/answers. */
+export interface RecordAnswerRequest {
+  questionId: number;
+  transcript: string;
+  durationSeconds: number;
+  followUp: boolean;
+  parentAnswerId?: number | null;
+}
+
+/** Respuesta de POST y GET /interview-sessions/{sessionId}/answers. */
+export interface Answer {
+  id: number;
+  questionId: number;
+  /** Solo en repreguntas: la respuesta que la originó. */
+  parentAnswerId: number | null;
+  transcript: string;
+  audioUrl: string | null;
+  durationSeconds: number;
+  answeredAt: string;
+  followUp: boolean;
+  /** US-09: repregunta que la IA generó para esta respuesta (solo en respuestas normales). */
+  followUpQuestion?: string | null;
+}
+
+/** US-09: respuesta de POST /interview-sessions/{sessionId}/answers/{answerId}/follow-up. */
+export interface FollowUpQuestion {
+  parentAnswerId: number;
+  questionId: number;
+  statement: string;
+}

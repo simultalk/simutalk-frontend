@@ -1,0 +1,20 @@
+.encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tabla { width: 100%; border-collapse: collapse; }
+.tabla th, .tabla td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--st-border); }
+.tabla th { font-size: 13px; color: var(--st-text-secondary); font-weight: 600; }
+
+.estado { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; }
+.DRAFT { background: var(--st-neutral-soft); color: var(--st-text-secondary); }
+.PUBLISHED { background: var(--st-primary-soft); color: var(--st-primary-dark); }
+.CLOSED { background: var(--st-danger-soft); color: var(--st-danger); }
+
+.error { color: var(--st-danger); }
+.acciones { white-space: nowrap; }
+.eliminar { color: var(--st-danger); }

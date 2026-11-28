@@ -1,0 +1,310 @@
+.st-stagger {
+  display: grid;
+  gap: 20px;
+}
+
+/* Tarjeta de presentación: avatar, nombre y avance del perfil */
+.presentacion {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.logo {
+  width: 84px;
+  height: 84px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.06);
+}
+
+.identidad h2 {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.identidad .st-kicker {
+  margin-bottom: 6px;
+}
+
+.razon {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.hero-acciones {
+  display: grid;
+  justify-items: end;
+  gap: 14px;
+}
+
+.tamano {
+  white-space: nowrap;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Botón blanco sobre la banda verde */
+.boton-claro {
+  --mat-button-filled-container-color: #ffffff;
+  --mat-button-filled-label-text-color: var(--st-brand-deep);
+  --mat-button-filled-icon-color: var(--st-brand-deep);
+}
+
+.datos-rapidos {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.datos-rapidos li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.datos-rapidos mat-icon {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  color: var(--st-accent);
+}
+
+/* Formulario a la izquierda, certificaciones a la derecha */
+.columnas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 20px;
+  align-items: start;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+  padding: 0 0 8px;
+}
+
+fieldset + fieldset {
+  padding-top: 16px;
+  border-top: 1px solid var(--st-border);
+}
+
+legend {
+  padding: 0;
+  margin-bottom: 14px;
+}
+
+.campos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  column-gap: 16px;
+}
+
+.campos .completo {
+  grid-column: 1 / -1;
+}
+
+/* Los campos con ayuda crecen para que el texto no se monte sobre el siguiente */
+.campos mat-form-field[subscriptSizing='dynamic'] {
+  margin-bottom: 16px;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--st-border);
+}
+
+.actualizado {
+  margin-right: auto;
+  font-size: 12px;
+  color: var(--st-text-secondary);
+}
+
+.error {
+  color: var(--st-danger);
+  margin: 0 0 8px;
+}
+
+/* Accesos rápidos a la derecha */
+.atajos {
+  position: sticky;
+  top: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.atajo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  color: var(--st-text);
+  text-decoration: none;
+}
+
+.atajo mat-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  font-size: 22px;
+  color: var(--st-primary);
+  background: var(--st-primary-soft);
+}
+
+.atajo strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.atajo small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--st-text-secondary);
+}
+
+/* Esqueleto mientras carga */
+.esqueleto {
+  display: grid;
+  gap: 20px;
+}
+
+.esqueleto-hero,
+.esqueleto-fila > div {
+  border-radius: var(--st-radius);
+  background: linear-gradient(
+    90deg,
+    var(--st-neutral-soft) 0%,
+    var(--st-surface) 50%,
+    var(--st-neutral-soft) 100%
+  );
+  background-size: 200% 100%;
+  animation: brillo 1.4s linear infinite;
+}
+
+.esqueleto-hero {
+  height: 148px;
+}
+
+.esqueleto-fila {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.esqueleto-fila > div {
+  height: 92px;
+}
+
+@keyframes brillo {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 1080px) {
+  .columnas {
+    grid-template-columns: 1fr;
+  }
+
+  .atajos {
+    position: static;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .presentacion {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 24px;
+  }
+
+  .logo {
+    width: 64px;
+    height: 64px;
+    font-size: 22px;
+  }
+
+  .identidad h2 {
+    font-size: 22px;
+  }
+
+
+  .campos {
+    grid-template-columns: 1fr;
+  }
+
+  .st-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .st-stat {
+    padding: 16px;
+  }
+
+  .st-stat-value {
+    font-size: 24px;
+  }
+
+  .acciones {
+    flex-wrap: wrap;
+  }
+
+  .actualizado {
+    width: 100%;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-acciones {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .boton-claro {
+    white-space: nowrap;
+  }
+
+  .atajos {
+    grid-template-columns: 1fr;
+  }
+}

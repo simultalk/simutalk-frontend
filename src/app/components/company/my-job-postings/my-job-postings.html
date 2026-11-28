@@ -1,0 +1,54 @@
+<header class="st-page-header encabezado">
+  <div>
+    <p class="st-breadcrumb">{{ 'common.home' | translate }} / {{ 'recruitment.myJobPostings.title' | translate }}</p>
+    <h1 class="st-page-title">{{ 'recruitment.myJobPostings.title' | translate }}</h1>
+    <p class="st-page-subtitle">{{ 'recruitment.myJobPostings.subtitle' | translate }}</p>
+  </div>
+  <a mat-flat-button routerLink="/recruitment/my-job-postings/new">{{ 'recruitment.myJobPostings.create' | translate }}</a>
+</header>
+
+@if (loading()) {
+  <p role="status">{{ 'recruitment.myJobPostings.loading' | translate }}</p>
+} @else if (errorMessage()) {
+  <p class="error" role="alert">{{ errorMessage() }}</p>
+} @else if (jobPostings().length === 0) {
+  <p>{{ 'recruitment.myJobPostings.empty' | translate }}</p>
+} @else {
+  <div class="st-card">
+    <table class="tabla st-tabla-responsive">
+      <thead>
+      <tr>
+        <th>{{ 'recruitment.myJobPostings.colTitle' | translate }}</th>
+        <th>{{ 'recruitment.myJobPostings.colClosing' | translate }}</th>
+        <th>{{ 'recruitment.myJobPostings.colWeight' | translate }}</th>
+        <th>{{ 'recruitment.myJobPostings.colStatus' | translate }}</th>
+        <th>{{ 'recruitment.myJobPostings.colActions' | translate }}</th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (job of jobPostings(); track job.id) {
+          <tr>
+            <td class="completo"><strong>{{ job.title }}</strong></td>
+            <td [attr.data-label]="'recruitment.myJobPostings.colClosing' | translate">{{ job.closingDate | date: 'dd/MM/yyyy' }}</td>
+            <td [attr.data-label]="'recruitment.myJobPostings.colWeight' | translate">{{ job.totalWeight }} / 100</td>
+            <td [attr.data-label]="'recruitment.myJobPostings.colStatus' | translate"><span class="estado" [class]="'estado ' + job.status">{{ 'recruitment.status.' + job.status | translate }}</span></td>
+            <td class="acciones">
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'criteria']">{{ 'recruitment.myJobPostings.criteria' | translate }}</a>
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'script']">{{ 'recruitment.myJobPostings.script' | translate }}</a>
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'pipeline']">{{ 'recruitment.myJobPostings.pipeline' | translate }}</a>
+              @if (job.status !== 'CLOSED') {
+                <a mat-button [routerLink]="['/recruitment/my-job-postings', job.id, 'edit']">{{ 'common.edit' | translate }}</a>
+              }
+              @if (job.status !== 'PUBLISHED') {
+                <button mat-button class="eliminar" type="button" (click)="remove(job)">{{ 'common.delete' | translate }}</button>
+              }
+              @if (job.status === 'PUBLISHED') {
+                <button mat-button class="eliminar" type="button" (click)="close(job)">{{ 'recruitment.myJobPostings.close' | translate }}</button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+}

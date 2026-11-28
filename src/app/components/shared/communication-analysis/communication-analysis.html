@@ -1,0 +1,145 @@
+@if (analysis(); as a) {
+  <section class="st-card tarjeta" aria-labelledby="comunicacion-titulo">
+    <header class="cabecera">
+      <span class="icono" aria-hidden="true">
+        <mat-icon fontSet="material-symbols-outlined">record_voice_over</mat-icon>
+      </span>
+      <div>
+        <p class="st-kicker">{{ 'communication.kicker' | translate }}</p>
+        <h2 id="comunicacion-titulo">
+          {{ (isCandidate() ? 'communication.titleCandidate' : 'communication.titleRecruiter') | translate }}
+        </h2>
+        <p class="sub">{{ 'communication.subtitle' | translate }}</p>
+      </div>
+    </header>
+
+    <!-- Indicadores -->
+    <div class="indicadores">
+      <div class="indicador">
+        <span class="valor">
+          @if (a.wordsPerMinute != null) {
+            <span [stCountUp]="a.wordsPerMinute"></span>
+          } @else {
+            —
+          }
+        </span>
+        <span class="etiqueta">{{ 'communication.wpm' | translate }}</span>
+      </div>
+      <div class="indicador">
+        <span class="valor" [stCountUp]="a.totalWords"></span>
+        <span class="etiqueta">{{ 'communication.words' | translate }}</span>
+      </div>
+      <div class="indicador" [class.indicador--alerta]="a.fillerWordCount > 0">
+        <span class="valor"><span [stCountUp]="a.fillerWordsPer100Words" [decimals]="1"></span></span>
+        <span class="etiqueta">{{ 'communication.fillerPer100' | translate }}</span>
+      </div>
+    </div>
+
+    <!-- Ejemplos y resultados -->
+    <div class="proporciones">
+      <div class="proporcion">
+        <span class="proporcion-texto">
+          <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">lightbulb</mat-icon>
+          {{ 'communication.withExample' | translate }}
+          <strong>{{ a.answersWithConcreteExample }}/{{ a.answerCount }}</strong>
+        </span>
+        <span class="barra" role="img" [attr.aria-label]="share(a.answersWithConcreteExample, a.answerCount) + ' %'">
+          <span [style.width.%]="share(a.answersWithConcreteExample, a.answerCount)"></span>
+        </span>
+      </div>
+      <div class="proporcion">
+        <span class="proporcion-texto">
+          <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">trending_up</mat-icon>
+          {{ 'communication.withResult' | translate }}
+          <strong>{{ a.answersWithResult }}/{{ a.answerCount }}</strong>
+        </span>
+        <span class="barra barra--acento" role="img" [attr.aria-label]="share(a.answersWithResult, a.answerCount) + ' %'">
+          <span [style.width.%]="share(a.answersWithResult, a.answerCount)"></span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Muletillas -->
+    <div class="bloque">
+      <h3 class="bloque-titulo">{{ 'communication.fillerTitle' | translate }}</h3>
+      @if (a.fillerWords.length === 0) {
+        <p class="limpio">
+          <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">check_circle</mat-icon>
+          {{ 'communication.noFiller' | translate }}
+        </p>
+      } @else {
+        <ul class="muletillas">
+          @for (f of a.fillerWords; track f.word) {
+            <li>
+              <span class="muletilla">«{{ f.word }}»</span>
+              <span class="muletilla-barra"><span [style.width.%]="(f.count / maxFiller()) * 100"></span></span>
+              <strong>×{{ f.count }}</strong>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <!-- Respuesta por respuesta -->
+    <div class="bloque">
+      <h3 class="bloque-titulo">{{ 'communication.byAnswer' | translate }}</h3>
+      <ol class="respuestas">
+        @for (r of rows(); track r.answerId) {
+          <li class="respuesta" [class.respuesta--abierta]="open() === r.answerId">
+            <button
+              type="button"
+              class="respuesta-fila"
+              [attr.aria-expanded]="open() === r.answerId"
+              [disabled]="!hasEvidence(r)"
+              (click)="toggle(r.answerId)"
+            >
+              <span class="respuesta-nombre">
+                {{ (r.followUp ? 'communication.followUpN' : 'communication.answerN') | translate: { n: r.number } }}
+              </span>
+              <span [class]="lengthClass(r.length)">{{ 'communication.length.' + r.length | translate }}</span>
+              <span class="respuesta-datos">
+                {{ 'communication.answerStats' | translate: { words: r.words, fillers: r.fillerWordCount } }}
+              </span>
+              <span class="marcas" aria-hidden="true">
+                <mat-icon fontSet="material-symbols-outlined" [class.activa]="!!r.concreteExampleEvidence">lightbulb</mat-icon>
+                <mat-icon fontSet="material-symbols-outlined" [class.activa]="!!r.resultEvidence">trending_up</mat-icon>
+              </span>
+              @if (hasEvidence(r)) {
+                <mat-icon class="flecha" fontSet="material-symbols-outlined" aria-hidden="true">expand_more</mat-icon>
+              }
+            </button>
+
+            @if (open() === r.answerId) {
+              <div class="evidencias">
+                @if (r.concreteExampleEvidence) {
+                  <blockquote>
+                    <span class="cita-tipo">{{ 'communication.exampleQuote' | translate }}</span>
+                    <mark>{{ r.concreteExampleEvidence }}</mark>
+                  </blockquote>
+                }
+                @if (r.resultEvidence) {
+                  <blockquote class="resultado">
+                    <span class="cita-tipo">{{ 'communication.resultQuote' | translate }}</span>
+                    <mark>{{ r.resultEvidence }}</mark>
+                  </blockquote>
+                }
+              </div>
+            }
+          </li>
+        }
+      </ol>
+    </div>
+
+    <!-- Consejos (solo postulante) -->
+    @if (tips().length > 0) {
+      <div class="consejos">
+        <h3 class="bloque-titulo">{{ 'communication.tipsTitle' | translate }}</h3>
+        <ul>
+          @for (t of tips(); track t) {
+            <li>{{ t | translate }}</li>
+          }
+        </ul>
+      </div>
+    }
+  </section>
+}

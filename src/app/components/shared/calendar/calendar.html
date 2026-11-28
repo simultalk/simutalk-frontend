@@ -1,0 +1,179 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'calendar.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'calendar.title' | translate }}</h1>
+  <p class="st-page-subtitle">
+    {{ (isCandidate ? 'calendar.subtitleCandidate' : 'calendar.subtitleRecruiter') | translate }}
+  </p>
+</header>
+
+<div class="st-stagger contenedor">
+  <!-- Indicadores -->
+  <section class="st-stats" [attr.aria-label]="'calendar.statsLabel' | translate">
+    <div class="st-stat st-stat--accent">
+      <span class="st-stat-value" [stCountUp]="closingThisWeek()"></span>
+      <span class="st-stat-label">{{ 'calendar.statClosingWeek' | translate }}</span>
+    </div>
+    @if (isCandidate) {
+      <div class="st-stat">
+        <span class="st-stat-value" [stCountUp]="pendingInterviews()"></span>
+        <span class="st-stat-label">{{ 'calendar.statPendingInterviews' | translate }}</span>
+      </div>
+    } @else {
+      <div class="st-stat">
+        <span class="st-stat-value" [stCountUp]="receivedThisMonth()"></span>
+        <span class="st-stat-label">{{ 'calendar.statReceivedMonth' | translate }}</span>
+      </div>
+    }
+    <div class="st-stat">
+      <span class="st-stat-value" [stCountUp]="eventsThisMonth()"></span>
+      <span class="st-stat-label">{{ 'calendar.statEventsMonth' | translate }}</span>
+    </div>
+  </section>
+
+  <div class="columnas">
+    <!-- Mes -->
+    <section class="st-card mes" [attr.aria-label]="monthLabel()">
+      <header class="mes-cabecera">
+        <div>
+          <p class="st-kicker">{{ 'calendar.kicker' | translate }}</p>
+          <h2 class="mes-titulo">{{ monthLabel() }}</h2>
+        </div>
+        <div class="navegacion">
+          <button mat-stroked-button type="button" (click)="goToday()">{{ 'calendar.today' | translate }}</button>
+          <button mat-icon-button type="button" (click)="prev()" [attr.aria-label]="'calendar.prev' | translate">
+            <mat-icon fontSet="material-symbols-outlined">chevron_left</mat-icon>
+          </button>
+          <button mat-icon-button type="button" (click)="next()" [attr.aria-label]="'calendar.next' | translate">
+            <mat-icon fontSet="material-symbols-outlined">chevron_right</mat-icon>
+          </button>
+        </div>
+      </header>
+
+      <!-- Leyenda: también sirve de filtro -->
+      <div class="leyenda" role="group" [attr.aria-label]="'calendar.legend' | translate">
+        @for (k of legend(); track k) {
+          <button
+            type="button"
+            class="chip"
+            [attr.data-kind]="k"
+            [class.chip--apagado]="hidden().has(k)"
+            [attr.aria-pressed]="!hidden().has(k)"
+            (click)="toggleKind(k)"
+          >
+            <span class="chip-punto"></span>
+            {{ 'calendar.legendKind.' + k | translate }}
+          </button>
+        }
+      </div>
+
+      @if (loading()) {
+        <div class="cargando" role="status">{{ 'calendar.loading' | translate }}</div>
+      } @else if (error()) {
+        <p class="error" role="alert">
+          {{ 'calendar.error' | translate }}
+          <button mat-button type="button" (click)="load()">{{ 'calendar.retry' | translate }}</button>
+        </p>
+      } @else {
+        <div class="grilla" role="grid" [attr.data-dir]="direction()">
+          <div class="semana semana--cabecera" role="row">
+            @for (w of weekdays(); track $index) {
+              <span class="dia-semana" role="columnheader">{{ w }}</span>
+            }
+          </div>
+          @for (row of [0, 1, 2, 3, 4, 5]; track row) {
+            <div class="semana" role="row">
+              @for (cell of cells().slice(row * 7, row * 7 + 7); track cell.iso) {
+                <button
+                  type="button"
+                  role="gridcell"
+                  class="dia"
+                  [class.dia--fuera]="!cell.inMonth"
+                  [class.dia--hoy]="cell.isToday"
+                  [class.dia--finde]="cell.isWeekend"
+                  [class.dia--pasado]="cell.isPast"
+                  [class.dia--elegido]="cell.iso === selected()"
+                  [class.dia--con-eventos]="cell.events.length > 0"
+                  [attr.aria-selected]="cell.iso === selected()"
+                  [attr.aria-label]="cell.iso + (cell.events.length ? ', ' + cell.events.length : '')"
+                  (click)="select(cell)"
+                >
+                  <span class="numero">{{ cell.day }}</span>
+                  <span class="eventos">
+                    @for (e of cell.events.slice(0, 2); track e.id) {
+                      <span class="evento" [attr.data-kind]="e.kind" [matTooltip]="(eventKey(e) | translate: { count: e.count ?? 0 }) + ': ' + e.title">
+                        {{ e.title }}
+                      </span>
+                    }
+                    @if (cell.events.length > 2) {
+                      <span class="mas">+{{ cell.events.length - 2 }}</span>
+                    }
+                  </span>
+                  <!-- En celular solo se ven puntos -->
+                  <span class="puntos" aria-hidden="true">
+                    @for (e of cell.events.slice(0, 3); track e.id) {
+                      <i [attr.data-kind]="e.kind"></i>
+                    }
+                  </span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Agenda -->
+    <aside class="agenda">
+      <section class="st-hero dia-elegido">
+        <p class="st-kicker">{{ 'calendar.selectedDay' | translate }}</p>
+        <h2>{{ selectedLabel() }}</h2>
+        @if (selectedEvents().length === 0) {
+          <p class="sin-eventos">{{ 'calendar.noEvents' | translate }}</p>
+        } @else {
+          <ul class="lista-dia">
+            @for (e of selectedEvents(); track e.id) {
+              <li>
+                <a [routerLink]="e.link" class="evento-dia" [attr.data-kind]="e.kind">
+                  <span class="tipo">{{ eventKey(e) | translate: { count: e.count ?? 0 } }}</span>
+                  <strong>{{ e.title }}</strong>
+                  @if (e.applied) {
+                    <span class="ya">{{ 'calendar.alreadyApplied' | translate }}</span>
+                  }
+                </a>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <section class="st-card proximos">
+        <h2 class="st-section-title">{{ 'calendar.upcoming' | translate }}</h2>
+        @if (upcoming().length === 0) {
+          <p class="sin-eventos-claro">{{ 'calendar.noUpcoming' | translate }}</p>
+        } @else {
+          <ol class="linea-tiempo">
+            @for (e of upcoming(); track e.id) {
+              <li [attr.data-kind]="e.kind">
+                <span class="fecha-chica">
+                  <strong>{{ shortDate(e.date).day }}</strong>
+                  <small>{{ shortDate(e.date).month }}</small>
+                </span>
+                <a [routerLink]="e.link" class="detalle">
+                  <span class="tipo-chico">{{ eventKey(e) | translate: { count: e.count ?? 0 } }}</span>
+                  <strong>{{ e.title }}</strong>
+                  <span class="faltan" [class.faltan--urgente]="daysLeft(e.date) <= 3">
+                    @switch (daysLeft(e.date)) {
+                      @case (0) { {{ 'calendar.isToday' | translate }} }
+                      @case (1) { {{ 'calendar.tomorrow' | translate }} }
+                      @default { {{ 'calendar.inDays' | translate: { days: daysLeft(e.date) } }} }
+                    }
+                  </span>
+                </a>
+              </li>
+            }
+          </ol>
+        }
+      </section>
+    </aside>
+  </div>
+</div>

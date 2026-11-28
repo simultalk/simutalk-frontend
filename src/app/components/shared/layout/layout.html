@@ -1,0 +1,47 @@
+<a class="saltar" href="#contenido" (click)="saltarAlContenido($event)">{{ 'shared.a11y.skipToContent' | translate }}</a>
+
+<header class="barra">
+  <a class="marca" [routerLink]="auth.homeUrl()" [attr.aria-label]="'shared.layout.goHome' | translate">
+    <img src="logo.svg" alt="" width="32" height="32" />
+    <span>Simu<strong>Talk</strong></span>
+  </a>
+
+  <span class="espacio"></span>
+
+  <div class="usuario">
+    <app-notification-bell />
+    <app-theme-toggle />
+    <app-language-switcher />
+    <span class="usuario-texto">
+      {{ username }}@if (roleLabel) {<span class="rol"> · {{ roleLabel | translate }}</span>}
+    </span>
+    <span class="avatar" aria-hidden="true">{{ initials }}</span>
+    <button mat-stroked-button type="button" (click)="auth.signOut()">
+      <mat-icon fontSet="material-symbols-outlined">logout</mat-icon>
+      {{ 'shared.layout.logout' | translate }}
+    </button>
+  </div>
+</header>
+
+<div class="cuerpo">
+  <nav class="menu" [attr.aria-label]="'shared.layout.mainMenu' | translate">
+    <p class="menu-titulo" aria-hidden="true">{{ 'shared.layout.menuTitle' | translate }}</p>
+    @for (item of menu; track item.route) {
+      <a class="opcion" [routerLink]="item.route" routerLinkActive="activa" ariaCurrentWhenActive="page">
+        <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">{{ item.icon }}</mat-icon>
+        <span>{{ item.label | translate }}</span>
+      </a>
+    }
+
+    <!-- Reloj con la hora actual, abajo del menú -->
+    <div class="menu-pie">
+      <app-clock />
+    </div>
+  </nav>
+
+  <main id="contenido" class="contenido" tabindex="-1">
+    <router-outlet />
+  </main>
+</div>
+
+<app-notification-toasts />

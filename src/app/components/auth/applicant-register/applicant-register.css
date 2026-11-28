@@ -1,0 +1,23 @@
+.exito {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: var(--st-radius);
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  font-weight: 600;
+}
+
+.exito span { flex: 1; }
+
+.ya-tengo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--st-text-secondary);
+  cursor: pointer;
+}
+
+.ya-tengo input { accent-color: var(--st-primary); width: 16px; height: 16px; }

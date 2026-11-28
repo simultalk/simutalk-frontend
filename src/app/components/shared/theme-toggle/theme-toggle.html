@@ -1,0 +1,16 @@
+<button
+  type="button"
+  role="switch"
+  class="interruptor"
+  [class.oscuro]="theme.dark()"
+  [attr.aria-checked]="theme.dark()"
+  [attr.aria-label]="'shared.theme.dark' | translate"
+  [attr.title]="'shared.theme.dark' | translate"
+  (click)="theme.toggle(!theme.dark())"
+>
+  <span class="perilla">
+    <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">
+      {{ theme.dark() ? 'dark_mode' : 'light_mode' }}
+    </mat-icon>
+  </span>
+</button>

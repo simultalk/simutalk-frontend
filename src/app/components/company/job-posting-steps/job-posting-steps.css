@@ -1,0 +1,42 @@
+.pasos {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 0 0 20px;
+}
+
+.pasos li,
+.pasos a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pasos li {
+  font-size: 14px;
+  color: var(--st-text-secondary);
+  padding: 6px 14px 6px 6px;
+  border-radius: 999px;
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+}
+
+.pasos a { color: inherit; text-decoration: none; }
+
+.numero {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--st-border);
+  color: var(--st-text);
+}
+
+.actual { border-color: var(--st-primary); color: var(--st-primary-dark); font-weight: 600; }
+.actual .numero { background: var(--st-primary); color: #fff; }
+.hecho .numero { background: var(--st-primary-soft); color: var(--st-primary-dark); }

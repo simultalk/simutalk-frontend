@@ -1,0 +1,148 @@
+
+<header class="st-page-header encabezado">
+  <div>
+    <p class="st-breadcrumb">
+      <a routerLink="/recruitment/my-job-postings">{{ 'recruitment.myJobPostings.title' | translate }}</a> / {{ 'recruitment.script.crumb' | translate }}
+    </p>
+    <h1 class="st-page-title">{{ 'recruitment.script.title' | translate }}</h1>
+    <p class="st-page-subtitle">{{ job()?.title }}</p>
+  </div>
+  @if (isDraft()) {
+    <button mat-flat-button type="button" (click)="publish()" [disabled]="publishing()">
+      {{ (publishing() ? 'recruitment.script.publishing' : 'recruitment.script.publish') | translate }}
+    </button>
+  }
+</header>
+
+<app-job-posting-steps [step]="3" [jobId]="jobPostingId" />
+
+@if (loading()) {
+  <p role="status">{{ 'recruitment.script.loading' | translate }}</p>
+} @else {
+  @if (publishError()) {
+    <p class="error caja" role="alert">{{ publishError() }}</p>
+  }
+
+  <div class="st-card">
+    <p class="resumen">
+      {{ 'recruitment.script.weights' | translate }}: <strong [class.ok]="totalWeight() === 100">{{ totalWeight() }} / 100</strong>
+      · {{ 'recruitment.script.questions' | translate }}: <strong>{{ questions().length }}</strong>
+    </p>
+    @if (missing().length > 0) {
+      <p class="aviso">
+        {{ 'recruitment.script.missing' | translate }}
+        @for (c of missing(); track c.id) {
+          <span class="chip falta">{{ c.name }}</span>
+        }
+      </p>
+    }
+    @if (!isDraft()) {
+      <p class="aviso">{{ 'recruitment.script.notDraft' | translate }}</p>
+    }
+
+    @if (questions().length === 0) {
+      <p>{{ 'recruitment.script.empty' | translate }}</p>
+    } @else {
+      @if (isDraft()) {
+        <p class="ayuda">{{ 'recruitment.script.dragHint' | translate }}</p>
+      }
+      <ol class="lista" cdkDropList [cdkDropListDisabled]="!isDraft()" (cdkDropListDropped)="drop($event)">
+        @for (q of questions(); track q.id; let i = $index) {
+          <li class="pregunta" cdkDrag>
+            <span class="numero">{{ i + 1 }}</span>
+            <div class="texto">
+              <p class="enunciado">{{ q.statement }}</p>
+              <p class="datos">
+                <span class="chip">{{ criterionName(q.criterionId) }}</span>
+                @if (q.origin === 'AI_SUGGESTED') {
+                  <span class="chip ia">{{ 'common.ai' | translate }}</span>
+                }
+                {{ q.maxDurationSeconds }} s
+                @if (q.allowsFollowUp) {
+                  · {{ 'recruitment.script.followUp' | translate }}
+                }
+              </p>
+            </div>
+            @if (isDraft()) {
+              <button mat-button type="button" (click)="edit(q)">{{ 'common.edit' | translate }}</button>
+              <button mat-button class="eliminar" type="button" (click)="remove(q)">{{ 'common.remove' | translate }}</button>
+            }
+          </li>
+        }
+      </ol>
+    }
+  </div>
+
+  @if (isDraft()) {
+    @if (competencies().length === 0) {
+      <p class="aviso">{{ 'recruitment.script.needCompetency' | translate }}</p>
+    } @else {
+      <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
+        <h2 class="subtitulo">{{ (editingId() ? 'recruitment.script.formEdit' : 'recruitment.script.formAdd') | translate }}</h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'recruitment.script.criterion' | translate }}</mat-label>
+          <mat-select formControlName="criterionId">
+            @for (c of competencies(); track c.id) {
+              <mat-option [value]="c.id">{{ c.name }}</mat-option>
+            }
+          </mat-select>
+          @if (form.controls.criterionId.invalid) {
+            <mat-error>{{ 'recruitment.script.criterionRequired' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <div class="sugerir">
+          <button mat-stroked-button type="button" (click)="suggest()" [disabled]="suggesting()">
+            {{ (suggesting() ? 'common.searching' : 'recruitment.script.suggest') | translate }}
+          </button>
+          <span class="ayuda">{{ 'recruitment.script.suggestHint' | translate }}</span>
+        </div>
+        @for (s of questionSuggestions(); track s.statement) {
+          @let v = ai.question(s);
+          <div class="sugerencia">
+            <div class="sugerencia-texto">
+              <span>{{ v.statement }}</span>
+              @if (v.rationale) {
+                <span class="motivo">{{ v.rationale }}</span>
+              }
+            </div>
+            <button mat-button type="button" (click)="useSuggestion(v); discardSuggestion(s)">{{ 'common.use' | translate }}</button>
+            <button mat-button type="button" (click)="discardSuggestion(s)">{{ 'common.discard' | translate }}</button>
+          </div>
+        }
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'recruitment.script.question' | translate }}</mat-label>
+          <textarea matInput formControlName="statement" rows="3" maxlength="500"></textarea>
+          @if (form.controls.statement.hasError('required')) {
+            <mat-error>{{ 'recruitment.script.questionRequired' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>{{ 'recruitment.script.maxDuration' | translate }}</mat-label>
+          <input matInput type="number" formControlName="maxDurationSeconds" min="30" max="600" />
+          @if (form.controls.maxDurationSeconds.invalid) {
+            <mat-error>{{ 'recruitment.script.maxDurationInvalid' | translate }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-checkbox formControlName="allowsFollowUp">{{ 'recruitment.script.allowsFollowUp' | translate }}</mat-checkbox>
+
+        @if (errorMessage()) {
+          <p class="error" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <div class="botones">
+          @if (editingId()) {
+            <button mat-button type="button" (click)="cancelEdit()">{{ 'common.cancel' | translate }}</button>
+          }
+          <button mat-flat-button type="submit" [disabled]="saving()">
+            {{ (saving() ? 'common.saving' : editingId() ? 'common.saveChanges' : 'recruitment.script.add') | translate }}
+          </button>
+        </div>
+      </form>
+    }
+  }
+}

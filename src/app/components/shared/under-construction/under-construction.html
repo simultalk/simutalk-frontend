@@ -1,0 +1,12 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'common.home' | translate }} / {{ title | translate }}</p>
+  <h1 class="st-page-title">{{ title | translate }}</h1>
+</header>
+
+<section class="st-card aviso">
+  <span class="icono" aria-hidden="true">
+    <mat-icon fontSet="material-symbols-outlined">construction</mat-icon>
+  </span>
+  <h2>{{ 'shared.underConstruction.title' | translate }}</h2>
+  <p>{{ 'shared.underConstruction.message' | translate: { section: (title | translate) } }}</p>
+</section>

@@ -1,0 +1,60 @@
+.st-breadcrumb a { color: inherit; }
+
+.encabezado {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.resumen { margin: 0 0 8px; }
+.resumen strong { color: var(--st-danger); }
+.resumen strong.ok { color: var(--st-primary-dark); }
+.aviso, .ayuda { color: var(--st-text-secondary); font-size: 14px; }
+
+.chip {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  margin-right: 6px;
+}
+.chip.falta { background: var(--st-danger-soft); color: var(--st-danger); }
+
+.lista { list-style: none; padding: 0; margin: 0; }
+.pregunta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--st-border);
+  background: var(--st-surface);
+  cursor: grab;
+}
+.numero { font-weight: 700; color: var(--st-text-secondary); width: 24px; }
+.texto { flex: 1; }
+.enunciado { margin: 0 0 4px; }
+.datos { margin: 0; font-size: 13px; color: var(--st-text-secondary); }
+.eliminar { color: var(--st-danger); }
+
+/* Arrastrar y soltar */
+.cdk-drag-preview { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15); border-radius: var(--st-radius); }
+.cdk-drag-placeholder { opacity: 0.3; }
+.cdk-drop-list-dragging .pregunta:not(.cdk-drag-placeholder) { transition: transform 200ms ease; }
+
+.formulario { display: flex; flex-direction: column; gap: 8px; max-width: 640px; margin-top: 16px; }
+.subtitulo { font-size: 18px; margin: 0 0 8px; }
+.botones { display: flex; justify-content: flex-end; gap: 12px; margin-top: 8px; }
+.error { color: var(--st-danger); margin: 0; }
+.caja { margin-bottom: 12px; }
+
+.chip.ia { background: var(--st-warning-soft); color: var(--st-warning); }
+
+.sugerir { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.sugerencia { display: flex; align-items: center; gap: 8px; padding: 10px 0; border-top: 1px solid var(--st-border); }
+.sugerencia-texto { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.motivo { font-size: 13px; font-style: italic; color: var(--st-text-secondary); }

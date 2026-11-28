@@ -1,0 +1,271 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Barra superior: franja fina de marca arriba y fondo tipo vidrio */
+.barra {
+  position: relative;
+  z-index: 2;
+  height: 64px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: color-mix(in srgb, var(--st-surface) 82%, transparent);
+  backdrop-filter: saturate(160%) blur(16px);
+  border-bottom: 1px solid var(--st-border);
+}
+
+.barra::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--st-brand) 0%, var(--st-primary) 60%, var(--st-accent) 100%);
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--st-text);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.marca img {
+  transition: transform var(--st-dur) var(--st-ease);
+}
+
+.marca:hover img {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+.marca strong {
+  color: var(--st-primary);
+}
+
+.espacio {
+  flex: 1;
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.usuario-texto {
+  font-size: 14px;
+  color: var(--st-text);
+}
+
+.rol {
+  color: var(--st-text-secondary);
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--st-brand-gradient);
+  color: #fff;
+  box-shadow: 0 0 0 2px var(--st-surface), 0 0 0 3px color-mix(in srgb, var(--st-primary) 40%, transparent);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menú lateral + contenido */
+.cuerpo {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.menu {
+  width: 240px;
+  flex-shrink: 0;
+  padding: 16px 12px;
+  background: var(--st-surface);
+  border-right: 1px solid var(--st-border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow-y: auto;
+}
+
+/* Etiqueta "Menú" sobre las opciones */
+.menu-titulo {
+  margin: 4px 12px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--st-text-secondary);
+}
+
+.opcion {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--st-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition:
+    background-color var(--st-dur) var(--st-ease),
+    color var(--st-dur) var(--st-ease),
+    transform var(--st-dur) var(--st-ease);
+}
+
+.opcion mat-icon {
+  color: var(--st-text-secondary);
+  transition: color var(--st-dur) var(--st-ease);
+}
+
+.opcion:hover {
+  background: var(--st-background);
+  transform: translateX(2px);
+}
+
+.opcion:hover mat-icon {
+  color: var(--st-primary);
+}
+
+/* Opción activa: fondo suave y una barra de acento a la izquierda */
+.opcion.activa {
+  background: var(--st-primary-soft);
+  color: var(--st-primary-dark);
+  font-weight: 600;
+}
+
+.opcion.activa mat-icon {
+  color: var(--st-primary);
+}
+
+.opcion.activa::before {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--st-primary);
+}
+
+.menu-pie {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.opcion:focus-visible {
+  outline: 2px solid var(--st-primary);
+  outline-offset: 2px;
+}
+
+.contenido {
+  flex: 1;
+  overflow-y: auto;
+  padding: 28px 32px;
+  background: var(--st-background);
+}
+
+/* Celular: barra superior compacta y el menú pasa abajo, como en las apps */
+@media (max-width: 720px) {
+  .barra {
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .usuario-texto,
+  .marca span {
+    display: none;
+  }
+
+  .usuario {
+    gap: 6px;
+  }
+
+  /* Cerrar sesión queda solo con el ícono */
+  .usuario button {
+    min-width: 0;
+    padding: 0 10px;
+    font-size: 0;
+  }
+
+  .usuario button mat-icon {
+    margin: 0;
+    font-size: 20px;
+  }
+
+  .cuerpo {
+    flex-direction: column;
+  }
+
+  .contenido {
+    order: 1;
+  }
+
+  .menu {
+    order: 2;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 6px 8px;
+    border-right: none;
+    border-top: 1px solid var(--st-border);
+    overflow: visible;
+  }
+
+  .opcion {
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    padding: 6px 4px;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .opcion:hover {
+    transform: none;
+  }
+
+  .menu-titulo,
+  .menu-pie,
+  .opcion.activa::before {
+    display: none;
+  }
+}
+
+/* Accesibilidad (T-05): enlace para saltar el menú con el teclado. Solo se ve al recibir el foco. */
+.saltar {
+  position: absolute;
+  left: 16px;
+  top: -48px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--st-primary);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.saltar:focus {
+  top: 12px;
+}
+
+.contenido:focus {
+  outline: none;
+}

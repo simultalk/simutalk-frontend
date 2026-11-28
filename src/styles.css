@@ -1,1 +1,542 @@
-/* You can add global styles to this file, and also import other style files */
+/* Identidad de marca de SimuTalk (Figma: Identidad de marca y wireframes).
+   Usen estas variables en sus CSS en vez de escribir colores a mano. */
+:root {
+  --st-primary: #1b6e5e;
+  --st-primary-dark: #0f5c4f;
+  --st-primary-soft: #e8f2ef;
+  --st-background: #f5f7fa;
+  --st-surface: #ffffff;
+  --st-text: #1a2230;
+  --st-text-secondary: #5c6779;
+  --st-accent: #ff9500;
+  --st-border: #e2e8f0;
+  --st-radius: 12px;
+
+  /* Estados (usar estas variables en vez de colores fijos) */
+  --st-danger: #b3261e;
+  --st-danger-soft: #fdecea;
+  --st-warning: #a35c00;
+  --st-warning-soft: #fff4e5;
+  --st-neutral-soft: #f1f3f6;
+
+  /* Verde de la marca para fondos de color: no cambia en modo oscuro */
+  --st-brand: #1b6e5e;
+  --st-brand-deep: #0f5c4f;
+  --st-brand-night: #0a3a33;
+
+  /* Movimiento: transiciones lentas y suaves, sin rebotes */
+  --st-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --st-dur: 0.33s;
+
+  /* Profundidad: sombras muy suaves, la jerarquía la dan el color y el espacio */
+  --st-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 12px rgba(16, 24, 40, 0.04);
+  --st-shadow-md: 0 14px 34px rgba(15, 92, 79, 0.12);
+  --st-hairline: rgba(26, 34, 48, 0.08);
+
+  /* Banda de marca: verde profundo con brillos (tarjetas destacadas, login) */
+  --st-brand-gradient:
+    radial-gradient(circle at 88% 12%, rgba(255, 149, 0, 0.22), transparent 28%),
+    radial-gradient(circle at 8% 110%, rgba(127, 214, 192, 0.28), transparent 32%),
+    linear-gradient(140deg, var(--st-brand) 0%, var(--st-brand-deep) 55%, var(--st-brand-night) 100%);
+}
+
+/* Modo oscuro: mismas variables con otros valores; todas las pantallas cambian solas */
+html.dark {
+  --st-primary: #2f9b82;
+  --st-primary-dark: #7fd6c0;
+  --st-primary-soft: #16302a;
+  --st-background: #0f1419;
+  --st-surface: #1a2129;
+  --st-text: #e6edf3;
+  --st-text-secondary: #9aa7b5;
+  --st-border: #2c3640;
+
+  --st-danger: #ff8a80;
+  --st-danger-soft: #3b1f1f;
+  --st-warning: #ffb74d;
+  --st-warning-soft: #3a2a12;
+  --st-neutral-soft: #252d36;
+
+  --st-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2);
+  --st-shadow-md: 0 14px 34px rgba(0, 0, 0, 0.45);
+  --st-hairline: rgba(255, 255, 255, 0.08);
+}
+
+/* Cambio de modo suave */
+body,
+.st-card,
+.st-auth-seccion {
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+body {
+  background-color: var(--st-background);
+  color: var(--st-text);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Encabezado de página: "Inicio / Sección" + título, como en los wireframes.
+   Estilo editorial: ruta en mayúsculas espaciadas, título grande y una línea de acento. */
+.st-page-header {
+  position: relative;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--st-border);
+}
+
+.st-page-header::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 56px;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, var(--st-primary), var(--st-accent));
+}
+
+.st-breadcrumb,
+.st-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--st-primary);
+  margin: 0 0 8px;
+}
+
+html.dark .st-breadcrumb,
+html.dark .st-kicker {
+  color: var(--st-primary-dark);
+}
+
+.st-page-title {
+  font-size: 30px;
+  line-height: 1.15;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--st-text);
+  margin: 0;
+}
+
+.st-page-subtitle {
+  font-size: 15px;
+  line-height: 1.55;
+  max-width: 70ch;
+  color: var(--st-text-secondary);
+  margin: 8px 0 0;
+}
+
+/* Tarjeta blanca con borde suave. */
+.st-card {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  padding: 24px;
+  box-shadow: var(--st-shadow-sm);
+}
+
+/* Tarjeta que se puede tocar: se eleva un poco al pasar el mouse */
+.st-card--hover {
+  transition:
+    transform var(--st-dur) var(--st-ease),
+    box-shadow var(--st-dur) var(--st-ease),
+    border-color var(--st-dur) var(--st-ease);
+}
+
+.st-card--hover:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--st-shadow-md);
+  border-color: color-mix(in srgb, var(--st-primary) 35%, var(--st-border));
+}
+
+/* Título de sección dentro de una página */
+.st-section-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--st-text);
+  margin: 0 0 16px;
+}
+
+/* Banda de marca: verde profundo con brillos y una trama fina (encabezados destacados) */
+.st-hero {
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  border-radius: var(--st-radius);
+  padding: 32px;
+  background: var(--st-brand-gradient);
+  isolation: isolate;
+}
+
+.st-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(110deg, transparent 35%, #000 100%);
+}
+
+.st-hero .st-kicker { color: rgba(255, 255, 255, 0.72); }
+
+/* Indicadores: número grande + etiqueta */
+.st-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.st-stat {
+  position: relative;
+  padding: 20px;
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  box-shadow: var(--st-shadow-sm);
+  overflow: hidden;
+}
+
+.st-stat::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--st-primary);
+}
+
+.st-stat--accent::before { background: var(--st-accent); }
+
+.st-stat-value {
+  display: block;
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--st-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.st-stat-label {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--st-text-secondary);
+}
+
+/* Etiquetas cortas en mayúsculas */
+.st-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--st-primary-dark);
+  background: var(--st-primary-soft);
+  border: 1px solid color-mix(in srgb, var(--st-primary) 22%, transparent);
+  white-space: nowrap;
+}
+
+.st-tag--warning { color: var(--st-warning); background: var(--st-warning-soft); border-color: transparent; }
+.st-tag--danger { color: var(--st-danger); background: var(--st-danger-soft); border-color: transparent; }
+.st-tag--neutral { color: var(--st-text-secondary); background: var(--st-neutral-soft); border-color: transparent; }
+
+/* Enlace "ver más" con un chevron (›) que se desliza a la derecha al pasar el mouse */
+.st-link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--st-primary);
+  text-decoration: none;
+}
+
+.st-link-arrow::after {
+  content: '';
+  flex-shrink: 0;
+  width: 8px;
+  height: 12px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'%3E%3Cpath d='M1.5 1.5L6 6L1.5 10.5' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 12'%3E%3Cpath d='M1.5 1.5L6 6L1.5 10.5' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 100% 100% no-repeat;
+  transition: transform var(--st-dur) var(--st-ease);
+}
+
+.st-link-arrow:hover::after,
+.st-link-arrow:focus-visible::after { transform: translateX(5px); }
+html.dark .st-link-arrow { color: var(--st-primary-dark); }
+
+/* Los hijos entran uno tras otro */
+.st-stagger > * {
+  animation: st-entrar 0.6s var(--st-ease) both;
+}
+.st-stagger > *:nth-child(2) { animation-delay: 0.06s; }
+.st-stagger > *:nth-child(3) { animation-delay: 0.12s; }
+.st-stagger > *:nth-child(4) { animation-delay: 0.18s; }
+.st-stagger > *:nth-child(5) { animation-delay: 0.24s; }
+.st-stagger > *:nth-child(n + 6) { animation-delay: 0.3s; }
+
+/* Estado vacío: ícono en círculo de marca, título y explicación */
+.st-empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.st-empty-icon {
+  width: 76px;
+  height: 76px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--st-brand-gradient);
+  box-shadow: 0 0 0 8px var(--st-primary-soft);
+}
+
+.st-empty-icon mat-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 34px;
+}
+
+.st-empty h2 {
+  margin: 12px 0 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.st-empty p {
+  margin: 0;
+  max-width: 46ch;
+  font-size: 14px;
+  color: var(--st-text-secondary);
+}
+
+/* Botones de Material con esquinas de la marca (no tipo píldora) */
+html {
+  --mat-button-filled-container-shape: 10px;
+  --mat-button-outlined-container-shape: 10px;
+  --mat-button-protected-container-shape: 10px;
+  --mat-button-tonal-container-shape: 10px;
+  --mat-button-text-container-shape: 10px;
+}
+
+/* Pantallas de registro: marca a la izquierda y formulario a la derecha. */
+.st-auth {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+}
+
+/* Interruptores arriba a la derecha (modo e idioma) */
+.st-auth-herramientas {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+}
+
+.st-auth-marca {
+  background: var(--st-brand-gradient);
+  color: #fff;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.st-auth-marca h2 { font-size: 26px; line-height: 1.25; margin: 0; }
+.st-auth-marca p { margin: 0; opacity: 0.9; }
+.st-auth-marca ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.st-auth-marca li { padding-left: 24px; position: relative; opacity: 0.92; }
+.st-auth-marca li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--st-accent);
+}
+
+.st-auth-logo { display: flex; align-items: center; gap: 10px; font-size: 20px; color: #fff; text-decoration: none; }
+.st-auth-logo img { background: #fff; border-radius: 10px; padding: 4px; }
+
+.st-auth-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: auto;
+}
+
+.st-auth-panel {
+  padding: 40px 24px;
+  display: flex;
+  justify-content: center;
+  overflow-y: auto;
+}
+
+.st-auth-form {
+  width: 100%;
+  max-width: 640px;
+  animation: st-entrar 0.35s ease-out;
+}
+
+.st-auth-form h1 { font-size: 26px; margin: 0; }
+.st-auth-sub { color: var(--st-text-secondary); font-size: 14px; margin: 6px 0 24px; }
+
+/* Cada bloque del formulario, en dos columnas */
+.st-auth-seccion {
+  background: var(--st-surface);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  padding: 20px 20px 8px;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 16px;
+}
+
+.st-auth-seccion h2 {
+  grid-column: 1 / -1;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--st-primary-dark);
+  margin: 0 0 12px;
+}
+
+.st-auth-seccion .completo { grid-column: 1 / -1; }
+
+.st-auth-acciones { display: flex; flex-direction: column; gap: 12px; }
+.st-auth-acciones button[type='submit'] { height: 44px; }
+.st-auth-error { color: var(--mat-sys-error); margin: 0; }
+.st-auth-enlace { text-align: center; margin: 4px 0 0; font-size: 14px; }
+
+@keyframes st-entrar {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Cada pantalla interna entra con una animación corta al navegar */
+main.contenido > :not(router-outlet) {
+  display: block;
+  animation: st-entrar 0.45s var(--st-ease);
+}
+
+/* Tablas: resaltan la fila al pasar el mouse y en celular cada fila es una tarjeta */
+.st-tabla-responsive tbody tr { transition: background 0.15s; }
+.st-tabla-responsive tbody tr:hover { background: var(--st-background); }
+
+@media (max-width: 720px) {
+  main.contenido { padding: 16px !important; }
+
+  /* Indicadores: dos por fila en celular */
+  .st-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .st-stat { padding: 16px; }
+  .st-stat-value { font-size: 24px; }
+  .st-stat-label { font-size: 11px; letter-spacing: 0.06em; }
+  .st-page-title { font-size: 22px; }
+  .st-card { padding: 16px; }
+
+  /* La tarjeta que envuelve la tabla desaparece: cada fila ya es su propia tarjeta */
+  .st-card:has(> .st-tabla-responsive) { background: none; border: none; padding: 0; }
+
+  .st-tabla-responsive { display: block; width: 100%; }
+  .st-tabla-responsive thead { display: none; }
+  .st-tabla-responsive tbody { display: grid; gap: 12px; }
+
+  .st-tabla-responsive tr {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px 12px;
+    height: auto !important;
+    padding: 14px 16px;
+    background: var(--st-surface);
+    border: 1px solid var(--st-border);
+    border-radius: var(--st-radius);
+  }
+
+  .st-tabla-responsive tbody tr:hover { background: var(--st-surface); }
+
+  .st-tabla-responsive td {
+    display: block;
+    min-width: 0;
+    padding: 0 !important;
+    border: none !important;
+    white-space: normal !important;
+    font-size: 14px;
+  }
+
+  /* Título de la fila y acciones ocupan todo el ancho */
+  .st-tabla-responsive td.completo,
+  .st-tabla-responsive td.acciones { grid-column: 1 / -1; }
+
+  .st-tabla-responsive td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--st-text-secondary);
+  }
+
+  .st-tabla-responsive td.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0 -8px;
+    padding-top: 8px !important;
+    border-top: 1px solid var(--st-border) !important;
+  }
+}
+
+/* Accesibilidad (T-05): foco visible en todo lo que se puede usar con el teclado. */
+a:focus-visible,
+button:focus-visible,
+[role='button']:focus-visible,
+[role='link']:focus-visible,
+[role='region'][tabindex]:focus-visible,
+[tabindex]:not([tabindex='-1']):focus-visible {
+  outline: 2px solid var(--st-primary);
+  outline-offset: 2px;
+}
+
+/* Quien prefiere menos movimiento no ve animaciones */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
+    transition-duration: 0.01ms !important;
+  }
+}

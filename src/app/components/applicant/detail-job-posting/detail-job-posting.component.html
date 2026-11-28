@@ -1,0 +1,45 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'recruitment.jobDetail.breadcrumb' | translate }}</p>
+  <button mat-button type="button" (click)="goBack()">{{ 'recruitment.jobDetail.back' | translate }}</button>
+</header>
+
+@if (loading()) {
+  <p role="status">{{ 'recruitment.jobDetail.loading' | translate }}</p>
+} @else if (jobPosting(); as job) {
+  <article class="st-card detalle">
+    <h1 class="st-page-title">{{ job.title }}</h1>
+    <p class="meta">
+      {{
+        'recruitment.jobDetail.companyAndClosing'
+          | translate
+            : {
+                company: job.companyName ?? ('recruitment.jobList.companyFallback' | translate: { id: job.companyId }),
+                date: (job.closingDate | date: 'dd/MM/yyyy'),
+              }
+      }}
+    </p>
+    <p class="descripcion">{{ job.description }}</p>
+
+    @if (job.anonymizedScreening) {
+      <p class="aviso">{{ 'recruitment.jobDetail.anonymizedNotice' | translate }}</p>
+    }
+
+    @if (successMessage()) {
+      <p class="mensaje ok" role="status">{{ successMessage() | translate }}</p>
+    }
+    @if (errorMessage()) {
+      <p class="mensaje error" role="alert">{{ errorMessage() | translate }}</p>
+    }
+
+    <button
+      mat-flat-button
+      type="button"
+      (click)="onApply()"
+      [disabled]="applying() || alreadyAppliedOrBlocked()"
+    >
+      {{ (applying() ? 'recruitment.jobDetail.applying' : 'recruitment.jobDetail.applyButton') | translate }}
+    </button>
+  </article>
+} @else if (errorMessage()) {
+  <p class="mensaje error" role="alert">{{ errorMessage() | translate }}</p>
+}

@@ -1,0 +1,125 @@
+:host {
+  display: block;
+}
+
+/* Tarjeta verde con brillos, igual que las bandas de marca */
+.reloj {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--st-radius);
+  color: #fff;
+  background: var(--st-brand-gradient);
+  box-shadow: var(--st-shadow-sm);
+}
+
+.reloj::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(120deg, transparent 30%, #000 100%);
+}
+
+.esfera {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+}
+
+.borde {
+  fill: rgba(255, 255, 255, 0.08);
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-width: 1.5;
+}
+
+.marca {
+  stroke: rgba(255, 255, 255, 0.45);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.marca--fuerte {
+  stroke: #fff;
+  stroke-width: 2.5;
+}
+
+.aguja {
+  stroke-linecap: round;
+  transition: transform 0.4s var(--st-ease);
+}
+
+.aguja--hora {
+  stroke: #fff;
+  stroke-width: 4;
+}
+
+.aguja--minuto {
+  stroke: rgba(255, 255, 255, 0.92);
+  stroke-width: 2.5;
+}
+
+/* El segundero salta como un reloj de verdad, sin transición */
+.aguja--segundo {
+  stroke: var(--st-accent);
+  stroke-width: 1.5;
+  transition: none;
+}
+
+.centro {
+  fill: var(--st-accent);
+}
+
+.texto {
+  display: grid;
+  min-width: 0;
+  line-height: 1.2;
+}
+
+.saludo {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hora {
+  margin-top: 2px;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.hora small {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--st-accent);
+}
+
+.fecha {
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.zona {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}

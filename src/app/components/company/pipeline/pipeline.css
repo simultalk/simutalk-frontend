@@ -1,0 +1,28 @@
+.encabezado { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.herramientas { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+.tablero { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 12px; align-items: flex-start; }
+.columna {
+  flex: 1 0 240px;
+  min-width: 240px;
+  background: var(--st-background);
+  border: 1px solid var(--st-border);
+  border-radius: var(--st-radius);
+  padding: 12px;
+}
+.columna-titulo {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 14px; font-weight: 700; margin: 0 0 12px; color: var(--st-text);
+}
+.contador {
+  background: var(--st-primary-soft); color: var(--st-primary-dark);
+  font-size: 12px; font-weight: 700; padding: 2px 10px; border-radius: 999px;
+}
+
+.tarjeta { margin-bottom: 10px; padding: 12px; }
+.nombre { margin: 0; font-weight: 600; }
+.fecha { margin: 2px 0 10px; font-size: 13px; color: var(--st-text-secondary); }
+.tarjeta-acciones { display: flex; flex-direction: column; gap: 8px; }
+
+.vacia { font-size: 13px; color: var(--st-text-secondary); margin: 4px 0; }
+.error { color: var(--st-danger); }

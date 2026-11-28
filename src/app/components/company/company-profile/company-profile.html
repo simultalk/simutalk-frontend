@@ -1,0 +1,197 @@
+<header class="st-page-header">
+  <p class="st-breadcrumb">{{ 'profiles.company.breadcrumb' | translate }}</p>
+  <h1 class="st-page-title">{{ 'profiles.company.title' | translate }}</h1>
+  <p class="st-page-subtitle">{{ 'profiles.company.subtitle' | translate }}</p>
+</header>
+
+@if (loading()) {
+  <div class="esqueleto" role="status" [attr.aria-label]="'profiles.company.loading' | translate">
+    <div class="esqueleto-hero"></div>
+    <div class="esqueleto-fila"><div></div><div></div><div></div><div></div></div>
+  </div>
+} @else if (loadError()) {
+  <p class="error" role="alert">{{ loadError() }}</p>
+} @else if (company(); as c) {
+  <div class="st-stagger">
+    <!-- Tarjeta de presentación de la empresa -->
+    <section class="st-hero presentacion" aria-labelledby="empresa-nombre">
+      <span class="logo" aria-hidden="true">{{ initials() }}</span>
+      <div class="identidad">
+        <p class="st-kicker">{{ c.industry }}</p>
+        <h2 id="empresa-nombre">{{ c.tradeName }}</h2>
+        <p class="razon">{{ c.legalName }}</p>
+        <ul class="datos-rapidos">
+          <li>
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">badge</mat-icon>
+            RUC {{ c.ruc }}
+          </li>
+          <li>
+            <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">location_on</mat-icon>
+            {{ c.district }}
+          </li>
+          @if (c.email) {
+            <li>
+              <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">mail</mat-icon>
+              {{ c.email }}
+            </li>
+          }
+        </ul>
+      </div>
+      <div class="hero-acciones">
+        <span class="tamano">{{ 'iam.companyRegister.size' + c.companySize | translate }}</span>
+        <a mat-flat-button class="boton-claro" routerLink="/recruitment/my-job-postings/new">
+          <mat-icon fontSet="material-symbols-outlined">add</mat-icon>
+          {{ 'profiles.company.newPosting' | translate }}
+        </a>
+      </div>
+    </section>
+
+    <!-- Indicadores de la empresa (GET /reports/companies/{id}/summary) -->
+    <section class="st-stats" [attr.aria-label]="'profiles.company.statsLabel' | translate">
+      <div class="st-stat">
+        <span class="st-stat-value" [stCountUp]="summary()?.activeJobPostings ?? 0"></span>
+        <span class="st-stat-label">{{ 'profiles.company.statActive' | translate }}</span>
+      </div>
+      <div class="st-stat st-stat--accent">
+        <span class="st-stat-value" [stCountUp]="summary()?.assessedCandidates ?? 0"></span>
+        <span class="st-stat-label">{{ 'profiles.company.statAssessed' | translate }}</span>
+      </div>
+      <div class="st-stat">
+        @if (summary()?.averageDaysToShortlist != null) {
+          <span class="st-stat-value" [stCountUp]="summary()!.averageDaysToShortlist" [decimals]="1"></span>
+        } @else {
+          <span class="st-stat-value">—</span>
+        }
+        <span class="st-stat-label">{{ 'profiles.company.statDays' | translate }}</span>
+      </div>
+      <div class="st-stat">
+        <span class="st-stat-value" [stCountUp]="summary()?.anchoredEvidences ?? 0"></span>
+        <span class="st-stat-label">{{ 'profiles.company.statEvidences' | translate }}</span>
+      </div>
+    </section>
+
+    <div class="columnas">
+      <form class="st-card formulario" [formGroup]="form" (ngSubmit)="save()">
+        <fieldset>
+          <legend class="st-kicker">{{ 'profiles.company.sectionIdentity' | translate }}</legend>
+          <div class="campos">
+            <mat-form-field appearance="outline" class="completo">
+              <mat-label>{{ 'profiles.company.legalName' | translate }}</mat-label>
+              <input matInput formControlName="legalName" maxlength="150" autocomplete="organization" />
+              @if (form.controls.legalName.invalid) {
+                <mat-error>{{ 'profiles.company.legalNameRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.company.tradeName' | translate }}</mat-label>
+              <input matInput formControlName="tradeName" maxlength="150" />
+              @if (form.controls.tradeName.invalid) {
+                <mat-error>{{ 'profiles.company.tradeNameRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>RUC</mat-label>
+              <input matInput [value]="c.ruc" disabled />
+              <mat-icon matSuffix fontSet="material-symbols-outlined" aria-hidden="true">lock</mat-icon>
+              <mat-hint>{{ 'profiles.company.rucHint' | translate }}</mat-hint>
+            </mat-form-field>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="st-kicker">{{ 'profiles.company.sectionBusiness' | translate }}</legend>
+          <div class="campos">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.company.industry' | translate }}</mat-label>
+              <input matInput formControlName="industry" maxlength="150" />
+              @if (form.controls.industry.invalid) {
+                <mat-error>{{ 'profiles.company.industryRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'iam.companyRegister.size' | translate }}</mat-label>
+              <mat-select formControlName="companySize">
+                @for (s of sizes; track s) {
+                  <mat-option [value]="s">{{ 'iam.companyRegister.size' + s | translate }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="st-kicker">{{ 'profiles.company.sectionContact' | translate }}</legend>
+          <div class="campos">
+            <mat-form-field appearance="outline">
+              <mat-label>{{ 'profiles.company.district' | translate }}</mat-label>
+              <input matInput formControlName="district" maxlength="80" />
+              @if (form.controls.district.invalid) {
+                <mat-error>{{ 'profiles.company.districtRequired' | translate }}</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+              <mat-label>{{ 'profiles.company.email' | translate }}</mat-label>
+              <input matInput type="email" formControlName="email" maxlength="254" autocomplete="email" />
+              <mat-hint>{{ 'profiles.company.emailHint' | translate }}</mat-hint>
+              @if (form.controls.email.invalid) {
+                <mat-error>{{ 'profiles.company.emailInvalid' | translate }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </fieldset>
+
+        @if (saveError()) {
+          <p class="error" role="alert">{{ saveError() }}</p>
+        }
+
+        <div class="acciones">
+          <span class="actualizado">
+            {{ 'profiles.me.updatedAt' | translate: { date: (c.updatedAt | date: 'dd/MM/yyyy HH:mm') } }}
+          </span>
+          <button mat-stroked-button type="button" (click)="discard()" [disabled]="form.pristine || saving()">
+            {{ 'common.discard' | translate }}
+          </button>
+          <button mat-flat-button type="submit" [disabled]="form.pristine || saving()">
+            {{ (saving() ? 'common.saving' : 'common.saveChanges') | translate }}
+          </button>
+        </div>
+      </form>
+
+      <!-- Accesos rápidos -->
+      <aside class="atajos" [attr.aria-label]="'profiles.company.shortcuts' | translate">
+        <a class="st-card st-card--hover atajo" routerLink="/recruitment/my-job-postings">
+          <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">work</mat-icon>
+          <span>
+            <strong>{{ 'shared.menu.myJobPostings' | translate }}</strong>
+            <small>{{ 'profiles.company.shortcutPostings' | translate }}</small>
+          </span>
+        </a>
+        <a class="st-card st-card--hover atajo" routerLink="/assessment/ranking">
+          <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">leaderboard</mat-icon>
+          <span>
+            <strong>{{ 'shared.menu.ranking' | translate }}</strong>
+            <small>{{ 'profiles.company.shortcutRanking' | translate }}</small>
+          </span>
+        </a>
+        <a class="st-card st-card--hover atajo" routerLink="/analytics/reports">
+          <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">insights</mat-icon>
+          <span>
+            <strong>{{ 'shared.menu.reports' | translate }}</strong>
+            <small>{{ 'profiles.company.shortcutReports' | translate }}</small>
+          </span>
+        </a>
+        <a class="st-card st-card--hover atajo" routerLink="/calendar">
+          <mat-icon fontSet="material-symbols-outlined" aria-hidden="true">calendar_month</mat-icon>
+          <span>
+            <strong>{{ 'shared.menu.calendar' | translate }}</strong>
+            <small>{{ 'profiles.company.shortcutCalendar' | translate }}</small>
+          </span>
+        </a>
+      </aside>
+    </div>
+  </div>
+}

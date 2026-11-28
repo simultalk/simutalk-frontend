@@ -1,0 +1,7 @@
+.selector {
+  color: var(--st-text);
+}
+
+.selector mat-icon {
+  color: var(--st-primary);
+}
