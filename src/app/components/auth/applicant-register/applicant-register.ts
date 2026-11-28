@@ -1,5 +1,6 @@
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -9,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ThemeToggle } from '../../shared/theme-toggle/theme-toggle';
 import { LanguageSwitcher } from '../../shared/language-switcher/language-switcher';
+import { PasswordStrength } from '../../shared/password-strength/password-strength';
 import { ApplicantRegistrationError, RegistrationService } from '../../../services/registration.service';
 
 function adultBirthDate(control: AbstractControl) {
@@ -32,6 +34,7 @@ function adultBirthDate(control: AbstractControl) {
     MatIconModule,
     ThemeToggle,
     LanguageSwitcher,
+    PasswordStrength,
     TranslatePipe,
   ],
   templateUrl: './applicant-register.html',
@@ -44,6 +47,7 @@ export class ApplicantRegister {
 
   loading = signal(false);
   errorMessage = signal('');
+  hidePassword = signal(true);
   success = signal(false);
   completeExistingAccount = signal(false);
 
@@ -58,6 +62,18 @@ export class ApplicantRegister {
     yearsOfExperience: [0, [Validators.required, Validators.min(0), Validators.max(2147483647), Validators.pattern(/^\d+$/)]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(72)]],
   });
+
+  // Fecha de nacimiento más reciente que permite el calendario: hoy menos 18 años (yyyy-mm-dd)
+  maxBirthDate = (() => {
+    const limit = new Date();
+    limit.setFullYear(limit.getFullYear() - 18);
+    const month = String(limit.getMonth() + 1).padStart(2, '0');
+    const day = String(limit.getDate()).padStart(2, '0');
+    return `${limit.getFullYear()}-${month}-${day}`;
+  })();
+
+  // Texto actual de la contraseña, para el indicador de seguridad
+  passwordValue = toSignal(this.form.controls.password.valueChanges, { initialValue: '' });
 
   submit(): void {
     if (this.loading() || this.success()) return;

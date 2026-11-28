@@ -135,6 +135,21 @@
       "password": "Password",
       "passwordRequired": "Enter a password",
       "passwordInvalid": "Between 8 and 72 characters",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "strength": {
+        "label": "Strength",
+        "weak": "Weak",
+        "fair": "Fair",
+        "good": "Good",
+        "strong": "Strong",
+        "rule": {
+          "length": "At least 8 characters",
+          "caseMix": "Upper and lower case",
+          "number": "At least one number",
+          "symbol": "At least one symbol"
+        }
+      },
       "district": "District",
       "districtRequired": "Enter the district"
     },
