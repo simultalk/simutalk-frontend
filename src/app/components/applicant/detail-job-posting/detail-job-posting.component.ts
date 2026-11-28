@@ -22,6 +22,7 @@ export class DetailJobPostingComponent implements OnInit {
   applying = signal(false);
   alreadyAppliedOrBlocked = signal(false);
   successMessage = signal('');
+  /** Clave de traducción, o mensaje del backend que el interceptor ya tradujo. */
   errorMessage = signal('');
 
   ngOnInit(): void {
@@ -30,7 +31,7 @@ export class DetailJobPostingComponent implements OnInit {
       this.loadJobDetail(id);
     } else {
       this.loading.set(false);
-      this.errorMessage.set('La vacante solicitada no existe.');
+      this.errorMessage.set('recruitment.jobDetail.notFound');
     }
   }
 
@@ -41,12 +42,12 @@ export class DetailJobPostingComponent implements OnInit {
         this.jobPosting.set(job);
         if (job.status !== 'PUBLISHED') {
           this.alreadyAppliedOrBlocked.set(true);
-          this.errorMessage.set('Solo se aceptan postulaciones a vacantes publicadas.');
+          this.errorMessage.set('recruitment.jobDetail.notPublished');
         }
         this.loading.set(false);
       },
       error: (err) => {
-        this.errorMessage.set(err.error?.message || 'No se pudo cargar la vacante.');
+        this.errorMessage.set(err.error?.message || 'recruitment.jobDetail.loadError');
         this.loading.set(false);
       },
     });
@@ -64,16 +65,16 @@ export class DetailJobPostingComponent implements OnInit {
       next: () => {
         this.applying.set(false);
         this.alreadyAppliedOrBlocked.set(true);
-        this.successMessage.set('¡Listo! Tu postulación fue registrada.');
+        this.successMessage.set('recruitment.jobDetail.applySuccess');
       },
       error: (err) => {
         this.applying.set(false);
         if (err.status === 422) {
           // Ya postuló o la vacante no está publicada: mostramos el mensaje del backend
           this.alreadyAppliedOrBlocked.set(true);
-          this.errorMessage.set(err.error?.message || 'Ya registraste una postulación para esta vacante.');
+          this.errorMessage.set(err.error?.message || 'recruitment.jobDetail.alreadyApplied');
         } else {
-          this.errorMessage.set(err.error?.message || 'Ocurrió un error al procesar tu postulación.');
+          this.errorMessage.set(err.error?.message || 'recruitment.jobDetail.applyError');
         }
       },
     });

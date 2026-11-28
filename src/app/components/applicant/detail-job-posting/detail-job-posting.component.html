@@ -1,28 +1,34 @@
 <header class="st-page-header">
-  <p class="st-breadcrumb">Inicio / Vacantes / Detalle</p>
-  <button mat-button type="button" (click)="goBack()">← Volver a vacantes</button>
+  <p class="st-breadcrumb">{{ 'recruitment.jobDetail.breadcrumb' | translate }}</p>
+  <button mat-button type="button" (click)="goBack()">{{ 'recruitment.jobDetail.back' | translate }}</button>
 </header>
 
 @if (loading()) {
-  <p role="status">Cargando vacante...</p>
+  <p role="status">{{ 'recruitment.jobDetail.loading' | translate }}</p>
 } @else if (jobPosting(); as job) {
   <article class="st-card detalle">
     <h1 class="st-page-title">{{ job.title }}</h1>
     <p class="meta">
-      {{ job.companyName ?? ('recruitment.jobList.companyFallback' | translate: { id: job.companyId }) }} · Cierra el
-      {{ job.closingDate | date: 'dd/MM/yyyy' }}
+      {{
+        'recruitment.jobDetail.companyAndClosing'
+          | translate
+            : {
+                company: job.companyName ?? ('recruitment.jobList.companyFallback' | translate: { id: job.companyId }),
+                date: (job.closingDate | date: 'dd/MM/yyyy'),
+              }
+      }}
     </p>
     <p class="descripcion">{{ job.description }}</p>
 
     @if (job.anonymizedScreening) {
-      <p class="aviso">Esta vacante usa cribado anonimizado: tu nombre no se muestra en la primera revisión.</p>
+      <p class="aviso">{{ 'recruitment.jobDetail.anonymizedNotice' | translate }}</p>
     }
 
     @if (successMessage()) {
-      <p class="mensaje ok" role="status">{{ successMessage() }}</p>
+      <p class="mensaje ok" role="status">{{ successMessage() | translate }}</p>
     }
     @if (errorMessage()) {
-      <p class="mensaje error" role="alert">{{ errorMessage() }}</p>
+      <p class="mensaje error" role="alert">{{ errorMessage() | translate }}</p>
     }
 
     <button
@@ -31,9 +37,9 @@
       (click)="onApply()"
       [disabled]="applying() || alreadyAppliedOrBlocked()"
     >
-      {{ applying() ? 'Enviando...' : 'Postular' }}
+      {{ (applying() ? 'recruitment.jobDetail.applying' : 'recruitment.jobDetail.applyButton') | translate }}
     </button>
   </article>
 } @else if (errorMessage()) {
-  <p class="mensaje error" role="alert">{{ errorMessage() }}</p>
+  <p class="mensaje error" role="alert">{{ errorMessage() | translate }}</p>
 }
